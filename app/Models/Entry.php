@@ -8,4 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Entry extends Model
 {
     use HasFactory;
+
+
+    protected $fillable=['user_id' , 'kpi_id' , 'acual' , 'notes'];
 }
