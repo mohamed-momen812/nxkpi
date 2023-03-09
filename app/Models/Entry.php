@@ -11,4 +11,12 @@ class Entry extends Model
 
 
     protected $fillable=['user_id' , 'kpi_id' , 'acual' , 'notes'];
+
+    public function user(){
+        return $this->belongsTo(User::class , 'user_id');
+    }
+
+    public function kpi(){
+        return $this->belongsTo(Kpi::class , 'kpi_id');
+    }
 }
