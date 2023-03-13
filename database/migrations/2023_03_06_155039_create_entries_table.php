@@ -19,7 +19,8 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->unsignedBigInteger('kpi_id');
             $table->foreign('kpi_id')->references('id')->on('kpis')->onDelete('cascade')->onUpdate('cascade');
-            $table->json('actual');
+            $table->date('entry_date')->nullable();
+            $table->decimal('actual');
             $table->decimal('target');
             $table->string('notes')->nullable();
             $table->timestamps();

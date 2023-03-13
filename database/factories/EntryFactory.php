@@ -28,37 +28,53 @@ class EntryFactory extends Factory
         $kpi_freq = $kpi->frequency->name;
         switch ($kpi_freq) {
             case "Daily":
-                $dt = Carbon::today();
-                $actual = array($dt->toDateString() => 4000 , $dt->subDay()->toDateString() => 5000 , $dt->subDay(2)->toDateString() => 6000);
+                $today = Carbon::today();
+                $entry_date = $today->subDay(rand(1,30));
             break;
             case "Weakly":
-                $now = Carbon::now();
-                $weekStartDate = $now->startOfWeek()->format('Y-m-d');
-//                $weekEndDate = $now->endOfWeek()->format('Y-m-d ');
-                $actual = array($weekStartDate => 9000 , $now->subWeek()->format('Y-m-d') => 7500 , $now->subWeek(1)->format('Y-m-d') => 8000);
+                $today = Carbon::today();
+                $entry_date = $today->subWeek(rand(1,30));
             break;
             case "Monthly":
-                $now = Carbon::today();
+                $today = Carbon::today();
+                $entry_date = $today->subMonth(rand(1,30));
 
-                $actual = array( $now->format('F Y') => 5000 , $now->subMonth()->format('F Y') => 6000 , $now->subMonth(3)->format('F Y') => 7000);
+                // $actual = array( $now->format('F Y') => 5000 , $now->subMonth()->format('F Y') => 6000 , $now->subMonth(3)->format('F Y') => 7000);
             break;
             case "Quarterly":
-                $now = Carbon::today();
-
-                $actual = array( "Quarter 1 ( ".$now->year." )" => 5000 , "Quarter 4 ( ".$now->subYear()->year." )" => 6000 , "Quarter 3 ( ".$now->subYear()->year." )" => 7000);
+                $today = Carbon::today();
+                $date = $today->subMonth(rand(1,60));
+                $entry_date = $date ;
+                // $month = $date->format('f');
+                // switch($month){
+                //     case "January" || "February" || "March":
+                //         $entry_date = "Quarter 1 ( ". $date->format('y')." ) ".$date ;
+                //         break;
+                //     case "April" || "May" || "June" :
+                //         $entry_date = "Quarter 2 ( ". $date->format('y')." ) ".$date ;
+                //         break;
+                //     case "July" || "August" || "September" :
+                //         $entry_date = "Quarter 3 ( ". $date->format('y')." ) ".$date ;
+                //         break;
+                //     case "October" || "November" || "December" :
+                //         $entry_date = "Quarter 4 ( ". $date->format('y')." ) ".$date ;
+                //         break;
+                // }
+                // $actual = array( "Quarter 1 ( ".$now->year." )" => 5000 , "Quarter 4 ( ".$now->subYear()->year." )" => 6000 , "Quarter 3 ( ".$now->subYear()->year." )" => 7000);
                 break;
             case "Yearly":
-                $now = Carbon::today();
-
-                $actual = array( $now->year => 5000 , $now->subYear()->year => 6000 , $now->subYear(1)->year => 7000);
+                $today = Carbon::today();
+                $date = $today->subYear(rand(1,20));
+                $entry_date = $date;
                 break;
             default:
-                $actual = null ;
+                $entry_date = null ;
         }
         return [
             'user_id' => $this->faker->randomElement( User::pluck('id')->toArray() ),
             'kpi_id' => $kpi_id,
-            'actual' => json_encode( $actual ),
+            'entry_date' => $entry_date,
+            'actual' => $this->faker->numberBetween(1000,10000),
             'target' => $kpi_target,
         ];
     }

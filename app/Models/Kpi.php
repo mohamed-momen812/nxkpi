@@ -11,6 +11,8 @@ class Kpi extends Model
 
     protected $fillable = [ 'name' , 'description' , 'user_target' , 'sort_order' , 'user_id' , 'frequency_id' , 'category_id' , 'created_at' , 'updated_at'];
 
+    protected $with =['frequency'];
+
     public function category(){
         return $this->belongsTo(Category::class , 'category_id');
     }

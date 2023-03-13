@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\EntryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,3 +27,5 @@ Route::group( ['middleware' => 'api','prefix' => 'auth'] , function ($router) {
 Route::get('test' , function (){
    return "hossam";
 })->middleware('auth:api');
+
+Route::resource('entries',EntryController::class);

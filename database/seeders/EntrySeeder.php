@@ -17,6 +17,6 @@ class EntrySeeder extends Seeder
     {
         DB::table('entries')->delete();
         
-        \App\Models\Entry::factory()->count(30)->create();
+        \App\Models\Entry::factory()->count(100)->create();
     }
 }
