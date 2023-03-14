@@ -17,8 +17,13 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->text('description')->nullable();
-            $table->decimal('user_target');
+            $table->decimal('user_target')->nullable();
             $table->integer('sort_order')->nullable();
+            $table->string('format')->default('1,234');
+            $table->string('direction')->default('up');
+            $table->string('aggregated')->default('sum_totals');
+            $table->boolean('target_calculated')->default(false);
+            $table->json('thresholds')->nullable();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->unsignedBigInteger('frequency_id');

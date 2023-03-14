@@ -3,42 +3,33 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\EntryResource;
-use App\Interfaces\EntryRepositoryInterface;
+use App\Http\Requests\KpiRequest;
+use App\Http\Resources\KpiResource;
+use App\Interfaces\KpiRepositoryInterface;
 use Illuminate\Http\Request;
 
-class EntryController extends Controller
+class KpiController extends Controller
 {
-    private $entryRepo;
-    public function __construct(EntryRepositoryInterface $entryRepoInterface)
+    private $kpiRepo ;
+    public function __construct(KpiRepositoryInterface $kpiRepoInterface)
     {
-        $this->entryRepo = $entryRepoInterface ;
-    }
-    public function index()
-    {
-        $entries = $this->entryRepo->allWithPaginate();
-        return EntryResource::collection($entries);
+        $this->kpiRepo = $kpiRepoInterface ;
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function index()
+    {
+        $kpis = $this->kpiRepo->allWithPaginate();
+        return KpiResource::collection($kpis);
+    }
+
     public function create()
     {
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function store(KpiRequest $request)
     {
-        //
+
     }
 
     /**
@@ -49,8 +40,8 @@ class EntryController extends Controller
      */
     public function show($id)
     {
-        $entry = $this->entryRepo->find($id);
-        return EntryResource::make($entry);
+        $kpi = $this->kpiRepo->find($id);
+        return KpiResource::make($kpi);
     }
 
     /**

@@ -29,3 +29,4 @@ Route::get('test' , function (){
 })->middleware('auth:api');
 
 Route::resource('entries',EntryController::class);
+Route::resource('kpis',\App\Http\Controllers\Api\KpiController::class);

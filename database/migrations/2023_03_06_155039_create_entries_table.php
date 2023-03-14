@@ -23,6 +23,11 @@ return new class extends Migration
             $table->decimal('actual');
             $table->decimal('target');
             $table->string('notes')->nullable();
+            $table->integer('day')->nullable();
+            $table->integer('weekNo')->nullable();
+            $table->integer('month')->nullable();
+            $table->integer('quarter')->nullable();
+            $table->integer('year')->nullable();
             $table->timestamps();
         });
     }
