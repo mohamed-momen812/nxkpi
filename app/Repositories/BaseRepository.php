@@ -1,4 +1,4 @@
-<?php   
+<?php
 
 namespace App\Repositories;
 
@@ -8,10 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class BaseRepository implements BaseRepositoryInterface
 {
-    protected $model; 
+    protected $model;
 
-    public function __construct(Model $model)     
-    {         
+    public function __construct(Model $model)
+    {
         $this->model = $model;
     }
 
@@ -23,8 +23,11 @@ class BaseRepository implements BaseRepositoryInterface
 
     public function update(array $attributes, $id)
     {
-        $model = $this->model->find($id);
-        $data = $model->update($attributes);
+//        $model = $this->model->find($id);
+//        $data = $model->update($attributes);
+        $this->model->where('id' , $id)->update($attributes);
+        $data = $this->model->find($id);
+
         return $data;
     }
 

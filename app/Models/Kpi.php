@@ -9,7 +9,7 @@ class Kpi extends Model
 {
     use HasFactory;
 
-    protected $fillable = [ 'name' , 'description' , 'user_target' , 'sort_order' , 'user_id' , 'frequency_id' , 'category_id' , 'created_at' , 'updated_at'];
+    protected $fillable = [ 'name' , 'description' , 'user_target' , 'sort_order' ,'format','direction','aggregated','target_calculated','thresholds', 'user_id' , 'frequency_id' , 'category_id' , 'created_at' , 'updated_at'];
 
 //    protected $with =['frequency'];
 
