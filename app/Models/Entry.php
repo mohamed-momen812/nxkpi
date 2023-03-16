@@ -11,7 +11,7 @@ class Entry extends Model
 {
     use HasFactory , Helper;
 
-    protected $fillable = ['user_id' , 'kpi_id' ,'entry_date' , 'acual' ,'target', 'notes' ,'day' , 'weekNo' , 'month' , 'quarter' ,'year' ];
+    protected $fillable = ['user_id' , 'kpi_id' ,'entry_date' , 'actual' ,'target', 'notes' ,'day' , 'weekNo' , 'month' , 'quarter' ,'year' ];
 
     protected $appends = ["range_date"];
 

@@ -12,4 +12,8 @@ class EntryRepository extends BaseRepository implements EntryRepositoryInterface
         parent::__construct($model);
     }
     
+    public function getEntriesByKpi($kpi_id)
+    {
+        return $this->model->where('kpi_id' , $kpi_id)->get();
+    }
 }
