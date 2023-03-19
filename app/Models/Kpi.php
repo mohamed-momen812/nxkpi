@@ -9,10 +9,20 @@ class Kpi extends Model
 {
     use HasFactory;
 
-    protected $fillable = [ 'name' , 'description' , 'user_target' , 'sort_order' ,'format','direction','aggregated','target_calculated','thresholds', 'user_id' , 'frequency_id' , 'category_id' , 'created_at' , 'updated_at'];
+    protected $fillable = [ 'name' , 'description' , 'user_target' , 'sort_order' ,'format','direction','aggregated','target_calculated','thresholds', 'equation' , 'user_id' , 'frequency_id' , 'category_id' , 'created_at' , 'updated_at'];
 
 //    protected $with =['frequency'];
 
+    public function getEquationAttribute($v){
+       $s = preg_match_all('#\((.*?)\)#', $v, $match);
+        foreach( $match[1] as $id ){
+            $kpi_target = Kpi::find($id)->user_target ;
+            dd($kpi_target);
+        }
+        //eval compute formula
+//        print trim($s[0]);
+        return $v;
+    }
     public function category(){
         return $this->belongsTo(Category::class , 'category_id');
     }

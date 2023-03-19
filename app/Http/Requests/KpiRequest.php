@@ -38,7 +38,7 @@ class KpiRequest extends FormRequest
             'aggregated' => 'in:Sum Totals,Average',
             'target_calculated' => 'boolean',
             'thresholds' => 'nullable',
-
+            'equation' => 'string'
         ];
     }
 
@@ -53,6 +53,7 @@ class KpiRequest extends FormRequest
             'aggregated' => 'in:Sum Totals,Average',
             'target_calculated' => 'boolean',
             'thresholds' => 'nullable',
+            'equation' => 'string'
         ];
     }
 

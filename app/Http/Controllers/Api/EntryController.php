@@ -48,38 +48,31 @@ class EntryController extends Controller
      */
     public function store(EntryRequest $request)
     {
+        //to get kpi_id and notes directly
         $input = $request->validated();
+
         $input['user_id'] = auth()->id();
         $kpi = $this->kpiRepo->find($request->kpi_id);
 
         if($kpi == null) return "kpi not found";
-        
+
         $input['target'] = $kpi->user_target ;
         $entries = $request->entries ;
-        
+
         foreach($entries as $entry)
         {
-            foreach($entry as $data)
-            {
-                $date = new Carbon($entry['date']);
-                $input['entry_date'] = $date;
-                $input['actual'] = $entry['actual'];
-                $input['day'] = $date->day ;
-                $input['week'] = $date->weekOfYear ;
-                $input['month'] = $date->month;
-                $input['quarter'] = $this->calcYearlyQuarter($date) ;
-                $input['year'] = $date->year;
-    
-                $entry = $this->entryRepo->create($input);
-    
-                if($entry) continue;
-                
-                return $this->responseJsonFailed();
-            }
+            $preparedData = $this->prepareData($entry);
+            $input = array_merge($input , $preparedData );
+
+            $entry = $this->entryRepo->create($input);
+
+            if($entry) continue;
+
+            return $this->responseJsonFailed();
         }
-        
+
         $entriesForOneKpi = $this->entryRepo->getEntriesByKpi($request->kpi_id);
-        return $this->responseJson($entriesForOneKpi);
+        return $this->responseJson($entriesForOneKpi , 'Entries created successfully');
     }
 
     /**
@@ -91,7 +84,11 @@ class EntryController extends Controller
     public function show($id)
     {
         $entry = $this->entryRepo->find($id);
-        return EntryResource::make($entry);
+
+        if ($entry == null) return $this->responseJsonFailed("Entry Not Found" );
+
+        $entry = $this->entryRepo->find($id);
+        return $this->responseJson( EntryResource::make($entry) );
     }
 
     /**
@@ -102,7 +99,7 @@ class EntryController extends Controller
      */
     public function edit($id)
     {
-        //
+
     }
 
     /**
@@ -112,9 +109,33 @@ class EntryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(EntryRequest $request)
     {
-        //
+        //to get kpi_id and notes directly
+        $input = $request->except('entries');
+
+        $input['user_id'] = auth()->id();
+        $kpi = $this->kpiRepo->find($request->kpi_id);
+
+        if($kpi == null) return "kpi not found";
+
+        $input['target'] = $kpi->user_target ;
+        $entries = $request->entries ;
+
+        foreach($entries as $entry)
+        {
+            $preparedData = $this->prepareData($entry);
+            $input = array_merge($input , $preparedData );
+            $entry = $this->entryRepo->update($input , $entry['id']);
+
+            if($entry) continue;
+
+            return $this->responseJsonFailed();
+
+        }
+
+        $entriesForOneKpi = $this->entryRepo->getEntriesByKpi($request->kpi_id);
+        return $this->responseJson($entriesForOneKpi , 'Entries updated successfully');
     }
 
     /**
@@ -125,6 +146,29 @@ class EntryController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $entry = $this->entryRepo->find($id);
+
+        if ($entry == null) return $this->responseJsonFailed("Entry Not Found" );
+
+        $entry = $this->entryRepo->destroy($id);
+
+        if ($entry){
+            return $this->responseJson('Entry deleted successfully');
+        }
+        return $this->responseJsonFailed();
+    }
+
+    public function prepareData($entry)
+    {
+        $date = new Carbon($entry['date']);
+        $input['entry_date'] = $date;
+        $input['actual'] = $entry['actual'];
+        $input['day'] = $date->day ;
+        $input['weekNo'] = $date->weekOfYear ;
+        $input['month'] = $date->month;
+        $input['quarter'] = $this->calcYearlyQuarter($date) ;
+        $input['year'] = $date->year;
+
+        return $input ;
     }
 }

@@ -27,6 +27,10 @@ Route::group(['middleware' => 'auth:api'] , function (){
     Route::resource('categories' , \App\Http\Controllers\Api\CategoryController::class);
     Route::resource('kpis',\App\Http\Controllers\Api\KpiController::class);
     Route::resource('entries',EntryController::class);
+
+    //new update route for entry update
+    Route::put('entries' , [EntryController::class,'update']);
+
 });
 
 Route::get('test' , function (){

@@ -25,6 +25,7 @@ class KpiResource extends JsonResource
             'direction' =>$this->direction,
             'aggregated' => $this->aggregated,
             'target_calculated' => $this->target_calculated,
+            'equation' => $this->equation,
             'thresholds' => $this->thresholds,
             "user" => new UserResource($this->user) ,
             "frequency" => new FrequencyResource($this->frequency) ,

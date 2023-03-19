@@ -22,7 +22,9 @@ return new class extends Migration
             $table->string('format')->default('1,234');
             $table->string('direction')->default('up');
             $table->string('aggregated')->default('sum_totals');
+            $table->string('equation')->nullable();
             $table->boolean('target_calculated')->default(false);
+
             $table->json('thresholds')->nullable();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
