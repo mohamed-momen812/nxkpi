@@ -6,8 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\KpiRequest;
 use App\Http\Resources\KpiResource;
 use App\Interfaces\KpiRepositoryInterface;
+use App\Models\Equation;
+use App\Models\Kpi;
 use App\Traits\ApiTrait;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class KpiController extends Controller
 {
@@ -44,8 +47,9 @@ class KpiController extends Controller
         $input['direction'] = request('direction' , 'none');
         $input['target_calculated'] = request('target_calculated' , false);
         $kpi = $this->kpiRepo->create($input);
-
+        
         if ($kpi){
+            $equation = $this->setEquation($kpi);
             return $this->responseJson(KpiResource::make($kpi) , 'Kpi created successfully');
         }
         return $this->responseJsonFailed();
@@ -117,5 +121,22 @@ class KpiController extends Controller
             return $this->responseJson('kpi deleted successfully');
         }
         return $this->responseJsonFailed();
+    }
+
+    public function setEquation(Kpi $kpi)
+    {
+        $equation = Equation::create([
+            'equat_body' => $kpi->equation ,
+            'kpi_id' => $kpi->id ,
+        ]); 
+        preg_match_all('#\#(.*?)\##', $kpi->equation, $match);
+        $kpis_id = $match[1];
+    
+        foreach($kpis_id as $kpi){
+            $equations_kpi = DB::table('equations_kpis')->insert([
+                'equation_id' => $equation->id ,
+                'kpi_id' => $kpi ,
+            ]);
+        }
     }
 }
