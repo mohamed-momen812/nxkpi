@@ -171,4 +171,17 @@ class EntryController extends Controller
 
         return $input ;
     }
+
+    public function getEntriesByKpi($kpi_id)
+    {
+        $kpi = $this->kpiRepo->find($kpi_id);
+
+        if($kpi == null) return "kpi not found";
+
+        $entries = $this->entryRepo->getEntriesByKpi($kpi_id) ;
+
+        if($entries == null || empty($entries) == true) return "kpi hasn't entries";
+
+        return $this->entryRepo->getEntriesByKpi($kpi_id);
+    }
 }

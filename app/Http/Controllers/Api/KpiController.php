@@ -47,7 +47,7 @@ class KpiController extends Controller
         $input['direction'] = request('direction' , 'none');
         $input['target_calculated'] = request('target_calculated' , false);
         $kpi = $this->kpiRepo->create($input);
-        
+
         if ($kpi){
             $equation = $this->setEquation($kpi);
             return $this->responseJson(KpiResource::make($kpi) , 'Kpi created successfully');
@@ -115,10 +115,14 @@ class KpiController extends Controller
      */
     public function destroy($id)
     {
+        $kpi = $this->kpiRepo->find($id);
+
+        if($kpi == null) return $this->responseJsonFailed($message='kpi not found');
+
         $kpi = $this->kpiRepo->destroy($id);
 
         if ($kpi){
-            return $this->responseJson('kpi deleted successfully');
+            return $this->responseJson($message="kpi deleted successfully");
         }
         return $this->responseJsonFailed();
     }
@@ -128,10 +132,10 @@ class KpiController extends Controller
         $equation = Equation::create([
             'equat_body' => $kpi->equation ,
             'kpi_id' => $kpi->id ,
-        ]); 
+        ]);
         preg_match_all('#\#(.*?)\##', $kpi->equation, $match);
         $kpis_id = $match[1];
-    
+
         foreach($kpis_id as $kpi){
             $equations_kpi = DB::table('equations_kpis')->insert([
                 'equation_id' => $equation->id ,
@@ -139,4 +143,5 @@ class KpiController extends Controller
             ]);
         }
     }
+
 }

@@ -31,6 +31,8 @@ Route::group(['middleware' => 'auth:api'] , function (){
     //new update route for entry update
     Route::put('entries' , [EntryController::class,'update']);
 
+    //dashboard controller
+    Route::get('kpi/total-ratio/{kpi}' , [\App\Http\Controllers\Api\DashboardController::class , 'totalRatio']);
 });
 
 Route::get('test' , function (){
