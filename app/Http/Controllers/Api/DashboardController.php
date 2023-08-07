@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\DashboardResource;
 use App\Interfaces\KpiRepositoryInterface;
+use App\Models\Dashboard;
 use App\Traits\ApiTrait;
 use Illuminate\Http\Request;
+
 
 class DashboardController extends Controller
 {
@@ -52,4 +55,14 @@ class DashboardController extends Controller
         return $target;
     }
 
+    public function index()
+    {
+        $dashboards = Dashboard::where('user_id' , auth()->user()->id)->get();
+        if ($dashboards)
+        {
+            return $this->responseJson(DashboardResource::collection($dashboards));
+        }
+
+        return $this->responseJsonFailed();
+    }
 }
