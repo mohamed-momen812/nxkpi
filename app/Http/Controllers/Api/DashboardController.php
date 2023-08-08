@@ -65,4 +65,6 @@ class DashboardController extends Controller
 
         return $this->responseJsonFailed();
     }
+
+//    public function store()
 }
