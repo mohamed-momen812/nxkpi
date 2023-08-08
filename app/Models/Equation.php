@@ -11,7 +11,8 @@ class Equation extends Model
 
     protected $fillable =["equat_body" , "kpi_id"];
 
-    public function kpi(){
+    public function kpi()
+    {
         return $this->belongsTo(Kpi::class , 'kpi_id');
     }
 }

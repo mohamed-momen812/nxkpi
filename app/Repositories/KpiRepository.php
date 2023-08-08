@@ -2,8 +2,8 @@
 
 namespace App\Repositories;
 
-use App\Interfaces\KpiRepositoryInterface;
 use App\Models\Kpi;
+use App\Interfaces\KpiRepositoryInterface;
 
 class KpiRepository extends BaseRepository implements KpiRepositoryInterface
 {

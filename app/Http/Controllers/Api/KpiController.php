@@ -2,20 +2,21 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\KpiRequest;
-use App\Http\Resources\KpiResource;
-use App\Interfaces\KpiRepositoryInterface;
-use App\Models\Equation;
 use App\Models\Kpi;
 use App\Traits\ApiTrait;
-use Illuminate\Http\Request;
+use App\Models\Equation;
+use App\Enums\FormatEnum;
+use App\Http\Requests\KpiRequest;
 use Illuminate\Support\Facades\DB;
-
+use App\Http\Resources\KpiResource;
+use App\Http\Controllers\Controller;
+use App\Interfaces\KpiRepositoryInterface;
 class KpiController extends Controller
 {
     use ApiTrait;
-    private $kpiRepo ;
+
+    private $kpiRepo;
+
     public function __construct(KpiRepositoryInterface $kpiRepoInterface)
     {
         $this->kpiRepo = $kpiRepoInterface ;
@@ -28,6 +29,7 @@ class KpiController extends Controller
         if ($kpis){
             return $this->responseJson(KpiResource::collection($kpis),'kpis retrieved successfully');
         }
+
         return $this->responseJsonFailed();
     }
 
@@ -40,12 +42,7 @@ class KpiController extends Controller
     {
         $input = $request->validated();
         $input['user_id'] = auth()->id() ;
-        $input['frequency_id'] = $request->input('frequency_id' , 1 );
-        $input['category_id'] = $request->input('category_id' , null );
-        $input['format'] = $request->input('format' , '1,234' ) ;
-        $input['aggregated'] = $request->input('aggregated' ,'Sum Totals');
-        $input['direction'] = request('direction' , 'none');
-        $input['target_calculated'] = request('target_calculated' , false);
+
         $kpi = $this->kpiRepo->create($input);
 
         if ($kpi){
@@ -130,8 +127,8 @@ class KpiController extends Controller
     public function setEquation(Kpi $kpi)
     {
         $equation = Equation::create([
-            'equat_body' => $kpi->equation ,
-            'kpi_id' => $kpi->id ,
+            'equat_body' => $kpi->equation,
+            'kpi_id' => $kpi->id,
         ]);
         preg_match_all('#\#(.*?)\##', $kpi->equation, $match);
         $kpis_id = $match[1];

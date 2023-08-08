@@ -38,7 +38,13 @@ class KpiRequest extends FormRequest
             'aggregated' => 'in:Sum Totals,Average',
             'target_calculated' => 'boolean',
             'thresholds' => 'nullable',
-            'equation' => 'string'
+            'equation' => 'string',
+            'frequency_id' => 'required',
+            'category_id' => 'required',
+            'format' => 'required',
+            'aggregated' => 'required',
+            'direction' => 'nullable',
+            'target_calculated' => 'required',
         ];
     }
 
@@ -53,7 +59,13 @@ class KpiRequest extends FormRequest
             'aggregated' => 'in:Sum Totals,Average',
             'target_calculated' => 'boolean',
             'thresholds' => 'nullable',
-            'equation' => 'string'
+            'equation' => 'string',
+            'frequency_id' => 'required',
+            'category_id' => 'required',
+            'format' => 'required',
+            'aggregated' => 'required',
+            'direction' => 'nullable',
+            'target_calculated' => 'required',
         ];
     }
 
@@ -64,7 +76,6 @@ class KpiRequest extends FormRequest
             'user_target.numeric' => 'user target must be numeric' ,
             'user_target.max' => 'user target must be between 9999999.99 and 0.01',
             'sort_order.integer' => 'sort order must be number' ,
-
         ];
     }
 }

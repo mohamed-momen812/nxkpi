@@ -24,7 +24,7 @@ class KpiFactory extends Factory
             'description' => $this->faker->sentence(6),
             'user_target' => $this->faker->numberBetween(1000,10000),
             'sort_order' => rand(1,100),
-            'format' => '1,234.56' ,
+            'format' => 'integer_float' ,
             'direction' => 'up' ,
             'aggregated' => 'Sum Total',
             'target_calculated' => false ,

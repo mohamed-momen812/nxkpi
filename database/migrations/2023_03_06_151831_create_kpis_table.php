@@ -1,8 +1,10 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
+use App\Models\Kpi;
+use App\Enums\FormatEnum;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration
 {
@@ -19,9 +21,9 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->decimal('user_target')->nullable();
             $table->integer('sort_order')->nullable();
-            $table->string('format')->default('1,234');
+            $table->string('format')->default(FormatEnum::INTEGER->value);
             $table->string('direction')->default('up');
-            $table->string('aggregated')->default('sum_totals');
+            $table->string('aggregated')->default(Kpi::AGGREGATED_SUM_TOTAL);
             $table->string('equation')->nullable();
             $table->boolean('target_calculated')->default(false);
 
