@@ -35,6 +35,8 @@ Route::group(['middleware' => 'auth:api'] , function (){
     Route::get('kpi/total-ratio/{kpi}' , [\App\Http\Controllers\Api\DashboardController::class , 'totalRatio']);
 
     Route::apiResource('users' , \App\Http\Controllers\Api\UserController::class);
+
+    Route::apiResource('dashboards' , \App\Http\Controllers\Api\DashboardController::class);
 });
 
 Route::get('test' , function (){
