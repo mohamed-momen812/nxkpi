@@ -2,13 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Traits\KpiTrait;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Kpi extends Model
 {
-    use HasFactory;
+    use HasFactory, KpiTrait;
 
     protected $fillable = ['name' , 'description' , 'user_target' , 'sort_order' ,'format','direction','aggregated','target_calculated','thresholds', 'equation' , 'user_id' , 'frequency_id' , 'category_id' , 'created_at' , 'updated_at'];
 
@@ -72,5 +72,10 @@ class Kpi extends Model
     public function user()
     {
         return $this->belongsTo(User::class , 'user_id');
+    }
+
+    public function charts()
+    {
+        return $this->belongsToMany(Chart::class);
     }
 }

@@ -3,8 +3,9 @@
 namespace Database\Seeders;
 
 use App\Models\Entry;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Database\Seeders\DashboardSeeder;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class DatabaseSeeder extends Seeder
 {
@@ -22,7 +23,8 @@ class DatabaseSeeder extends Seeder
             CategorySeeder::class,
             FrequencySeeder::class,
             KpiSeeder::class,
-            EntrySeeder::class
+            EntrySeeder::class,
+            DashboardSeeder::class
         ]);
     }
 }

@@ -24,14 +24,10 @@ class DashboardSeeder extends Seeder
 
         $users_id = User::pluck('id')->toArray() ;
 
-        $kpis_id = Kpi::pluck('id')->toArray() ;
-
-        foreach(range(1,5) as $index)
-        {
+        foreach(range(1,5) as $index){
             DB::table('dashboards')->insert([
                 'name'      => Str::random(6),
                 'user_id'   => $users_id[array_rand($users_id)],
-                'kpi_id'    => $kpis_id[array_rand($kpis_id)],
             ]);
         }
     }

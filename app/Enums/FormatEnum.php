@@ -10,7 +10,7 @@ enum FormatEnum: string
     case FLOAT = 'float';
     case INTEGER_PERCENTAGE = 'integer_percentage';
     case FLOAT_PERCENTAGE = 'float_percentage';
-    // case DOLLAR = 'dollar';
+    case DOLLAR = 'dollar';
     // case SAR = 'sar';
     // case SECONDS = 'seconds';
     // case MINUTES = 'minutes';
@@ -50,6 +50,13 @@ enum FormatEnum: string
                 'name' => trans(key: 'format.float_percentage'),
                 'value' => self::FLOAT_PERCENTAGE->value,
                 'display' => '12.34%'
+            ],
+
+            self::DOLLAR => [
+                'code' => 3,
+                'name' => trans(key: 'format.dollar'),
+                'value' => self::DOLLAR->value,
+                'display' => '12$'
             ],
         };
     }

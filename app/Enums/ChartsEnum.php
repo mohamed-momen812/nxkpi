@@ -2,9 +2,8 @@
 
 namespace App\Enums;
 
-use Rexlabs\Enum\Enum;
 
-class ChartsEnum extends Enum
+enum ChartsEnum
 {
     const COLUMN_GRAPH = 1;
     const LINE_GRAPH = 2;
@@ -17,33 +16,44 @@ class ChartsEnum extends Enum
      *
      * @return array
      */
-    public static function map() : array
+    public function data() : array
     {
-        return [
+        return match($this) {
             static::COLUMN_GRAPH =>[
                 'value'  => 'column graph',
                 'code'   => 1
-                ],
+            ],
             static::LINE_GRAPH => [
                 'value' => 'line graph',
                 'code' => 2
-                ],
+            ],
             static::SINGLE_KPI => [
                 'value'  => 'single kpi',
                 'code' => 3
-                ],
+            ],
             static::STACKED_KPI_GRAPH => [
                 'value'  => 'stacked kpi graph',
                 'code' => 4
-                ],
+            ],
             static::MULTIPLE_KPI_SERIES => [
                 'value'  => 'multiple kpi series',
                 'code' => 5
-                ],
+            ],
             static::SINGLE_COLUMN_KPI => [
                 'value' => 'single column kpi',
                 'code'  => 6
-                ],
-        ];
+            ],
+        };
+    }
+
+    public static function collection(): array
+    {
+        $result = [];
+
+        foreach(self::cases() as $key => $day) {
+            $result[$key] = $day->data();
+        }
+
+        return $result;
     }
 }

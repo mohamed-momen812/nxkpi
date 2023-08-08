@@ -13,11 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('dashboards', function (Blueprint $table) {
+        Schema::create('chart_kpis', function (Blueprint $table) {
             $table->id();
-            $table->string("name");
-            $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->unsignedBigInteger('chart_id');
+            $table->foreign('chart_id')->references('id')->on('charts')->onDelete('cascade');
+            $table->unsignedBigInteger('kpi_id');
+            $table->foreign('kpi_id')->references('id')->on('kpis')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -29,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('dashboards');
+        Schema::dropIfExists('chart_kpis');
     }
 };
