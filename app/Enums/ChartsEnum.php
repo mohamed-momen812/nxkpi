@@ -21,27 +21,45 @@ enum ChartsEnum
         return match($this) {
             static::COLUMN_GRAPH =>[
                 'value'  => 'column graph',
-                'code'   => 1
+                'code'   => 1,
+                'title' => trans('chart.column_graph.title'),
+                'description' => trans('chart.column_graph.description'),
+                'logo' => '',
             ],
             static::LINE_GRAPH => [
                 'value' => 'line graph',
-                'code' => 2
+                'code' => 2,
+                'title' => trans('chart.column_graph.title'),
+                'description' => trans('chart.column_graph.description'),
+                'logo' => '',
             ],
             static::SINGLE_KPI => [
                 'value'  => 'single kpi',
-                'code' => 3
+                'code' => 3,
+                'title' => trans('chart.column_graph.title'),
+                'description' => trans('chart.column_graph.description'),
+                'logo' => '',
             ],
             static::STACKED_KPI_GRAPH => [
                 'value'  => 'stacked kpi graph',
-                'code' => 4
+                'code' => 4,
+                'title' => trans('chart.column_graph.title'),
+                'description' => trans('chart.column_graph.description'),
+                'logo' => '',
             ],
             static::MULTIPLE_KPI_SERIES => [
                 'value'  => 'multiple kpi series',
-                'code' => 5
+                'code' => 5,
+                'title' => trans('chart.column_graph.title'),
+                'description' => trans('chart.column_graph.description'),
+                'logo' => '',
             ],
             static::SINGLE_COLUMN_KPI => [
                 'value' => 'single column kpi',
-                'code'  => 6
+                'code'  => 6,
+                'title' => trans('chart.column_graph.title'),
+                'description' => trans('chart.column_graph.description'),
+                'logo' => '',
             ],
         };
     }
@@ -50,8 +68,8 @@ enum ChartsEnum
     {
         $result = [];
 
-        foreach(self::cases() as $key => $day) {
-            $result[$key] = $day->data();
+        foreach(self::cases() as $key => $record) {
+            $result[$key] = $record->data();
         }
 
         return $result;

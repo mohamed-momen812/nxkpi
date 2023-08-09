@@ -141,4 +141,26 @@ class KpiController extends Controller
         }
     }
 
+
+    public function totalRatio($kpi_id)
+    {
+        $kpi = $this->kpiRepo->find($kpi_id);
+
+        return $this->responseJson($kpi->totalRatio() . "%");
+    }
+
+    public function totalActual($kpi_id)
+    {
+        $kpi = $this->kpiRepo->find($kpi_id);
+
+        return $kpi->actualTotal();
+    }
+
+    public function kpiTarget($kpi_id)
+    {
+        $kpi = $this->kpiRepo->find($kpi_id);
+
+        return $kpi->target();
+    }
+
 }

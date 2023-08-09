@@ -24,19 +24,23 @@ Route::group( ['middleware' => 'api','prefix' => 'auth'] , function ($router) {
     Route::get('/user-profile', [AuthController::class, 'userProfile']);
 });
 Route::group(['middleware' => 'auth:api'] , function (){
+    // categories routes
     Route::resource('categories' , \App\Http\Controllers\Api\CategoryController::class);
-    Route::resource('kpis',\App\Http\Controllers\Api\KpiController::class);
-    Route::resource('entries',EntryController::class);
 
-    //new update route for entry update
+    // entries routes
+    Route::resource('entries',EntryController::class);
     Route::put('entries' , [EntryController::class,'update']);
 
-    //dashboard controller
-    Route::get('kpi/total-ratio/{kpi}' , [\App\Http\Controllers\Api\DashboardController::class , 'totalRatio']);
+    // kpis routes
+    Route::resource('kpis',\App\Http\Controllers\Api\KpiController::class);
+    Route::get('kpi/total-ratio/{kpi}' , [\App\Http\Controllers\Api\KpiController::class , 'totalRatio']);
 
+    // users routes
     Route::apiResource('users' , \App\Http\Controllers\Api\UserController::class);
 
+    // dashboard routes
     Route::apiResource('dashboards' , \App\Http\Controllers\Api\DashboardController::class);
+    Route::apiResource('charts' , \App\Http\Controllers\Api\ChartController::class);
 });
 
 Route::get('test' , function (){

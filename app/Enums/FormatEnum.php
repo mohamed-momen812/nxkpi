@@ -65,8 +65,8 @@ enum FormatEnum: string
     {
         $result = [];
 
-        foreach(self::cases() as $key => $day) {
-            $result[$key] = $day->data();
+        foreach(self::cases() as $key => $record) {
+            $result[$key] = $record->data();
         }
 
         return $result;
