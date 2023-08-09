@@ -52,7 +52,7 @@ class BaseRepository implements BaseRepositoryInterface
 
     public function destroy($id)
     {
-        $model = $this->model->find($id);
+        $model = $this->model->findOrFail($id);
         return $model->delete();
     }
 

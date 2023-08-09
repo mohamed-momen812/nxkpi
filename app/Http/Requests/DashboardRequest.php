@@ -13,7 +13,7 @@ class DashboardRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,8 +23,26 @@ class DashboardRequest extends FormRequest
      */
     public function rules()
     {
+        return request()->isMethod('PUT') || request()->isMethod('PATCH') ? $this->onUpdate() : $this->onCreate();
+    }
+
+    public function onCreate(){
         return [
-            //
+            'name' => 'required|string',
+        ];
+    }
+
+    public function onUpdate(){
+        return [
+            'name' => 'required|string',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'name.required' => 'name is required',
+            'name.string'   => 'name is required',
         ];
     }
 }

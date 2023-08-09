@@ -41,5 +41,5 @@ Route::group(['middleware' => 'auth:api'] , function (){
 
 Route::get('test' , function (){
    return "hossam";
-})->middleware('auth:api');
+});
 

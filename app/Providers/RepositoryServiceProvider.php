@@ -10,6 +10,7 @@ use App\Interfaces\KpiRepositoryInterface;
 use App\Interfaces\UserRepositoryInterface;
 use App\Repositories\BaseRepository;
 use App\Repositories\CategoryRepository;
+use App\Repositories\DashboardRepository;
 use App\Repositories\EntryRepository;
 use App\Repositories\GroupRepository;
 use App\Repositories\KpiRepository;
@@ -31,6 +32,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(CategoryRepositoryInterface::class,CategoryRepository::class);
         $this->app->bind(UserRepositoryInterface::class,UserRepository::class);
         $this->app->bind(GroupRepositoryInterface::class,GroupRepository::class);
+        $this->app->bind(DashboardRepository::class);
     }
 
     /**
