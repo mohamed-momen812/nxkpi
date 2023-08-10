@@ -21,6 +21,8 @@ class User extends Authenticatable implements JWTSubject
         'email',
         'group_id',
         'password',
+        'parent_user',
+        'type',
         'created_at',
         'updated_at'
     ];
@@ -79,6 +81,16 @@ class User extends Authenticatable implements JWTSubject
 
     public function kpis()
     {
-        return this->hasMany(Kpi::class);
+        return $this->hasMany(Kpi::class);
+    }
+
+    public function owner()
+    {
+        return $this->belongsTo(User::class , 'parent_user' , 'id');
+    }
+
+    public function empolyees()
+    {
+        return $this->hasMany(User::class , 'parent_user' , 'id');
     }
 }

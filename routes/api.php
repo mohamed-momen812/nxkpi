@@ -41,6 +41,8 @@ Route::group(['middleware' => 'auth:api'] , function (){
     // dashboard routes
     Route::apiResource('dashboards' , \App\Http\Controllers\Api\DashboardController::class);
     Route::apiResource('charts' , \App\Http\Controllers\Api\ChartController::class);
+
+    Route::apiResource('users' , \App\Http\Controllers\Api\UserController::class);
 });
 
 Route::get('test' , function (){

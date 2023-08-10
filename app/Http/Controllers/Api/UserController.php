@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UserRequest;
 use App\Http\Resources\UserResource;
 use App\Interfaces\UserRepositoryInterface;
 use App\Models\User;
@@ -34,7 +35,7 @@ class UserController extends Controller
         return $this->responseJsonFailed("no users here");
     }
 
-    public function store(Request $request)
+    public function store(UserRequest $request)
     {
 
     }

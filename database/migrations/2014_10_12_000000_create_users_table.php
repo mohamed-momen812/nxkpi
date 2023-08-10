@@ -22,6 +22,9 @@ return new class extends Migration
             $table->foreign('group_id')->references('id')->on('groups')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->unsignedBigInteger('parent_user')->nullable();
+            $table->foreign('parent_user')->references('id')->on('users')->onDelete('cascade');
+            $table->string('type')->default('owner');
             $table->rememberToken();
             $table->timestamps();
         });
