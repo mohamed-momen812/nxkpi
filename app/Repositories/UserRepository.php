@@ -19,4 +19,9 @@ class UserRepository extends BaseRepository implements \App\Interfaces\UserRepos
         return $this->model->where('group_id' , $group_id)->get();
     }
 
+    public function getUsersByParent($parent_user)
+    {
+        // TODO: Implement getUsersByGroup() method.
+        return $this->model->where('parent_user' , $parent_user)->get();
+    }
 }

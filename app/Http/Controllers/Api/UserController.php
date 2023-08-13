@@ -9,6 +9,7 @@ use App\Interfaces\UserRepositoryInterface;
 use App\Models\User;
 use App\Traits\ApiTrait;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -23,12 +24,7 @@ class UserController extends Controller
 
     public function index()
     {
-        $user = User::find(auth()->id()) ;
-        $group_id = $user->group_id ;
-
-        if ($group_id == null) return $this->responseJson($user);
-
-        $users = $this->userRepo->getUsersByGroup($group_id);
+        $users = $this->userRepo->getUsersByParent( auth()->user()->id );
 
         if ($users) return $this->responseJson(UserResource::collection($users));
 
@@ -37,7 +33,11 @@ class UserController extends Controller
 
     public function store(UserRequest $request)
     {
-
+        $data = $request->except('password');
+        $data['password'] = Hash::make($request->password);
+        $data['parent_user'] = auth()->user()->id ;
+        $user = $this->userRepo->create($data);
+        return ($user != null ) ?  $this->responseJson(new UserResource($user)) : $this->responseJsonFailed() ;
     }
 
     /**
@@ -48,7 +48,8 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
+        $user = $this->userRepo->find($id);
+        return $user ? $this->responseJson(new UserResource($user)) : $this->responseJsonFailed( "user not found") ;
     }
 
     /**
@@ -60,7 +61,15 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $user = $this->userRepo->find($id);
+        if( !$user->parent_user == auth()->user()->id ){
+            $this->responseJsonFailed("you havn't the permission to do that");
+        }
+        $data = $request->validated();
+        $request->password ?? $data['password'] = Hash::make($request->password) ;
+
+        $user = $this->userRepo->update($data , $id);
+        return ($user != null ) ?  $this->responseJson(new UserResource($user)) : $this->responseJsonFailed() ;
     }
 
     /**
@@ -71,6 +80,7 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $user = $this->userRepo->destroy($id);
+        return $this->responseJson();
     }
 }
