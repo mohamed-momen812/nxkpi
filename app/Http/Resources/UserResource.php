@@ -21,7 +21,15 @@ class  UserResource extends JsonResource
             "last_name" => $this->last_name ,
             "email" => $this->email ,
             "type"  => $this->type ,
-
+            'roles' => $this->rolesWithPermissions->map(function ($role) {
+                return [
+                    'name' => $role->name,
+                    'permissions' => $role->permissions->pluck('name'),
+                ];
+            }),
+            "added_permissions"    => $this->permissions->map(function ($permission){
+                return ['name' => $permission->name];
+            }),
             "created_at" => $this->created_at->format('d-m-y') ,
             "group" => new GroupResource($this->group) ,
         ];

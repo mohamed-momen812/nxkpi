@@ -35,6 +35,7 @@ class UserRequest extends FormRequest
             'password'      => 'required|string',
             'parent_user'   => 'numeric|exists:users,id',
             'type'          => 'string',
+            'permission_id' => 'array|nullable',
         ];
     }
 
@@ -47,6 +48,7 @@ class UserRequest extends FormRequest
             'password'      => 'required|string',
             'parent_user'   => 'numeric|exists:users,id',
             'type'          => 'string',
+            'permission_id' => 'array|nullable',
         ];
     }
 

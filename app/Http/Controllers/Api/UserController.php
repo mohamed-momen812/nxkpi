@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Traits\ApiTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Permission;
 
 class UserController extends Controller
 {
@@ -37,6 +38,13 @@ class UserController extends Controller
         $data['password'] = Hash::make($request->password);
         $data['parent_user'] = auth()->user()->id ;
         $user = $this->userRepo->create($data);
+        $user->assignRole( $request->type );
+        if($request->permission_ids){
+            foreach ($request->permission_ids as $permission_id){
+                $permission = Permission::findOrFail($permission_id);
+                $user->givePermissionTo($permission->name);
+            }
+        }
         return ($user != null ) ?  $this->responseJson(new UserResource($user)) : $this->responseJsonFailed() ;
     }
 
@@ -59,16 +67,32 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UserRequest $request, $id)
     {
         $user = $this->userRepo->find($id);
         if( !$user->parent_user == auth()->user()->id ){
             $this->responseJsonFailed("you havn't the permission to do that");
         }
-        $data = $request->validated();
+        $data = $request->except('permission_ids' , '_method');
         $request->password ?? $data['password'] = Hash::make($request->password) ;
 
+        //remove old role
+        $user->removeRole($user->type);
+        //remove added permission
+        if($request->permission_ids){
+            foreach ( $user->addedPermissions() as $permission ){
+                $user->revokePermissionTo($permission->name);
+            }
+        }
         $user = $this->userRepo->update($data , $id);
+        $user->assignRole( $request->type );
+        if($request->permission_ids){
+            foreach ($request->permission_ids as $permission_id){
+                $permission = Permission::findOrFail($permission_id);
+                $user->givePermissionTo($permission->name);
+            }
+        }
+
         return ($user != null ) ?  $this->responseJson(new UserResource($user)) : $this->responseJsonFailed() ;
     }
 

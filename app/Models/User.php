@@ -93,4 +93,14 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(User::class , 'parent_user' , 'id');
     }
+
+    public function rolesWithPermissions()
+    {
+        return $this->roles()->with('permissions');
+    }
+
+    public function addedPermissions()
+    {
+        return $this->permissions()->get();
+    }
 }

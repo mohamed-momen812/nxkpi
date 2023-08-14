@@ -24,7 +24,8 @@ class DatabaseSeeder extends Seeder
             FrequencySeeder::class,
             KpiSeeder::class,
             EntrySeeder::class,
-            DashboardSeeder::class
+            DashboardSeeder::class,
+            RoleAndPermissionSeeder::class,
         ]);
     }
 }
