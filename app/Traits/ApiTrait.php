@@ -4,12 +4,12 @@ namespace App\Traits;
 
 trait ApiTrait
 {
-    public function responseJson($data, $message = "Successfully Done" , $status = 200)
+    public function responseJson($data, $message = 'messages.Successfully Done' , $status = 200)
     {
         return response()->json([
             "success" => true,
             "status" => $status,
-            "message" => $message,
+            "message" => trans($message) ,
             "data" => $data
         ], $status);
     }

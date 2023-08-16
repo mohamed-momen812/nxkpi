@@ -16,6 +16,8 @@ use App\Http\Controllers\Api\EntryController;
 |
 */
 
+Route::get('/lang/{lang}' , [\App\Http\Controllers\LangController::class , 'change'])->name('lang.change');
+
 Route::group( ['middleware' => 'api','prefix' => 'auth'] , function ($router) {
     Route::post('/login', [AuthController::class, 'login']);
     Route::post('/register', [AuthController::class, 'register']);

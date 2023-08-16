@@ -2,6 +2,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\LoginRequest;
+use App\Http\Requests\RegisterRequest;
+use App\Traits\ApiTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
@@ -9,6 +12,7 @@ use Validator;
 
 class AuthController extends Controller
 {
+    use ApiTrait;
     /**
      * Create a new AuthController instance.
      *
@@ -22,16 +26,10 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function login(Request $request){
-        $validator = Validator::make($request->all(), [
-            'email' => 'required|email',
-            'password' => 'required|string|min:6',
-        ]);
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
-        }
-        if (! $token = auth()->attempt($validator->validated())) {
-            return response()->json(['error' => 'Credintials fail'], 401);
+    public function login(LoginRequest $request){
+
+        if (! $token = auth()->attempt($request->validated())) {
+            return $this->responseJsonFailed( 'Credintials fail' , 401 );
         }
         return $this->createNewToken($token);
     }
@@ -40,24 +38,12 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function register(Request $request) {
-        $validator = Validator::make($request->all(), [
-            'first_name' => 'required|string|between:2,100',
-            'last_name' => 'required|string|between:2,100',
-            'email' => 'required|string|email|max:100|unique:users',
-            'password' => 'required|string|confirmed|min:6',
-        ]);
-        if($validator->fails()){
-            return response()->json($validator->errors()->toJson(), 400);
-        }
+    public function register(RegisterRequest $request) {
         $user = User::create(array_merge(
-            $validator->validated(),
+            $request->validated(),
             ['password' => bcrypt($request->password)]
         ));
-        return response()->json([
-            'message' => 'User successfully registered',
-            'user' => $user
-        ], 201);
+        return $this->responseJson(['user' => $user] ,  'User successfully registered' , 201);
     }
 
     /**
@@ -67,7 +53,8 @@ class AuthController extends Controller
      */
     public function logout() {
         auth()->logout();
-        return response()->json(['message' => 'User successfully signed out']);
+        return $this->responseJson([] , $message = 'User successfully signed out');
+//        return response()->json(['message' => 'User successfully signed out']);
     }
     /**
      * Refresh a token.
@@ -83,7 +70,8 @@ class AuthController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function userProfile() {
-        return response()->json(auth()->user());
+        return $this->responseJson(auth()->user());
+//        return response()->json(auth()->user());
     }
     /**
      * Get the token array structure.
@@ -93,11 +81,17 @@ class AuthController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     protected function createNewToken($token){
-        return response()->json([
+        return $this->responseJson([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60,
+            'expires' => auth()->factory()->getTTL() * 60,
             'user' => auth()->user()
-        ]);
+        ], "logged in successfully" , 200);
+//        return response()->json([
+//            'access_token' => $token,
+//            'token_type' => 'bearer',
+//            'expires_in' => auth()->factory()->getTTL() * 60,
+//            'user' => auth()->user()
+//        ]);
     }
 }
