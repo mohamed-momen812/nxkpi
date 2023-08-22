@@ -2,7 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\Category;
 use App\Models\Group;
+use App\Models\User;
 use Faker\Factory;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -22,7 +24,7 @@ class UserSeeder extends Seeder
         $groups = Group::all();
 
         DB::table('users')->delete();
-        
+
         foreach( $groups as $group )
         {
             $group->users()->create([
@@ -30,6 +32,15 @@ class UserSeeder extends Seeder
                 'last_name' => $faker->name(),
                 'email' => $faker->email(),
                 'password' => Hash::make('11111111')
+            ]);
+        }
+
+        foreach ( User::all() as $user )
+        {
+            Category::create([
+                'name'      =>'Default',
+                'user_id'   => $user->id ,
+                'sort_order'=> 1
             ]);
         }
     }

@@ -18,6 +18,6 @@ class Category extends Model
 
     public function kpis()
     {
-        return $this->hasMany(Kpi::class);
+        return $this->hasMany(Kpi::class );
     }
 }

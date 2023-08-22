@@ -17,4 +17,9 @@ class CategoryRepository extends BaseRepository implements \App\Interfaces\Categ
     {
         return $this->model->all()->sortBy('-sort_order');
     }
+
+    public function getCategoriesByUserId($user_id)
+    {
+        return $this->model->where('user_id' , $user_id )->with('kpis')->paginate() ;
+    }
 }

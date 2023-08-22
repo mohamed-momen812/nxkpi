@@ -45,6 +45,8 @@ Route::group(['middleware' => 'auth:api'] , function (){
     Route::apiResource('charts' , \App\Http\Controllers\Api\ChartController::class);
 
     Route::apiResource('users' , \App\Http\Controllers\Api\UserController::class);
+
+    Route::get('frequencies' , [\App\Http\Controllers\Api\FrequencyController::class , 'index']);
 });
 
 Route::get('test' , function (){

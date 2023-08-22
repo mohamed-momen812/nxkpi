@@ -26,7 +26,7 @@ return new class extends Migration
             $table->string('aggregated')->default(Kpi::AGGREGATED_SUM_TOTAL);
             $table->string('equation')->nullable();
             $table->boolean('target_calculated')->default(false);
-
+            $table->string('icon')->nullable();
             $table->json('thresholds')->nullable();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');

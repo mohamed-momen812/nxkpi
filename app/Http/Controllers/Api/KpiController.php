@@ -24,7 +24,9 @@ class KpiController extends Controller
 
     public function index()
     {
-        $kpis = $this->kpiRepo->allWithPaginate();
+        $user = auth()->user();
+        $kpis = $user->kpis ;
+//        $kpis = $this->kpiRepo->allWithPaginate();
 
         if ($kpis){
             return $this->responseJson(KpiResource::collection($kpis),'kpis retrieved successfully');
@@ -42,11 +44,15 @@ class KpiController extends Controller
     {
         $input = $request->validated();
         $input['user_id'] = auth()->id() ;
-
+        if (!$request->category_id) {
+            $categories = auth()->user()->categories() ;
+            $defaultCat = $categories->firstWhere('name', 'Default');
+            $input['category_id'] = ($defaultCat) ? $defaultCat->id : null ;
+        }
         $kpi = $this->kpiRepo->create($input);
 
         if ($kpi){
-            $equation = $this->setEquation($kpi);
+            $equation = ($request->equation) ? $this->setEquation($kpi) : null ;
             return $this->responseJson(KpiResource::make($kpi) , 'Kpi created successfully');
         }
         return $this->responseJsonFailed();
@@ -61,8 +67,10 @@ class KpiController extends Controller
     public function show($id)
     {
         $kpi = $this->kpiRepo->find($id);
+        $user = auth()->user();
+        $kpis = $user->kpis ;
 
-        if ($kpi){
+        if ($kpis->contains($kpi)){
             return $this->responseJson(KpiResource::make($kpi));
         }
         return $this->responseJsonFailed('Kpi Not Found');
@@ -88,6 +96,13 @@ class KpiController extends Controller
      */
     public function update(KpiRequest $request, $id)
     {
+        $kpi = $this->kpiRepo->find($id);
+        $user = auth()->user();
+        $kpis = $user->kpis ;
+
+        if (!$kpis->contains($kpi)){
+            return $this->responseJsonFailed('Kpi Not Found');
+        }
         $input = $request->validated();
         $input['user_id'] = auth()->id() ;
         $input['frequency_id'] = $request->input('frequency_id' , 1 );
@@ -113,6 +128,12 @@ class KpiController extends Controller
     public function destroy($id)
     {
         $kpi = $this->kpiRepo->find($id);
+        $user = auth()->user();
+        $kpis = $user->kpis ;
+
+        if (!$kpis->contains($kpi)){
+            return $this->responseJsonFailed('Kpi Not Found');
+        }
 
         if($kpi == null) return $this->responseJsonFailed($message='kpi not found');
 

@@ -28,6 +28,7 @@ class KpiFactory extends Factory
             'direction' => 'up' ,
             'aggregated' => 'Sum Total',
             'target_calculated' => false ,
+            'icon'=> 'target',
             'thresholds' => null ,
             'user_id' => $this->faker->randomElement( User::pluck('id')->toArray() ),
             'frequency_id' => $this->faker->randomElement( Frequency::pluck('id')->toArray() ),

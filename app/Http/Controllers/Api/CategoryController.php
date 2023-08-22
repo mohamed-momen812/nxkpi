@@ -21,8 +21,8 @@ class CategoryController extends Controller
 
     public function index()
     {
-        $categories = $this->categoryRepo->orderedAll();
-
+//        $categories = $this->categoryRepo->orderedAll();
+        $categories = $this->categoryRepo->getCategoriesByUserId(auth()->id());
         if ($categories)
         {
             return $this->responseJson(CategoryResource::collection($categories));

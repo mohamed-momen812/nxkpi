@@ -16,11 +16,12 @@ class CategoryResource extends JsonResource
     {
 //        return parent::toArray($request);
         return [
-            "id" => $this->id ,
-            "name" => $this->name ,
-            "sort_order" => $this->sort_order ,
-            "user" => new UserResource($this->user) ,
-            "created_at" => $this->created_at->format('d-m-y') ,
+            "id"            => $this->id ,
+            "name"          => $this->name ,
+            "sort_order"    => $this->sort_order ,
+            "kpis"          => KpiResource::collection($this->kpis),
+            "user"          => new UserResource($this->user) ,
+            "created_at"    => $this->created_at->format('d-m-y') ,
         ];
     }
 }

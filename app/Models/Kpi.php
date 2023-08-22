@@ -5,12 +5,14 @@ namespace App\Models;
 use App\Traits\KpiTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Spatie\Translatable\HasTranslations;
 
 class Kpi extends Model
 {
-    use HasFactory, KpiTrait;
+    use HasFactory, KpiTrait , HasTranslations;
 
-    protected $fillable = ['name' , 'description' , 'user_target' , 'sort_order' ,'format','direction','aggregated','target_calculated','thresholds', 'equation' , 'user_id' , 'frequency_id' , 'category_id' , 'created_at' , 'updated_at'];
+    public $translatable = ['name' , 'description'];
+    protected $fillable = ['name' , 'description' , 'user_target' , 'sort_order' ,'format','direction','aggregated','target_calculated','icon','thresholds', 'equation' , 'user_id' , 'frequency_id' , 'category_id' , 'created_at' , 'updated_at'];
 
 //    protected $with =['frequency'];
 

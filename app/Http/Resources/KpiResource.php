@@ -30,7 +30,7 @@ class KpiResource extends JsonResource
             'thresholds' => $this->thresholds,
             "user" => new UserResource($this->user) ,
             "frequency" => new FrequencyResource($this->frequency) ,
-            "category" => new CategoryResource($this->category) ,
+//            "category" => new CategoryResource($this->category) ,
             "created_at" => $this->created_at->format('d-m-y') ,
         ];
     }

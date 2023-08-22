@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
+use App\Interfaces\CategoryRepositoryInterface;
 use App\Traits\ApiTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -18,8 +19,10 @@ class AuthController extends Controller
      *
      * @return void
      */
-    public function __construct() {
+    private $categoryRepo ;
+    public function __construct(CategoryRepositoryInterface $categoryRepository) {
         $this->middleware('auth:api', ['except' => ['login', 'register']]);
+        $this->categoryRepo = $categoryRepository ;
     }
     /**
      * Get a JWT via given credentials.
@@ -43,6 +46,11 @@ class AuthController extends Controller
             $request->validated(),
             ['password' => bcrypt($request->password)]
         ));
+        $category = $this->categoryRepo->create([
+            'name'      =>'Default',
+            'user_id'   => $user->id ,
+            'sort_order'=> 1
+        ]);
         return $this->responseJson(['user' => $user] ,  'User successfully registered' , 201);
     }
 
