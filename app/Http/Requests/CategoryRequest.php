@@ -24,7 +24,7 @@ class CategoryRequest extends FormRequest
     public function onCreate()
     {
         return [
-            'name' => ['required' ,'string'],
+            'name' => ['required'],
             'sort_order' => ['integer'],
         ];
     }
@@ -32,7 +32,7 @@ class CategoryRequest extends FormRequest
     public function onUpdate()
     {
         return[
-            'name' => ['required' ,'string'],
+            'name' => ['required'],
             'sort_order' => ['integer'],
         ];
     }
