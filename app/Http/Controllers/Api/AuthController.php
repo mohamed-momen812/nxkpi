@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
+use App\Http\Resources\UserResource;
 use App\Interfaces\CategoryRepositoryInterface;
+use App\Models\Company;
 use App\Traits\ApiTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -46,12 +48,19 @@ class AuthController extends Controller
             $request->validated(),
             ['password' => bcrypt($request->password)]
         ));
+        $user->assignRole( "Owner" );
         $category = $this->categoryRepo->create([
             'name'      =>'Default',
             'user_id'   => $user->id ,
             'sort_order'=> 1
         ]);
-        return $this->responseJson(['user' => $user] ,  'User successfully registered' , 201);
+        $company = Company::create([
+            "user_id" => $user->id ,
+            "support_email" => $user->email,
+            "country" => "United State",
+            "site_url" => $user->id . ".nxkpi.com" ,
+        ]);
+        return $this->responseJson(['user' => new UserResource($user)] ,  'User successfully registered' , 201);
     }
 
     /**

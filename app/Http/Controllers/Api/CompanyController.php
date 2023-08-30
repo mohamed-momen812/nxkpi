@@ -6,10 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\CompanyRequest;
 use App\Http\Resources\CompanyResource;
 use App\Models\Company;
+use App\Traits\ApiTrait;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class CompanyController extends Controller
 {
+    use ApiTrait;
     /**
      * Display a listing of the resource.
      *
@@ -70,25 +73,25 @@ class CompanyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(CompanyRequest $request, $id)
+    public function update(CompanyRequest $request,Company $company)
     {
+        if (! Gate::allows('update-company', $company)) {
+            abort(403, 'not authorized');
+        }
         $data = $request->validated();
         $data['user_id'] = auth()->id();
 
         if($request->hasFile('logo')){
-            $data['logo'] = $request->file('avatar')->store('companyLogos');
+            $data['logo'] = $request->file('logo')->store('companyLogos');
+
 //            $file = $request->file('logo');
 //            $filename = $file->getClientOriginalName();
 //            $path = public_path().'/uploads/';
 //            return $file->move($path, $filename);
         }
-        $company = Company::update($data  , $id);
+        $company->update($data);
 
-        if ($company){
-            return $this->responseJson(CompanyResource::make($company),'company updated successfully');
-        }
-
-        return $this->responseJsonFailed();
+        return ($company != null ) ?  $this->responseJson(new CompanyResource($company)) : $this->responseJsonFailed() ;
     }
 
     /**
