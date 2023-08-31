@@ -38,6 +38,7 @@ class ChartController extends Controller
 
     public function store(ChartRequest $request)
     {
+        dd($request->validated());
         $chart = $this->chartRepository->create($request->validated());
 
         return $chart ? $this->responseJson(new ChartResource($chart)) : $this->responseJsonFailed();

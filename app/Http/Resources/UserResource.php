@@ -30,6 +30,7 @@ class  UserResource extends JsonResource
             "added_permissions"    => $this->permissions->map(function ($permission){
                 return ['name' => $permission->name];
             }),
+            "company" => new CompanyResource($this->company),
             "created_at" => $this->created_at->format('d-m-y') ,
             "group" => new GroupResource($this->group) ,
         ];

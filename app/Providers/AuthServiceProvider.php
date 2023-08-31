@@ -2,8 +2,11 @@
 
 namespace App\Providers;
 
+use App\Models\Company;
+use App\Policies\CompanyPolicy;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Gate;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -14,6 +17,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         // 'App\Models\Model' => 'App\Policies\ModelPolicy',
+        Company::class => CompanyPolicy::class,
     ];
 
     /**
@@ -27,6 +31,6 @@ class AuthServiceProvider extends ServiceProvider
             return config('app.frontend_url')."/password-reset/$token?email={$notifiable->getEmailForPasswordReset()}";
         });
 
-        //
+        Gate::define('update-company', [CompanyPolicy::class, 'update']);
     }
 }

@@ -8,10 +8,16 @@ use Spatie\Translatable\HasTranslations;
 
 class Category extends Model
 {
+<<<<<<< HEAD
     use HasFactory;
     use HasFactory , HasTranslations;
 
     public $translatable = ['name'];
+=======
+    use HasFactory , HasTranslations;
+
+    public $translatable = ['name' ];
+>>>>>>> origin
     protected $fillable =['name', 'user_id', 'sort_order', 'created_at', 'updated_at'];
 
     public function user()

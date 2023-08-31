@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\ChartsEnum;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Enum;
 
 class ChartRequest extends FormRequest
 {
@@ -28,7 +30,7 @@ class ChartRequest extends FormRequest
 
     public function onCreate(){
         return [
-            'type' => 'required|string',
+            'type' => new Enum(ChartsEnum::class),
             'dashboard_id' => 'required|exists:dashboards,id',
         ];
     }

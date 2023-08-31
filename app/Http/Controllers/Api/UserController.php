@@ -8,6 +8,7 @@ use App\Http\Resources\UserResource;
 use App\Interfaces\UserRepositoryInterface;
 use App\Models\User;
 use App\Traits\ApiTrait;
+use http\Message;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Permission;
@@ -41,6 +42,7 @@ class UserController extends Controller
         $user->assignRole( $request->type );
         if($request->permission_ids){
             foreach ($request->permission_ids as $permission_id){
+//                dd($permission_id);
                 $permission = Permission::findOrFail($permission_id);
                 $user->givePermissionTo($permission->name);
             }

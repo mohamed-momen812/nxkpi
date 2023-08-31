@@ -103,4 +103,9 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->permissions()->get();
     }
+
+    public function company()
+    {
+        return $this->hasOne( Company::class , 'user_id');
+    }
 }

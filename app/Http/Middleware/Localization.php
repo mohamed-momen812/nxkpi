@@ -18,8 +18,9 @@ class Localization
      */
     public function handle(Request $request, Closure $next)
     {
-        if($request->hasHeader('accept-lang')){
-            App::setLocale($request->header('accept-lang'));
+        if($request->hasHeader('Accept-Language')){
+
+            App::setLocale($request->header('Accept-Language'));
         }
 
 //        if(Session::has('lang')){
