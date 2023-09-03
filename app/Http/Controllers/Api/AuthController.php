@@ -7,6 +7,7 @@ use App\Http\Requests\RegisterRequest;
 use App\Http\Resources\UserResource;
 use App\Interfaces\CategoryRepositoryInterface;
 use App\Models\Company;
+use App\Models\Tenant;
 use App\Traits\ApiTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -54,11 +55,15 @@ class AuthController extends Controller
             'user_id'   => $user->id ,
             'sort_order'=> 1
         ]);
+
+        $tenant = Tenant::create(['user_id' => $user->id ]);
+        $tenant->domains()->create(['domain' => $tenant->id . '.Kpi.test']);
+
         $company = Company::create([
             "user_id" => $user->id ,
             "support_email" => $user->email,
             "country" => "United State",
-            "site_url" => $user->id . ".nxkpi.com" ,
+            "site_url" => $tenant->id . 'Kpi.test' ,
         ]);
         return $this->responseJson(['user' => new UserResource($user)] ,  'User successfully registered' , 201);
     }

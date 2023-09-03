@@ -31,6 +31,7 @@ class  UserResource extends JsonResource
                 return ['name' => $permission->name];
             }),
             "company" => new CompanyResource($this->company),
+            "tenant"  => new TenantResource($this->user_id),
             "created_at" => $this->created_at->format('d-m-y') ,
             "group" => new GroupResource($this->group) ,
         ];

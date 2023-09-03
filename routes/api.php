@@ -46,7 +46,7 @@ Route::group(['middleware' => 'auth:api'] , function (){
 
     Route::apiResource('users' , \App\Http\Controllers\Api\UserController::class);
     Route::apiResource('companies' , \App\Http\Controllers\Api\CompanyController::class);
-    Route::get('frequencies' , [\App\Http\Controllers\Api\FrequencyController::class , 'inde    x']);
+    Route::get('frequencies' , [\App\Http\Controllers\Api\FrequencyController::class , 'index']);
 });
 
 Route::get('test' , function (){

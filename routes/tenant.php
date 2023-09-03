@@ -24,6 +24,7 @@ Route::middleware([
     PreventAccessFromCentralDomains::class,
 ])->group(function () {
     Route::get('/', function () {
+        dd('kemo');
         return 'This is your multi-tenant application. The id of the current tenant is ' . tenant('id');
     });
 });
@@ -36,7 +37,6 @@ Route::middleware([
     Route::get('/', function () {
         return 'This is your multi-tenant application. The id of the current tenant is ' . tenant('id');
     });
-    Route::get('test' , function (){
-        return "hossam";
-    });
+
+    require __DIR__.'/api.php';
 });

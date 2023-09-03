@@ -38,8 +38,9 @@ class RouteServiceProvider extends ServiceProvider
         $this->configureRateLimiting();
 
         $this->routes(function () {
-            $this->mapApiRoutes();
+
             $this->mapWebRoutes();
+            $this->mapApiRoutes();
         });
 //        $this->routes(function () {
 //            Route::prefix('api')
