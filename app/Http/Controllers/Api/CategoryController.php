@@ -22,7 +22,8 @@ class CategoryController extends Controller
     public function index()
     {
 //        $categories = $this->categoryRepo->orderedAll();
-        $categories = $this->categoryRepo->getCategoriesByUserId(auth()->id());
+        $user_id = tenant()->user->id;
+        $categories = $this->categoryRepo->getCategoriesByUserId($user_id);
         if ($categories)
         {
             return $this->responseJson(CategoryResource::collection($categories));
@@ -50,7 +51,7 @@ class CategoryController extends Controller
     public function store(CategoryRequest $request)
     {
         $input = $request->validated();
-        $input['user_id'] = auth()->id();
+        $input['user_id'] = tenant()->user->id;
         $category = $this->categoryRepo->create($input);
 
         if ($category) {

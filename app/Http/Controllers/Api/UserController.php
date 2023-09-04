@@ -37,7 +37,8 @@ class UserController extends Controller
     {
         $data = $request->except('password');
         $data['password'] = Hash::make($request->password);
-        $data['parent_user'] = auth()->user()->id ;
+//        $data['parent_user'] = auth()->user()->id ; tenant()->user->id
+        $data['parent_user'] = tenant()->user->id;
         $user = $this->userRepo->create($data);
         $user->assignRole( $request->type );
         if($request->permission_ids){

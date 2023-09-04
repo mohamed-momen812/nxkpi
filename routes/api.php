@@ -25,7 +25,7 @@ Route::group( ['middleware' => 'api','prefix' => 'auth'] , function ($router) {
     Route::post('/refresh', [AuthController::class, 'refresh']);
     Route::get('/user-profile', [AuthController::class, 'userProfile']);
 });
-Route::group(['middleware' => 'auth:api'] , function (){
+Route::group([] , function (){
     // categories routes
     Route::resource('categories' , \App\Http\Controllers\Api\CategoryController::class);
 
