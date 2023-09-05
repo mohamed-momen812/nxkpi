@@ -34,10 +34,13 @@ class AuthController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function login(LoginRequest $request){
-
+        if( auth()->user() ) {
+            auth()->logout();
+        }
         if (! $token = auth()->attempt($request->validated())) {
             return $this->responseJsonFailed( 'Credintials fail' , 401 );
         }
+
         return $this->createNewToken($token);
     }
     /**
@@ -50,7 +53,7 @@ class AuthController extends Controller
         $user = User::create($userData);
         $user->assignRole( "Owner" );
         $tenant = Tenant::create(['user_id' => $user->id ]);
-        $tenant->domains()->create(['domain' => $tenant->id . '.nxkpi.test']);
+        $tenant->domains()->create(['domain' => $user->company_domain . '.Kpi.test']);
 
         $tenantService->intiateTenant($tenant , $userData);
 
@@ -93,9 +96,11 @@ class AuthController extends Controller
      */
     protected function createNewToken($token){
         return $this->responseJson([
-            'access_token' => $token,
-            'token_type' => 'bearer',
-            'expires' => auth()->factory()->getTTL() * 60,
+            'access_token' => auth()->user()->createToken('MyApp')->plainTextToken,
+
+//            'access_token' => $token,
+//            'token_type' => 'bearer',
+//            'expires' => auth()->factory()->getTTL() * 60,
             'user' => auth()->user()
         ], "logged in successfully" , 200);
 //        return response()->json([

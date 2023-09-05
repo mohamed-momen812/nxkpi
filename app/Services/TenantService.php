@@ -6,6 +6,7 @@ use App\Interfaces\CategoryRepositoryInterface;
 use App\Models\Company;
 use App\Models\Tenant;
 use App\Models\User;
+use Database\Seeders\RoleAndPermissionSeeder;
 
 class TenantService
 {
@@ -28,8 +29,14 @@ class TenantService
                 "user_id" => $user->id ,
                 "support_email" => $user->email,
                 "country" => "United State",
-                "site_url" => $tenant->id . '.nxkpi.test' ,
+                "site_url" => $user->company_domain . '.Kpi.test' ,
             ]);
         });
+
+        //make seed for role and permission
+        \Artisan::call('tenants:seed', [
+            '--tenants' => $tenant['id'],
+            '--class'   => RoleAndPermissionSeeder::class,
+        ]);
     }
 }

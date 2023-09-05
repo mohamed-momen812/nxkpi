@@ -7,6 +7,7 @@ use App\Policies\CompanyPolicy;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
+use Laravel\Sanctum\Sanctum;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -32,5 +33,7 @@ class AuthServiceProvider extends ServiceProvider
         });
 
         Gate::define('update-company', [CompanyPolicy::class, 'update']);
+
+        Sanctum::ignoreMigrations();
     }
 }

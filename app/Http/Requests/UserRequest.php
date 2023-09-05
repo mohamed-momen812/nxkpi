@@ -16,6 +16,12 @@ class UserRequest extends FormRequest
         return true;
     }
 
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'company_domain' => $this->company_domain ?? strval( octdec(uniqid()) ),
+        ]);
+    }
     /**
      * Get the validation rules that apply to the request.
      *
@@ -36,6 +42,7 @@ class UserRequest extends FormRequest
             'parent_user'   => 'numeric|exists:users,id',
             'type'          => 'string',
             'permission_id' => 'array|nullable',
+            'company_domain'=> 'string|unique:users',
         ];
     }
 
@@ -49,6 +56,7 @@ class UserRequest extends FormRequest
             'parent_user'   => 'numeric|exists:users,id',
             'type'          => 'string',
             'permission_id' => 'array|nullable',
+            'company_domain'=> 'string|unique:users',
         ];
     }
 

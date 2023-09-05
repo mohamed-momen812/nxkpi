@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class TenantResource extends JsonResource
+class DomainResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,11 +16,8 @@ class TenantResource extends JsonResource
     {
 //        return parent::toArray($request);
         return [
-            "id"                => $this->id,
-            "user_id"           => $this->user_id,
-            "tenancy_db_name"   => $this->tenancy_db_name,
-            "domains"           => DomainResource::collection($this->domains),
-
+            "id"            => $this->id,
+            "domain"        => $this->domain,
         ];
     }
 }

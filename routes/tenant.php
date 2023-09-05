@@ -30,13 +30,23 @@ Route::middleware([
 });
 
 Route::middleware([
-    'api',
-    InitializeTenancyByDomain::class,
-    PreventAccessFromCentralDomains::class,
-])->group(function () {
-    Route::get('/', function () {
-        return 'This is your multi-tenant application. The id of the current tenant is ' . tenant('id');
+        'api',
+        InitializeTenancyByDomain::class,
+        PreventAccessFromCentralDomains::class,
+    ])->group(function () {
+        require __DIR__.'/api.php';
     });
 
-    require __DIR__.'/api.php';
-});
+
+Route::middleware([
+        'api',
+        'auth:sanctum',
+        InitializeTenancyByDomain::class,
+        PreventAccessFromCentralDomains::class,
+    ])->group(function () {
+        Route::get('/', function () {
+            return 'This is your multi-tenant application. The id of the current tenant is ' . tenant('id');
+        });
+        require __DIR__.'/centralAndTenant.php';
+    });
+

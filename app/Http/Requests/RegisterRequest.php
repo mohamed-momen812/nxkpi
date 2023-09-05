@@ -16,6 +16,12 @@ class RegisterRequest extends FormRequest
         return true;
     }
 
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'company_domain' => $this->company_domain ?? strval( octdec(uniqid()) ),
+        ]);
+    }
     /**
      * Get the validation rules that apply to the request.
      *
@@ -28,6 +34,7 @@ class RegisterRequest extends FormRequest
                 'last_name' => 'required|string|between:2,100',
                 'email' => 'required|string|email|max:100|unique:users',
                 'password' => 'required|string|confirmed|min:6',
+                'company_domain'=> 'string|unique:users'
         ];
     }
 }

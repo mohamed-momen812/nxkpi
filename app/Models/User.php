@@ -20,6 +20,7 @@ class User extends Authenticatable implements JWTSubject
         'first_name',
         'last_name',
         'email',
+        'company_domain',
         'group_id',
         'password',
         'parent_user',
@@ -47,7 +48,10 @@ class User extends Authenticatable implements JWTSubject
         'email_verified_at' => 'datetime',
     ];
 
-
+//    public function setCompanyDomainAttribute($value)
+//    {
+//        $this->attributes['company_domain'] = $value ?? strval( octdec(uniqid()) );
+//    }
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.
      *

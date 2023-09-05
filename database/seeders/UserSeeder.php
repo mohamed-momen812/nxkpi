@@ -31,7 +31,8 @@ class UserSeeder extends Seeder
                 'first_name' => $faker->name(),
                 'last_name' => $faker->name(),
                 'email' => $faker->email(),
-                'password' => Hash::make('11111111')
+                'password' => Hash::make('11111111'),
+                'company_domain' => octdec(uniqid()),
             ]);
         }
 
