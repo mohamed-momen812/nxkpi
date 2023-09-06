@@ -25,7 +25,7 @@ class AuthController extends Controller
      */
     private $categoryRepo ;
     public function __construct(CategoryRepositoryInterface $categoryRepository) {
-        $this->middleware('auth:api', ['except' => ['login', 'register']]);
+//        $this->middleware('auth:api', ['except' => ['login', 'register']]);
         $this->categoryRepo = $categoryRepository ;
     }
     /**
@@ -84,7 +84,7 @@ class AuthController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function userProfile() {
-        return $this->responseJson(auth()->user());
+        return $this->responseJson(new UserResource( auth()->user() ));
 //        return response()->json(auth()->user());
     }
     /**
@@ -101,7 +101,7 @@ class AuthController extends Controller
 //            'access_token' => $token,
 //            'token_type' => 'bearer',
 //            'expires' => auth()->factory()->getTTL() * 60,
-            'user' => auth()->user()
+            'user' => new UserResource(auth()->user()),
         ], "logged in successfully" , 200);
 //        return response()->json([
 //            'access_token' => $token,

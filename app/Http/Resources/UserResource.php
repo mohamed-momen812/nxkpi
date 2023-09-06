@@ -20,6 +20,8 @@ class  UserResource extends JsonResource
             "first_name" => $this->first_name ,
             "last_name" => $this->last_name ,
             "email" => $this->email ,
+            "company_domain" => $this->company_domain,
+            "company_url" => $this->company_domain . '.Kpi.test',
             "type"  => $this->type ,
             'roles' => $this->rolesWithPermissions->map(function ($role) {
                 return [

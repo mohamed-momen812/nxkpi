@@ -25,12 +25,12 @@ class DashboardController extends Controller
     public function index()
     {
         $dashboards = Dashboard::where('user_id' , auth()->user()->id)->get();
-        if ($dashboards)
+        if ( !$dashboards->isEmpty())
         {
             return $this->responseJson(DashboardResource::collection($dashboards));
         }
 
-        return $this->responseJsonFailed();
+        return $this->responseJsonFailed("there's no dashboards yet");
     }
 
     public function store(DashboardRequest $request)

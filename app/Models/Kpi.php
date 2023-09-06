@@ -42,11 +42,16 @@ class Kpi extends Model
     public function getResultEquationAttribute()
     {
         $v = $this->equation ;
+
         // detect delemeted -> () : '#\((.*?)\)#'
         $s = preg_match_all('#\#(.*?)\##', $v, $match);
         $targets = array();
         foreach( $match[1] as $id ){
-            $kpi_target = Kpi::find($id)->user_target ;
+            $kpi = Kpi::find($id);
+            if(!$kpi){
+                return null;
+            }
+            $kpi_target = $kpi->user_target ;
             array_push($targets , $kpi_target);
         }
         // detect delemeter -> () : '/\((.*?)\)/'
@@ -79,5 +84,10 @@ class Kpi extends Model
     public function charts()
     {
         return $this->belongsToMany(Chart::class);
+    }
+
+    public function dashboards()
+    {
+        return $this->hasMany(Dashboard::class , 'kpi_id');
     }
 }

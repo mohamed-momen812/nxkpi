@@ -47,6 +47,8 @@ Route::middleware([
         Route::get('/', function () {
             return 'This is your multi-tenant application. The id of the current tenant is ' . tenant('id');
         });
+        Route::get('/auth/user-profile', [\App\Http\Controllers\Api\AuthController::class, 'userProfile']);
+        Route::post('/auth/logout', [\App\Http\Controllers\Api\AuthController::class, 'logout']);
         require __DIR__.'/centralAndTenant.php';
     });
 

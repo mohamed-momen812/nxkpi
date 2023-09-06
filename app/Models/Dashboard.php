@@ -8,8 +8,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Dashboard extends Model
 {
     use HasFactory;
-    protected $fillable = ['name', 'user_id',  'created_at', 'updated_at'];
+    protected $fillable = ['name', 'charts','user_id', 'kpi_id', 'created_at', 'updated_at'];
 
+    protected $casts = [
+        'charts' => 'json',
+    ];
     public function user()
     {
         return $this->belongsTo(User::class , 'user_id');
@@ -18,5 +21,10 @@ class Dashboard extends Model
     public function charts()
     {
         return $this->hasMany(Chart::class);
+    }
+
+    public function kpi()
+    {
+        return $this->belongsTo(Kpi::class , 'kpi_id');
     }
 }

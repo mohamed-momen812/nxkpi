@@ -19,9 +19,11 @@ class DashboardResource extends JsonResource
         return [
             'id'    => $this->id,
             'name'  => $this->name,
-//            'chart' => ChartsEnum::class($this->chart)->value,
-            "user" => new UserResource($this->user),
             'chatrs' => ChartResource::collection($this->whenLoaded('charts')),
+            'entries'=> EntryResource::collection($this->kpi->entries),
+//            'chart' => ChartsEnum::class($this->chart)->value,
+//            "user" => new UserResource($this->user),
+
         ];
     }
 

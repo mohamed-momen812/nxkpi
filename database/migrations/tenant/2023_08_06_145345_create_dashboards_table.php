@@ -16,8 +16,11 @@ return new class extends Migration
         Schema::create('dashboards', function (Blueprint $table) {
             $table->id();
             $table->string("name");
+            $table->json('charts')->nullable();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->unsignedBigInteger('kpi_id');
+            $table->foreign('kpi_id')->references('id')->on('kpis')->onDelete('cascade');
             $table->timestamps();
         });
     }
