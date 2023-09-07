@@ -53,7 +53,7 @@ class AuthController extends Controller
         $user = User::create($userData);
         $user->assignRole( "Owner" );
         $tenant = Tenant::create(['user_id' => $user->id ]);
-        $tenant->domains()->create(['domain' => $user->company_domain . '.Kpi.test']);
+        $tenant->domains()->create(['domain' => $user->company_domain . config('tenancy.custom_domain')]);
 
         $tenantService->intiateTenant($tenant , $userData);
 

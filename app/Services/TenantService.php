@@ -30,7 +30,7 @@ class TenantService
                 "user_id" => $user->id ,
                 "support_email" => $user->email,
                 "country" => "United State",
-                "site_url" => $user->company_domain . '.Kpi.test' ,
+                "site_url" => $user->company_domain . config('tenancy.custom_domain') ,
             ]);
         });
 

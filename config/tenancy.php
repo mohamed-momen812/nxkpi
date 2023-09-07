@@ -6,6 +6,9 @@ use Stancl\Tenancy\Database\Models\Domain;
 use Stancl\Tenancy\Database\Models\Tenant;
 
 return [
+    //custom domain to make subdomains for tenants from it
+    'custom_domain' => env('CUSTOM_DOMAIN'),
+
     'tenant_model' => \App\Models\Tenant::class,
 //    'id_generator' => Stancl\Tenancy\UUIDGenerator::class,
     'id_generator' =>null,

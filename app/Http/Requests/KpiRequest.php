@@ -42,7 +42,7 @@ class KpiRequest extends FormRequest
             'thresholds' => 'nullable',
             'equation' => ['string' , new EquationKpisExist ],
             'frequency_id' => 'required',
-            'category_id' => 'nullable',
+            'category_id' => ['exists:categories,id'],
             'format' => 'required',
 //            'direction' => 'nullable',
             'target_calculated' => 'required',

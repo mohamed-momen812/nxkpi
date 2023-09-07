@@ -29,9 +29,9 @@ trait KpiTrait
         $kpi_actual_target = $this->target($this->id) * $this->collectionCount ;
         $equat = ( ($kpi_actuals - $kpi_actual_target) / $kpi_actual_target ) * 100 ;
 
-        $ratio = eval( "return $equat ;" );
+        $ratio = round( eval( "return $equat ;" ) , 2);
 
-        return $this->responseJson($ratio . "%");
+        return ($ratio . "%");
     }
 
     public function getEntries()

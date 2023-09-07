@@ -28,11 +28,11 @@ class KpiController extends Controller
         $kpis = $user->kpis ;
 //        $kpis = $this->kpiRepo->allWithPaginate();
 
-        if ($kpis){
+        if ( !$kpis->isEmpty() ){
             return $this->responseJson(KpiResource::collection($kpis),'kpis retrieved successfully');
         }
 
-        return $this->responseJsonFailed();
+        return $this->responseJsonFailed("there's no kpis yet");
     }
 
     public function create()
@@ -44,11 +44,8 @@ class KpiController extends Controller
     {
         $input = $request->validated();
         $input['user_id'] = auth()->id() ;
-        if (!$request->category_id) {
-            $categories = auth()->user()->categories() ;
-            $defaultCat = $categories->firstWhere('name', 'Default');
-            $input['category_id'] = ($defaultCat) ? $defaultCat->id : null ;
-        }
+        $input['category_id'] = (isset($input['category_id'])) ? $input['category_id'] : 1 ;
+
         $kpi = $this->kpiRepo->create($input);
 
         if ($kpi){
@@ -167,7 +164,7 @@ class KpiController extends Controller
     {
         $kpi = $this->kpiRepo->find($kpi_id);
 
-        return $this->responseJson($kpi->totalRatio() . "%");
+        return $this->responseJson($kpi->totalRatio() );
     }
 
     public function totalActual($kpi_id)
