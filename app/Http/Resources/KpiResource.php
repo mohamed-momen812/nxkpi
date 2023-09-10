@@ -28,6 +28,7 @@ class KpiResource extends JsonResource
             'equation' => $this->equation,
             'equation_result' => $this->result_equation ,
             'thresholds' => $this->thresholds,
+            'total_ratio' => $this->totalRatio(),
             "user" => new UserResource($this->user) ,
             "frequency" => new FrequencyResource($this->frequency) ,
 //            "category" => new CategoryResource($this->category) ,

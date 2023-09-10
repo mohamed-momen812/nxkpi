@@ -4,7 +4,7 @@ namespace App\Traits;
 
 use App\Models\Entry;
 
-trait KpiTrait
+trait  KpiTrait
 {
     public function target()
     {
@@ -27,6 +27,9 @@ trait KpiTrait
     {
         $kpi_actuals = $this->actualTotal($this->id);
         $kpi_actual_target = $this->target($this->id) * $this->collectionCount ;
+        if($kpi_actual_target == 0){
+            return null;
+        }
         $equat = ( ($kpi_actuals - $kpi_actual_target) / $kpi_actual_target ) * 100 ;
 
         $ratio = round( eval( "return $equat ;" ) , 2);

@@ -22,3 +22,9 @@ Route::apiResource('charts' , \App\Http\Controllers\Api\ChartController::class);
 Route::apiResource('users' , \App\Http\Controllers\Api\UserController::class);
 Route::apiResource('companies' , \App\Http\Controllers\Api\CompanyController::class);
 Route::get('frequencies' , [\App\Http\Controllers\Api\FrequencyController::class , 'index']);
+
+Route::group(['prefix' => 'Reports'] , function (){
+    Route::get('top_perform' , [\App\Http\Controllers\Api\ReportController::class , 'topPerform']);
+    Route::get('worst_perform' , [\App\Http\Controllers\Api\ReportController::class , 'worstPerform']);
+    Route::get('multiple_kpis' , [\App\Http\Controllers\Api\ReportController::class , 'multipliKpis']);
+});

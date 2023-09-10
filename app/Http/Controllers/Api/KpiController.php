@@ -160,11 +160,13 @@ class KpiController extends Controller
     }
 
 
-    public function totalRatio($kpi_id)
+    public function totalRatio(Kpi $kpi)
     {
-        $kpi = $this->kpiRepo->find($kpi_id);
-
-        return $this->responseJson($kpi->totalRatio() );
+        if($kpi->aggregated == "Average"){
+            return $this->responseJson($kpi->totalRatio() );
+        }else{
+            return $this->responseJson($kpi->actualTotal() );
+        }
     }
 
     public function totalActual($kpi_id)
