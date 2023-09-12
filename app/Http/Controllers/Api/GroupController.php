@@ -3,16 +3,24 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\CompanyRequest;
-use App\Http\Resources\CompanyResource;
-use App\Models\Company;
+use App\Http\Requests\GroupRequest;
+use App\Http\Resources\GroupResource;
+use App\Interfaces\GroupRepositoryInterface;
+use App\Models\Group;
 use App\Traits\ApiTrait;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
+use PHPUnit\Framework\MockObject\Api;
 
-class CompanyController extends Controller
+class GroupController extends Controller
 {
     use ApiTrait;
+    private $groupRepo;
+
+    public function __construct(GroupRepositoryInterface $groupRepo)
+    {
+        $this->groupRepo = $groupRepo;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -20,7 +28,8 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        //
+        $groups = $this->groupRepo->all();
+        return $this->responseJson( GroupResource::collection($groups) );
     }
 
     /**
@@ -39,9 +48,10 @@ class CompanyController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(GroupRequest $request)
     {
-        //
+        $group = $this->groupRepo->create($request->validated());
+        return $this->responseJson( new GroupResource($group) );
     }
 
     /**
@@ -50,9 +60,9 @@ class CompanyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Group $group)
     {
-        //
+        return $this->responseJson( new GroupResource($group) );
     }
 
     /**
@@ -73,27 +83,10 @@ class CompanyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(CompanyRequest $request,Company $company)
+    public function update(GroupRequest $request, $id)
     {
-        if (! Gate::allows('update-company', $company)) {
-            abort(403, 'not authorized');
-        }
-        $data = $request->validated();
-        $data['user_id'] = auth()->id();
-
-        if($request->hasFile('logo')){
-            $data['logo'] = $request->file('logo')->store('companyLogos');
-
-//            $file = $request->file('logo');
-//            $filename = $file->getClientOriginalName();
-//            $path = public_path().'/uploads/';
-//            return $file->move($path, $filename);
-        }
-        $company->update($data);
-        if ($request->site_url != null) {
-            tenant()->domains()->update([ 'domain' => $request->site_url ]);
-        }
-        return ($company != null ) ?  $this->responseJson(new CompanyResource($company)) : $this->responseJsonFailed() ;
+        $group = $this->groupRepo->update( $request->except('_method') , $id);
+        return $this->responseJson( new GroupResource($group) );
     }
 
     /**
@@ -104,6 +97,7 @@ class CompanyController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $group = $this->groupRepo->destroy($id);
+        return $this->responseJson(  );
     }
 }

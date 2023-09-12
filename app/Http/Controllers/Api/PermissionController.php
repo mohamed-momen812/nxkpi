@@ -3,16 +3,22 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\CompanyRequest;
-use App\Http\Resources\CompanyResource;
-use App\Models\Company;
+use App\Http\Requests\PermissionRequest;
+use App\Http\Resources\PermissionResource;
+use App\Repositories\PermissionRepository;
 use App\Traits\ApiTrait;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
+use Spatie\Permission\Models\Permission;
 
-class CompanyController extends Controller
+class PermissionController extends Controller
 {
     use ApiTrait;
+    private $permissionRepo;
+
+    public function __construct(PermissionRepository $permissionRepo)
+    {
+        $this->permissionRepo = $permissionRepo;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -20,7 +26,8 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        //
+        $permissions = $this->permissionRepo->all();
+        return $this->responseJson( PermissionResource::collection($permissions) );
     }
 
     /**
@@ -39,9 +46,13 @@ class CompanyController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(PermissionRequest $request)
     {
-        //
+        $permission = $this->permissionRepo->create($request->validated());
+        if ($request->role_ids != null){
+            $permission->syncRoles($request->role_ids);
+        }
+        return $this->responseJson( new PermissionResource($permission) );
     }
 
     /**
@@ -50,9 +61,9 @@ class CompanyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Permission $permission)
     {
-        //
+        return $this->responseJson( new PermissionResource($permission) );
     }
 
     /**
@@ -73,27 +84,13 @@ class CompanyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(CompanyRequest $request,Company $company)
+    public function update(Request $request, $id)
     {
-        if (! Gate::allows('update-company', $company)) {
-            abort(403, 'not authorized');
+        $permission = $this->permissionRepo->update($request->except('_method','role_ids') , $id);
+        if ($request->role_ids != null){
+            $permission->syncRoles($request->role_ids);
         }
-        $data = $request->validated();
-        $data['user_id'] = auth()->id();
-
-        if($request->hasFile('logo')){
-            $data['logo'] = $request->file('logo')->store('companyLogos');
-
-//            $file = $request->file('logo');
-//            $filename = $file->getClientOriginalName();
-//            $path = public_path().'/uploads/';
-//            return $file->move($path, $filename);
-        }
-        $company->update($data);
-        if ($request->site_url != null) {
-            tenant()->domains()->update([ 'domain' => $request->site_url ]);
-        }
-        return ($company != null ) ?  $this->responseJson(new CompanyResource($company)) : $this->responseJsonFailed() ;
+        return $this->responseJson( new PermissionResource($permission) );
     }
 
     /**
@@ -104,6 +101,7 @@ class CompanyController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $permission = $this->permissionRepo->destroy($id);
+        return $this->responseJson();
     }
 }
