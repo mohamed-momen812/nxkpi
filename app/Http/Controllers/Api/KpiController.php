@@ -43,11 +43,11 @@ class KpiController extends Controller
     public function store(KpiRequest $request)
     {
         $input = $request->validated();
-        $input['user_id'] = auth()->id() ;
+
         $input['category_id'] = (isset($input['category_id'])) ? $input['category_id'] : 1 ;
 
         $kpi = $this->kpiRepo->create($input);
-
+        auth()->user()->kpis()->attach($kpi->id);
         if ($kpi){
             $equation = ($request->equation) ? $this->setEquation($kpi) : null ;
             return $this->responseJson(KpiResource::make($kpi) , 'Kpi created successfully');
@@ -64,8 +64,7 @@ class KpiController extends Controller
     public function show($id)
     {
         $kpi = $this->kpiRepo->find($id);
-        $user = auth()->user();
-        $kpis = $user->kpis ;
+        $kpis = auth()->user()->kpis ;
 
         if ($kpis->contains($kpi)){
             return $this->responseJson(KpiResource::make($kpi));
@@ -94,8 +93,7 @@ class KpiController extends Controller
     public function update(KpiRequest $request, $id)
     {
         $kpi = $this->kpiRepo->find($id);
-        $user = auth()->user();
-        $kpis = $user->kpis ;
+        $kpis = auth()->user()->kpis ;
 
         if (!$kpis->contains($kpi)){
             return $this->responseJsonFailed('Kpi Not Found');
@@ -125,8 +123,7 @@ class KpiController extends Controller
     public function destroy($id)
     {
         $kpi = $this->kpiRepo->find($id);
-        $user = auth()->user();
-        $kpis = $user->kpis ;
+        $kpis = auth()->user()->kpis ;
 
         if (!$kpis->contains($kpi)){
             return $this->responseJsonFailed('Kpi Not Found');

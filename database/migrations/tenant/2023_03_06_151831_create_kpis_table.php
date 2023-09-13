@@ -28,8 +28,7 @@ return new class extends Migration
             $table->boolean('target_calculated')->default(false);
             $table->string('icon')->nullable();
             $table->json('thresholds')->nullable();
-            $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+
             $table->unsignedBigInteger('frequency_id');
             $table->foreign('frequency_id')->references('id')->on('frequencies')->onDelete('cascade')->onUpdate('cascade');
             $table->unsignedBigInteger('category_id')->nullable();

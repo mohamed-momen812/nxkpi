@@ -14,6 +14,7 @@ class KpiResource extends JsonResource
      */
     public function toArray($request)
     {
+//        dd($this->entries()->lastWeek()->get());
 //        return parent::toArray($request);
         return [
             "id" => $this->id ,
@@ -33,6 +34,7 @@ class KpiResource extends JsonResource
             "frequency" => new FrequencyResource($this->frequency) ,
 //            "category" => new CategoryResource($this->category) ,
             "created_at" => $this->created_at->format('d-m-y') ,
+            'entries'   => EntryResource::collection($this->entries()->lastWeek()->get()),
         ];
     }
 

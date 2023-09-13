@@ -76,9 +76,9 @@ class Kpi extends Model
         return $this->hasMany(Entry::class);
     }
 
-    public function user()
+    public function users()
     {
-        return $this->belongsTo(User::class , 'user_id');
+        return $this->belongsToMany(User::class , 'kpi_user', 'kpi_id', 'user_id');
     }
 
     public function charts()

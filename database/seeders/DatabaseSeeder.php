@@ -26,6 +26,7 @@ class DatabaseSeeder extends Seeder
             EntrySeeder::class,
             DashboardSeeder::class,
             RoleAndPermissionSeeder::class,
+            KpiUserSeeder::class,
         ]);
     }
 }

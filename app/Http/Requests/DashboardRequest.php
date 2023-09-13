@@ -28,13 +28,15 @@ class DashboardRequest extends FormRequest
 
     public function onCreate(){
         return [
-            'name' => 'required|string',
+            'name'      => 'required|string',
+            'kpi_id'    => 'required|exists:kpis,id',
         ];
     }
 
     public function onUpdate(){
         return [
-            'name' => 'required|string',
+            'name'      => 'required|string',
+            'kpi_id'    => 'required|exists:kpis,id',
         ];
     }
 

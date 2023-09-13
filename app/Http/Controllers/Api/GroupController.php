@@ -9,6 +9,7 @@ use App\Interfaces\GroupRepositoryInterface;
 use App\Models\Group;
 use App\Traits\ApiTrait;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use PHPUnit\Framework\MockObject\Api;
 
 class GroupController extends Controller
@@ -28,8 +29,9 @@ class GroupController extends Controller
      */
     public function index()
     {
-        $groups = $this->groupRepo->all();
-        return $this->responseJson( GroupResource::collection($groups) );
+        $group = $this->groupRepo->getGroupByUser( auth()->user() );
+
+        return $this->responseJson( $group ? new GroupResource($group) : null );
     }
 
     /**
@@ -60,9 +62,10 @@ class GroupController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Group $group)
+    public function show($id)
     {
-        return $this->responseJson( new GroupResource($group) );
+        $group = $this->groupRepo->find($id);
+        return $group ? $this->responseJson( new GroupResource($group) ) : $this->responseJsonFailed( $message = "doesn't exist" , $status=404);
     }
 
     /**
@@ -83,8 +86,14 @@ class GroupController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(GroupRequest $request, $id)
+    public function update(GroupRequest $request,  $id)
     {
+        $group = $this->groupRepo->find($id);
+        if(!$group)
+            return $this->responseJsonFailed($message="doesn't exist" , $status = 404);
+        if (! Gate::allows('update-group', $group)) {
+            abort(403, 'not authorized');
+        }
         $group = $this->groupRepo->update( $request->except('_method') , $id);
         return $this->responseJson( new GroupResource($group) );
     }
