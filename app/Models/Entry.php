@@ -6,6 +6,8 @@ use App\Traits\Helper;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Query\Builder;
+use Illuminate\Support\Facades\DB;
 
 class Entry extends Model
 {
@@ -64,6 +66,14 @@ class Entry extends Model
                 break;
 
         }
+    }
+
+    public function scopeLastWeek($query)
+    {
+        return $query->whereBetween(('entry_date'), [
+            now()->subWeek()->startOfDay()->toDateString(),
+            now()->subWeek()->endOfDay()->toDateString(),
+        ]);
     }
 
 }

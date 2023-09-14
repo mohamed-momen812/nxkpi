@@ -31,7 +31,7 @@ class EntryController extends Controller
     }
     public function index()
     {
-        $entries = $this->entryRepo->getLastWeekData();
+        $entries = $this->entryRepo->allWithPaginate();
 
         if ( !$entries->isEmpty() )
         {

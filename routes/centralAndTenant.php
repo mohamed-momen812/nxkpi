@@ -20,8 +20,12 @@ Route::apiResource('dashboards' , \App\Http\Controllers\Api\DashboardController:
 Route::apiResource('charts' , \App\Http\Controllers\Api\ChartController::class);
 
 Route::apiResource('users' , \App\Http\Controllers\Api\UserController::class);
+Route::apiResource('groups' , \App\Http\Controllers\Api\GroupController::class);
 Route::apiResource('companies' , \App\Http\Controllers\Api\CompanyController::class);
 Route::get('frequencies' , [\App\Http\Controllers\Api\FrequencyController::class , 'index']);
+
+Route::apiResource('roles' , \App\Http\Controllers\Api\RoleController::class);
+Route::apiResource('permissions' , \App\Http\Controllers\Api\PermissionController::class);
 
 Route::group(['prefix' => 'Reports'] , function (){
     Route::get('top_perform' , [\App\Http\Controllers\Api\ReportController::class , 'topPerform']);

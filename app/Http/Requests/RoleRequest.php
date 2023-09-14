@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class DashboardRequest extends FormRequest
+class RoleRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,25 +26,18 @@ class DashboardRequest extends FormRequest
         return request()->isMethod('PUT') || request()->isMethod('PATCH') ? $this->onUpdate() : $this->onCreate();
     }
 
-    public function onCreate(){
-        return [
-            'name'      => 'required|string',
-            'kpi_id'    => 'required|exists:kpis,id',
-        ];
-    }
-
-    public function onUpdate(){
-        return [
-            'name'      => 'required|string',
-            'kpi_id'    => 'required|exists:kpis,id',
-        ];
-    }
-
-    public function messages()
+    public function onCreate()
     {
         return [
-            'name.required' => 'name is required',
-            'name.string'   => 'name is required',
+            'name'          => 'required|string|unique:roles,name',
+            'permission_ids'=> 'array',
+        ];
+    }
+    public function onUpdate()
+    {
+        return [
+            'name'          => 'required|string',
+            'permission_ids'=> 'array',
         ];
     }
 }

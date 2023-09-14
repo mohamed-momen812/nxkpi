@@ -86,7 +86,7 @@ class User extends Authenticatable implements JWTSubject
 
     public function kpis()
     {
-        return $this->hasMany(Kpi::class);
+        return $this->belongsToMany(Kpi::class, 'kpi_user', 'user_id', 'kpi_id');
     }
 
     public function owner()

@@ -30,7 +30,7 @@ class KpiFactory extends Factory
             'target_calculated' => false ,
             'icon'=> 'target',
             'thresholds' => null ,
-            'user_id' => $this->faker->randomElement( User::pluck('id')->toArray() ),
+
             'frequency_id' => $this->faker->randomElement( Frequency::pluck('id')->toArray() ),
             'category_id' => $this->faker->randomElement( Category::pluck('id')->toArray() ),
         ];

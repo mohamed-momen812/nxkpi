@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Models\Company;
+use App\Models\Group;
 use App\Policies\CompanyPolicy;
+use App\Policies\GroupPolicy;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
@@ -19,6 +21,7 @@ class AuthServiceProvider extends ServiceProvider
     protected $policies = [
         // 'App\Models\Model' => 'App\Policies\ModelPolicy',
         Company::class => CompanyPolicy::class,
+        Group::class    => GroupPolicy::class,
     ];
 
     /**
@@ -33,6 +36,7 @@ class AuthServiceProvider extends ServiceProvider
         });
 
         Gate::define('update-company', [CompanyPolicy::class, 'update']);
+        Gate::define('update-group', [GroupPolicy::class, 'update']);
 
         Sanctum::ignoreMigrations();
     }

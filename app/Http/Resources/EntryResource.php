@@ -29,8 +29,8 @@ class EntryResource extends JsonResource
             "year" => $this->year ,
             "range_date" => $this->range_date ,
             "created_at" => $this->created_at->format('d-m-y'),
-            "user" => new UserResource($this->user),
-            "kpi" => new KpiResource($this->kpi) ,
+//            "user" => new UserResource($this->user),
+//            "kpi" => new KpiResource($this->kpi) ,
         ];
     }
 

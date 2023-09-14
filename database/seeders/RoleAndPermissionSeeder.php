@@ -22,14 +22,14 @@ class RoleAndPermissionSeeder extends Seeder
         DB::table('role_has_permissions')->delete();
 
         //permissions
-        Permission::create(['name' => 'access-assigned-kpis']);
-        Permission::create(['name' => 'create-kpis']);
-        Permission::create(['name' => 'manage-users']);
-        Permission::create(['name' => 'full-access']);
-        Permission::create(['name' => 'enter-values']);
-        Permission::create(['name' => 'view-kpis']);
-        Permission::create(['name' => 'edit-kpis']);
-        Permission::create(['name' => 'manage-settings']);
+        Permission::firstOrCreate(['name' => 'access-assigned-kpis']);
+        Permission::firstOrCreate(['name' => 'create-kpis']);
+        Permission::firstOrCreate(['name' => 'manage-users']);
+        Permission::firstOrCreate(['name' => 'full-access']);
+        Permission::firstOrCreate(['name' => 'enter-values']);
+        Permission::firstOrCreate(['name' => 'view-kpis']);
+        Permission::firstOrCreate(['name' => 'edit-kpis']);
+        Permission::firstOrCreate(['name' => 'manage-settings']);
 
         $ownerRole = Role::create(['name' => 'Owner']);
         $userRole = Role::create(['name' => 'User']);
