@@ -34,8 +34,31 @@ class KpiResource extends JsonResource
             "frequency" => new FrequencyResource($this->frequency) ,
 //            "category" => new CategoryResource($this->category) ,
             "created_at" => $this->created_at->format('d-m-y') ,
-            'entries'   => EntryResource::collection($this->entries()->lastWeek()->get()),
+//            'entries'   => EntryResource::collection($this->entries()->lastWeek()->get()),
+            'entries'   => EntryResource::collection($this->getEntries()),
         ];
+    }
+
+    public function getEntries()
+    {
+        return $this->entries->filter(function ($item){
+            switch ($this->frequency->name){
+                case "Daily":
+                    return $item->entry_date >= now()->subWeek();
+                    break;
+                case "Weakly":
+                    return $item->entry_date >= now()->subWeek(6) ;
+                    break;
+                case "Monthly":
+                    return $item->entry_date >= now()->subMonth(6);
+                case "Quarterly":
+                    return $item->entry_date >= now()->subMonth(18);
+                case "Yearly":
+                    return  $item->entry_date >= now()->subYear(6);
+                default :
+                    return $item;
+            }
+        });
     }
 
 }

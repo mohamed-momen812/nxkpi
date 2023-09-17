@@ -24,9 +24,7 @@ class KpiController extends Controller
 
     public function index()
     {
-        $user = auth()->user();
-        $kpis = $user->kpis ;
-//        $kpis = $this->kpiRepo->allWithPaginate();
+        $kpis = auth()->user()->kpis ;
 
         if ( !$kpis->isEmpty() ){
             return $this->responseJson(KpiResource::collection($kpis),'kpis retrieved successfully');
@@ -99,7 +97,7 @@ class KpiController extends Controller
             return $this->responseJsonFailed('Kpi Not Found');
         }
         $input = $request->validated();
-        $input['user_id'] = auth()->id() ;
+
         $input['frequency_id'] = $request->input('frequency_id' , 1 );
         $input['category_id'] = $request->input('category_id' , null );
         $input['format'] = $request->input('format' , '1,234' ) ;

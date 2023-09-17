@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\EntryRequest;
 use App\Http\Resources\EntryResource;
+use App\Http\Resources\KpiResource;
 use App\Interfaces\EntryRepositoryInterface;
 use App\Interfaces\KpiRepositoryInterface;
 use App\Models\Dashboard;
@@ -31,14 +32,13 @@ class EntryController extends Controller
     }
     public function index()
     {
-        $entries = $this->entryRepo->allWithPaginate();
+        $kpis = auth()->user()->kpis ;
 
-        if ( !$entries->isEmpty() )
-        {
-            return $this->responseJson( EntryResource::collection($entries) , 'entries retrieved successfully');
+        if ( !$kpis->isEmpty() ){
+            return $this->responseJson(KpiResource::collection($kpis),'kpis retrieved successfully');
         }
 
-        return $this->responseJsonFailed("there's no entries yet");
+        return $this->responseJsonFailed("there's no kpis yet");
     }
 
     /**
@@ -62,7 +62,7 @@ class EntryController extends Controller
         //to get kpi_id and notes directly
         $input = $request->validated();
         $input['user_id'] = auth()->id();
-        $kpi = auth()->user()->kpis()->where('id' , $request->kpi_id )->first();
+        $kpi = auth()->user()->kpis->where('id' , $request->kpi_id )->first();
 
         if($kpi == null) return $this->responseJsonFailed("kpi not found");
 
@@ -134,7 +134,7 @@ class EntryController extends Controller
         //to get kpi_id and notes directly
         $input = $request->except('entries');
 
-        $kpi = auth()->user()->kpis()->where('id' , $request->kpi_id )->first();
+        $kpi = auth()->user()->kpis->where('id' , $request->kpi_id )->first();
 
         if($kpi == null) return $this->responseJsonFailed("kpi not found");
 
