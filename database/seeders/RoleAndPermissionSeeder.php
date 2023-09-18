@@ -22,20 +22,20 @@ class RoleAndPermissionSeeder extends Seeder
         DB::table('role_has_permissions')->delete();
 
         //permissions
-        Permission::firstOrCreate(['name' => 'access-assigned-kpis']);
-        Permission::firstOrCreate(['name' => 'create-kpis']);
-        Permission::firstOrCreate(['name' => 'manage-users']);
-        Permission::firstOrCreate(['name' => 'full-access']);
-        Permission::firstOrCreate(['name' => 'enter-values']);
-        Permission::firstOrCreate(['name' => 'view-kpis']);
-        Permission::firstOrCreate(['name' => 'edit-kpis']);
-        Permission::firstOrCreate(['name' => 'manage-settings']);
+        Permission::firstOrCreate(['name' => 'access-assigned-kpis', 'guard_name' => 'sanctum']);
+        Permission::firstOrCreate(['name' => 'create-kpis', 'guard_name' => 'sanctum']);
+        Permission::firstOrCreate(['name' => 'manage-users', 'guard_name' => 'sanctum']);
+        Permission::firstOrCreate(['name' => 'full-access', 'guard_name' => 'sanctum']);
+        Permission::firstOrCreate(['name' => 'enter-values', 'guard_name' => 'sanctum']);
+        Permission::firstOrCreate(['name' => 'view-kpis', 'guard_name' => 'sanctum']);
+        Permission::firstOrCreate(['name' => 'edit-kpis', 'guard_name' => 'sanctum']);
+        Permission::firstOrCreate(['name' => 'manage-settings', 'guard_name' => 'sanctum']);
 
-        $ownerRole = Role::create(['name' => 'Owner']);
-        $userRole = Role::create(['name' => 'User']);
-        $managerRole = Role::create(['name' => 'Manager']);
-        $directorRole = Role::create(['name' => 'Director']);
-        $adminRole = Role::create(['name' => 'Admin']);
+        $ownerRole = Role::create(['name' => 'Owner', 'guard_name' => 'sanctum']);
+        $userRole = Role::create(['name' => 'User', 'guard_name' => 'sanctum']);
+        $managerRole = Role::create(['name' => 'Manager', 'guard_name' => 'sanctum']);
+        $directorRole = Role::create(['name' => 'Director', 'guard_name' => 'sanctum']);
+        $adminRole = Role::create(['name' => 'Admin', 'guard_name' => 'sanctum']);
 
         //give all permissions to owner
         $allPermissions = Permission::all();

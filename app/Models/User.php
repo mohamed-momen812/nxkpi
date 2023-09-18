@@ -48,6 +48,7 @@ class User extends Authenticatable implements JWTSubject
         'email_verified_at' => 'datetime',
     ];
 
+    protected $guard_name = 'sanctum';
 //    public function setCompanyDomainAttribute($value)
 //    {
 //        $this->attributes['company_domain'] = $value ?? strval( octdec(uniqid()) );

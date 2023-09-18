@@ -17,10 +17,11 @@ class KpiUserSeeder extends Seeder
     public function run()
     {
         $users = User::all();
-        $kpis_id  = Kpi::pluck('id')->toArray();
+        $kpis  = Kpi::all();
 
         foreach ($users as $user){
-            $user->kpis()->attach(array_values( array_rand( array_values($kpis_id) , 3) ) );
+            $randomKpis = $kpis->shuffle()->take(3);
+            $user->kpis()->attach($randomKpis);
         }
     }
 }

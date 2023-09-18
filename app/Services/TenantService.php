@@ -18,9 +18,22 @@ class TenantService
     public function intiateTenant(Tenant $tenant , array $userData)
     {
         $tenant->run(function () use ($tenant , $userData){
+
+            //make seed for role and permission
+            \Artisan::call('tenants:seed', [
+                '--tenants' => $tenant['id'],
+                '--class'   => RoleAndPermissionSeeder::class,
+            ]);
+
+            //make seed for frequency
+            \Artisan::call('tenants:seed', [
+                '--tenants' => $tenant['id'],
+                '--class'   => FrequencySeeder::class,
+            ]);
+
             $userData['id'] = $tenant->user->id;
             $user = User::create($userData);
-//            $user->assignRole( "Owner" );
+            $user->assignRole( "Owner" );
             $category = $this->categoryRepo->create([
                 'name'      =>'Default',
                 'user_id'   => $user->id ,
@@ -34,16 +47,5 @@ class TenantService
             ]);
         });
 
-        //make seed for role and permission
-        \Artisan::call('tenants:seed', [
-            '--tenants' => $tenant['id'],
-            '--class'   => RoleAndPermissionSeeder::class,
-        ]);
-
-        //make seed for frequency
-        \Artisan::call('tenants:seed', [
-            '--tenants' => $tenant['id'],
-            '--class'   => FrequencySeeder::class,
-        ]);
     }
 }
