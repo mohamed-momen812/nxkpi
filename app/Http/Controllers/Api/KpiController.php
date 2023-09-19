@@ -61,6 +61,7 @@ class KpiController extends Controller
      */
     public function show($id)
     {
+        $this->authorize('view-kpis');
         $kpi = $this->kpiRepo->find($id);
         $kpis = auth()->user()->kpis ;
 

@@ -17,8 +17,7 @@ class TenantService
     }
     public function intiateTenant(Tenant $tenant , array $userData)
     {
-        $tenant->run(function () use ($tenant , $userData){
-
+        $tenant->run(function () use ($tenant){
             //make seed for role and permission
             \Artisan::call('tenants:seed', [
                 '--tenants' => $tenant['id'],
@@ -30,6 +29,8 @@ class TenantService
                 '--tenants' => $tenant['id'],
                 '--class'   => FrequencySeeder::class,
             ]);
+        });
+        $tenant->run(function () use ($tenant , $userData){
 
             $userData['id'] = $tenant->user->id;
             $user = User::create($userData);

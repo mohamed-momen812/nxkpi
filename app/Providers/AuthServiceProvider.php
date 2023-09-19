@@ -36,27 +36,6 @@ class AuthServiceProvider extends ServiceProvider
             return config('app.frontend_url')."/password-reset/$token?email={$notifiable->getEmailForPasswordReset()}";
         });
 
-        Gate::define('update-company', [CompanyPolicy::class, 'update']);
-        Gate::define('update-group', [GroupPolicy::class, 'update']);
-        Gate::define('manage_users', function(User $user) {
-            return $user->hasRole(['Owner', 'Manager']) ;
-        });
-        Gate::define('manage_users', function(User $user) {
-            return $user->hasRole(['Owner', 'Manager']) ;
-        });
-        Gate::define('access-assigned-kpis', function(User $user) {
-            return $user->hasRole(['Owner', 'User']) ;
-        });
-        Gate::define('create-kpis', function(User $user) {
-            return $user->hasRole(['Owner', 'Manager']) ;
-        });
-        Gate::define('edit-kpis', function(User $user) {
-            return $user->hasRole(['Owner', 'Manager']) ;
-        });
-        Gate::define('view-kpis', function(User $user) {
-            return $user->hasRole(['Owner', 'Director']) ;
-        });
-
         Sanctum::ignoreMigrations();
     }
 }

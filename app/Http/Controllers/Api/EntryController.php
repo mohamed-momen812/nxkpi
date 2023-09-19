@@ -134,7 +134,7 @@ class EntryController extends Controller
         //to get kpi_id and notes directly
         $input = $request->except('entries');
 
-        $kpi = auth()->user()->kpis->where('id' , $request->kpi_id )->first();
+        $kpi = auth()->user()->kpis ->where('id' , $request->kpi_id )->first();
 
         if($kpi == null) return $this->responseJsonFailed("kpi not found");
 

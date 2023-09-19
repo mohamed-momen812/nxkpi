@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Models\Kpi;
 use App\Rules\EquationKpisExist;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -16,7 +17,7 @@ class KpiRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return Gate::allows('create-kpis') || Gate::allows('edit-kpis') ;
     }
 
     /**
