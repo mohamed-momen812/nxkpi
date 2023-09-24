@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Traits\KpiTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Query\Builder;
 use Spatie\Translatable\HasTranslations;
 //use App\Traits\HasTranslations;
 class Kpi extends Model
@@ -18,6 +19,11 @@ class Kpi extends Model
 
     protected $appends = ['result_equation'];
 
+    protected $searchable = [
+        'created_at',
+        'users.name',
+        'groups.name',
+    ];
     // Aggregated values
     const AGGREGATED_SUM_TOTAL = 'sum_totals';
     const AGGREGATED_AVERAGE = 'average';
@@ -89,5 +95,11 @@ class Kpi extends Model
     public function dashboards()
     {
         return $this->hasMany(Dashboard::class , 'kpi_id');
+    }
+
+    public function scopeSearch(Builder $builder, $date = ''){
+        foreach ($this->searchable as $searchable){
+
+        }
     }
 }
