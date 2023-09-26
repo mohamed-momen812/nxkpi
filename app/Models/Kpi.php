@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use App\Traits\KpiTrait;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Query\Builder;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Spatie\Translatable\HasTranslations;
 //use App\Traits\HasTranslations;
 class Kpi extends Model
@@ -22,7 +25,7 @@ class Kpi extends Model
     protected $searchable = [
         'created_at',
         'users.name',
-        'groups.name',
+        'users.group.name',
     ];
     // Aggregated values
     const AGGREGATED_SUM_TOTAL = 'sum_totals';
@@ -97,9 +100,20 @@ class Kpi extends Model
         return $this->hasMany(Dashboard::class , 'kpi_id');
     }
 
-    public function scopeSearch(Builder $builder, $date = ''){
+    public function scopeSearch( $query, Request $request){
         foreach ($this->searchable as $searchable){
+            if ($searchable == 'created_at'){
+                $q = $query->orWhere('created_at', '>=', strtotime($request->query('from') ));
+            }
+            if (str_contains($searchable, '.')){
+                $relation = Str::beforeLast($searchable, '.');
+                $column = Str::afterLast($searchable, '.');
+
+                $q->orWhereRelation($relation, $column, 'like', "%$request->user_name%");
+                continue;
+            }
 
         }
+        return $q;
     }
 }

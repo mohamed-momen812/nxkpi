@@ -21,18 +21,19 @@ class ReportController extends Controller
     public function topPerform(Request $request)
     {
 
-        $kpis = $this->kpiRepo->all();
+        $kpis = $this->kpiRepo->search($request);
+//        $kpis = $this->kpiRepo->all();
 
-        $kpis = $kpis->filter(function ($kpi) use ($request) {
-            $createdAt = Carbon::parse($kpi->created_at);
-            return $createdAt->between(Carbon::parse($request->from), Carbon::parse($request->to ?? now() )) ;
-        });
-        // Filter based on user IDs
-        if ( $request->filled('user_ids') ) {
-            $kpis = $kpis->filter(function ($kpi) use ($request) {
-                return $kpi->users->pluck('id')->intersect($request->user_ids)->count() > 0;
-            });
-        }
+//        $kpis = $kpis->filter(function ($kpi) use ($request) {
+//            $createdAt = Carbon::parse($kpi->created_at);
+//            return $createdAt->between(Carbon::parse($request->from), Carbon::parse($request->to ?? now() )) ;
+//        });
+//        // Filter based on user IDs
+//        if ( $request->filled('user_ids') ) {
+//            $kpis = $kpis->filter(function ($kpi) use ($request) {
+//                return $kpi->users->pluck('id')->intersect($request->user_ids)->count() > 0;
+//            });
+//        }
         $sortedKpis = $kpis->reject(function ($kpi) {
             return $kpi->totalRatio() === null;
         })->sortByDesc(function ($kpi) {
@@ -42,9 +43,9 @@ class ReportController extends Controller
         return $this->responseJson(KpiResource::collection($sortedKpis));
     }
 
-    public function worstPerform()
+    public function worstPerform(Request $request)
     {
-        $kpis = $this->kpiRepo->all();
+        $kpis = $this->kpiRepo->search($request);
         $sortedKpis = $kpis->reject(function ($kpi) {
             return $kpi->totalRatio() === null;
         })->sortBy(function ($kpi) {
@@ -54,15 +55,15 @@ class ReportController extends Controller
         return $this->responseJson(KpiResource::collection($sortedKpis));
     }
 
-    public function multipliKpis()
+    public function multipliKpis(Request $request)
     {
-        $kpis = $this->kpiRepo->all();
+        $kpis = $this->kpiRepo->search($request);
         return $this->responseJson(KpiResource::collection($kpis));
     }
 
-    public function kpiPerformance()
+    public function kpiPerformance(Request $request)
     {
-        $kpis = $this->kpiRepo->all();
+        $kpis = $this->kpiRepo->search($request);
         $sortedKpis = $kpis->reject(function ($kpi) {
             return $kpi->totalRatio() === null;
         })->sortByDesc(function ($kpi) {

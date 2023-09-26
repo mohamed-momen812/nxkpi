@@ -5,12 +5,12 @@ namespace App\Enums;
 
 enum ChartsEnum
 {
-    const COLUMN_GRAPH = 1;
-    const LINE_GRAPH = 2;
-    const SINGLE_KPI = 3;
-    const STACKED_KPI_GRAPH = 4;
-    const MULTIPLE_KPI_SERIES = 5;
-    const SINGLE_COLUMN_KPI = 6;
+    const COLUMN_GRAPH = "column_graph";
+    const LINE_GRAPH = "line_graph";
+    const SINGLE_KPI = "single_kpi";
+    const STACKED_KPI_GRAPH = "stacked_kpi_graph";
+    const MULTIPLE_KPI_SERIES = "multiple_kpi_series";
+    const SINGLE_COLUMN_KPI = "single_column_kpi";
     /**
      * Retrieve a map of enum keys and values.
      *
@@ -21,42 +21,42 @@ enum ChartsEnum
         return match($this) {
             static::COLUMN_GRAPH =>[
                 'value'  => 'column graph',
-                'code'   => 1,
+                'code'   => "column_graph",
                 'title' => trans('chart.column_graph.title'),
                 'description' => trans('chart.column_graph.description'),
                 'logo' => '',
             ],
             static::LINE_GRAPH => [
                 'value' => 'line graph',
-                'code' => 2,
+                'code' => "line_graph",
                 'title' => trans('chart.column_graph.title'),
                 'description' => trans('chart.column_graph.description'),
                 'logo' => '',
             ],
             static::SINGLE_KPI => [
                 'value'  => 'single kpi',
-                'code' => 3,
+                'code' => "single_kpi",
                 'title' => trans('chart.column_graph.title'),
                 'description' => trans('chart.column_graph.description'),
                 'logo' => '',
             ],
             static::STACKED_KPI_GRAPH => [
                 'value'  => 'stacked kpi graph',
-                'code' => 4,
+                'code' => "stacked_kpi_graph",
                 'title' => trans('chart.column_graph.title'),
                 'description' => trans('chart.column_graph.description'),
                 'logo' => '',
             ],
             static::MULTIPLE_KPI_SERIES => [
                 'value'  => 'multiple kpi series',
-                'code' => 5,
+                'code' => "multiple_kpi_series",
                 'title' => trans('chart.column_graph.title'),
                 'description' => trans('chart.column_graph.description'),
                 'logo' => '',
             ],
             static::SINGLE_COLUMN_KPI => [
                 'value' => 'single column kpi',
-                'code'  => 6,
+                'code'  => "single_column_kpi",
                 'title' => trans('chart.column_graph.title'),
                 'description' => trans('chart.column_graph.description'),
                 'logo' => '',

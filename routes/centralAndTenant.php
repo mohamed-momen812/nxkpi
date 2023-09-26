@@ -32,7 +32,7 @@ Route::apiResource('roles' , \App\Http\Controllers\Api\RoleController::class);
 Route::apiResource('permissions' , \App\Http\Controllers\Api\PermissionController::class);
 
 Route::group(['prefix' => 'Reports'] , function (){
-    Route::post('top_perform' , [\App\Http\Controllers\Api\ReportController::class , 'topPerform']);
+    Route::get('top_perform' , [\App\Http\Controllers\Api\ReportController::class , 'topPerform']);
     Route::get('worst_perform' , [\App\Http\Controllers\Api\ReportController::class , 'worstPerform']);
     Route::get('multiple_kpis' , [\App\Http\Controllers\Api\ReportController::class , 'multipliKpis']);
     Route::get('kpi_performance', [\App\Http\Controllers\Api\ReportController::class, 'kpiPerformance']);

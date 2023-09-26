@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\ChartsEnum;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -11,7 +12,8 @@ class Dashboard extends Model
     protected $fillable = ['name', 'charts','user_id', 'kpi_id', 'created_at', 'updated_at'];
 
     protected $casts = [
-        'charts' => 'json',
+//        'charts' => 'json',
+        'charts'    => ChartsEnum::class,
     ];
     public function user()
     {

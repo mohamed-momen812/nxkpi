@@ -24,7 +24,7 @@ class DashboardController extends Controller
 
     public function index()
     {
-        $dashboards = Dashboard::where('user_id' , auth()->user()->id)->get();
+        $dashboards = Dashboard::where('user_id' , auth()->user()->id)->with('charts')->get();
         if ( !$dashboards->isEmpty())
         {
             return $this->responseJson(DashboardResource::collection($dashboards));

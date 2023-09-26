@@ -2,7 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\ChartsEnum;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Enum;
 
 class DashboardRequest extends FormRequest
 {
@@ -30,6 +33,8 @@ class DashboardRequest extends FormRequest
         return [
             'name'      => 'required|string',
             'kpi_id'    => 'required|exists:kpis,id',
+            'charts'    => [ 'array', Rule::in(ChartsEnum::class)],
+
         ];
     }
 
@@ -37,6 +42,8 @@ class DashboardRequest extends FormRequest
         return [
             'name'      => 'required|string',
             'kpi_id'    => 'required|exists:kpis,id',
+            'charts'    => [ 'array', Rule::in(ChartsEnum::class)],
+
         ];
     }
 
