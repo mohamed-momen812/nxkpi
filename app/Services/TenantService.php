@@ -6,6 +6,7 @@ use App\Interfaces\CategoryRepositoryInterface;
 use App\Models\Company;
 use App\Models\Tenant;
 use App\Models\User;
+use Database\Seeders\ChartSeeder;
 use Database\Seeders\FrequencySeeder;
 use Database\Seeders\RoleAndPermissionSeeder;
 
@@ -28,6 +29,12 @@ class TenantService
             \Artisan::call('tenants:seed', [
                 '--tenants' => $tenant['id'],
                 '--class'   => FrequencySeeder::class,
+            ]);
+
+            //make_seed_for_charts
+            \Artisan::call('tenants:seed', [
+                '--tenants' => $tenant['id'],
+                '--class'   => ChartSeeder::class,
             ]);
         });
         $tenant->run(function () use ($tenant , $userData){

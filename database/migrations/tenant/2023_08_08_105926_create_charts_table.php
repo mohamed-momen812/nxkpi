@@ -16,8 +16,6 @@ return new class extends Migration
         Schema::create('charts', function (Blueprint $table) {
             $table->id();
             $table->string('type');
-            $table->unsignedBigInteger('dashboard_id');
-            $table->foreign('dashboard_id')->references('id')->on('dashboards')->onDelete('cascade');
             $table->timestamps();
         });
     }

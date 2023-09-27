@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\ChartsEnum;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -11,9 +12,12 @@ class Chart extends Model
 
     protected $guarded = ['id'];
 
-    public function dashboard()
+    protected $casts = [
+        'charts'    => ChartsEnum::class ,
+    ];
+    public function dashboards()
     {
-        return $this->belongsTo(Dashboard::class);
+        return $this->belongsToMany(Dashboard::class, 'charts_dashboards', 'chart_id', 'dashboard_id');
     }
 
     public function kpis()

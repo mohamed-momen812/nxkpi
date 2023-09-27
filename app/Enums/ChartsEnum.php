@@ -3,14 +3,14 @@
 namespace App\Enums;
 
 
-enum ChartsEnum
+enum ChartsEnum: string
 {
-    const COLUMN_GRAPH = "column_graph";
-    const LINE_GRAPH = "line_graph";
-    const SINGLE_KPI = "single_kpi";
-    const STACKED_KPI_GRAPH = "stacked_kpi_graph";
-    const MULTIPLE_KPI_SERIES = "multiple_kpi_series";
-    const SINGLE_COLUMN_KPI = "single_column_kpi";
+    case COLUMN_GRAPH = "column_graph";
+    case LINE_GRAPH = "line_graph";
+    case SINGLE_KPI = "single_kpi";
+    case STACKED_KPI_GRAPH = "stacked_kpi_graph";
+    case MULTIPLE_KPI_SERIES = "multiple_kpi_series";
+    case SINGLE_COLUMN_KPI = "single_column_kpi";
     /**
      * Retrieve a map of enum keys and values.
      *

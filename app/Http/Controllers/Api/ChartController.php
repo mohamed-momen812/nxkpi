@@ -26,7 +26,7 @@ class ChartController extends Controller
 
     public function index(Request $request)
     {
-        $charts = Chart::where('dashboard_id' , $request->dashboard_id)->get();
+        $charts = Chart::all();
 
         if ($charts)
         {

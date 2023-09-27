@@ -15,11 +15,12 @@ class DashboardResource extends JsonResource
      */
     public function toArray($request)
     {
+//        dd($this->charts);
 //        return parent::toArray($request);
         return [
             'id'    => $this->id,
             'name'  => $this->name,
-            'chatrs' => ChartResource::collection($this->whenLoaded('charts')),
+            'chatrs' => ChartResource::collection($this->whenLoaded('charts')) ,
 //            'entries'=> EntryResource::collection($this->kpi->entries),
 //            'chart' => ChartsEnum::class($this->chart)->value,
 //            "user" => new UserResource($this->user),

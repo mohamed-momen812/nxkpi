@@ -70,10 +70,10 @@ class EntryController extends Controller
         {
             $dashboard = $this->dashboardRepo->create([
                 "name"      => $kpi->name,
-                "charts"    => [1,2,3],
                 "user_id"   => auth()->id(),
                 "kpi_id"    => $kpi->id,
             ]);
+            $dashboard->charts()->attach(1);
         }
 
         $input['target'] = $kpi->user_target ;

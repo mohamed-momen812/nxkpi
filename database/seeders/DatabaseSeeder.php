@@ -27,6 +27,8 @@ class DatabaseSeeder extends Seeder
             DashboardSeeder::class,
             RoleAndPermissionSeeder::class,
             KpiUserSeeder::class,
+            ChartSeeder::class,
+            ChartsDashboardsSeeder::class,
         ]);
     }
 }
