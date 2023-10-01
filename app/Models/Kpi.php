@@ -24,7 +24,7 @@ class Kpi extends Model
 
     protected $searchable = [
         'created_at',
-        'users.name',
+        'users.first_name',
         'users.group.name',
     ];
     // Aggregated values
@@ -100,20 +100,24 @@ class Kpi extends Model
         return $this->hasMany(Dashboard::class , 'kpi_id');
     }
 
-    public function scopeSearch( $query, Request $request){
-        foreach ($this->searchable as $searchable){
-            if ($searchable == 'created_at'){
-                $q = $query->orWhere('created_at', '>=', strtotime($request->query('from') ));
+    public function scopeSearch($query, Request $request)
+    {
+        return $query->where(function ($query) use ($request) {
+            foreach ($this->searchable as $searchable) {
+                if ($searchable == 'created_at' && $request->filled('from') && $request->filled('to')) {
+                    $query->whereBetween('created_at', [
+                        $request->query('from'),
+                        $request->query('to')
+                    ])->orWhere('created_at', '>=', $request->query('from'));
+                }
+                if (str_contains($searchable, '.')) {
+                    $relation = Str::beforeLast($searchable, '.');
+                    $column = Str::afterLast($searchable, '.');
+                    $query->whereHas($relation, function ($query) use ($column, $request) {
+                        $query->where($column, 'like', "%$request->user_name%");
+                    });
+                }
             }
-            if (str_contains($searchable, '.')){
-                $relation = Str::beforeLast($searchable, '.');
-                $column = Str::afterLast($searchable, '.');
-
-                $q->orWhereRelation($relation, $column, 'like', "%$request->user_name%");
-                continue;
-            }
-
-        }
-        return $q;
+        });
     }
 }

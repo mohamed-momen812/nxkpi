@@ -6,6 +6,14 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class ChartResource extends JsonResource
 {
+
+    protected $dashboard;
+
+    public function __construct($resource, $dashboard)
+    {
+        parent::__construct($resource);
+        $this->dashboard = $dashboard;
+    }
     /**
      * Transform the resource into an array.
      *
@@ -18,6 +26,7 @@ class ChartResource extends JsonResource
         return [
             'id'        => $this->id,
             'type'      => $this->type,
+            'entries'   => EntryResource::collection( $this->dashboard->kpi->entries)
         ];
     }
 }
