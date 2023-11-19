@@ -22,7 +22,7 @@ class ChartsDashboardsSeeder extends Seeder
 
         foreach ($dashboards_id as $dashboard_id){
             DB::table('charts_dashboards')->insert([
-                'chart_id'      => array_rand( array_values( $charts_id) ),
+                'chart_id'      => array_rand( array_values( $charts_id) ) === 0 ? array_rand( array_values( $charts_id) )+1 : array_rand( array_values( $charts_id) )  ,
                 'dashboard_id'  => $dashboard_id,
             ]);
         }
