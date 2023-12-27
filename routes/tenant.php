@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\Api\AuthController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Sanctum\Http\Controllers\CsrfCookieController;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
@@ -30,13 +31,7 @@ Route::middleware([
     });
 });
 
-Route::middleware([
-        'api',
-        InitializeTenancyByDomain::class,
-        PreventAccessFromCentralDomains::class,
-    ])->group(function () {
-        require __DIR__.'/api.php';
-    });
+
     
 Route::group(['prefix' => config('sanctum.prefix', 'sanctum')], static function () {
     Route::get('/csrf-cookie', [CsrfCookieController::class, 'show'])
@@ -62,3 +57,11 @@ Route::middleware([
     });
 
     
+    Route::middleware([
+        'api',
+        InitializeTenancyByDomain::class,
+        PreventAccessFromCentralDomains::class,
+    ])->group(function () {
+        require __DIR__.'/api.php';
+        Route::post('api/auth/tenant/signin', [AuthController::class, 'login']);
+    });

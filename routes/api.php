@@ -19,7 +19,7 @@ use App\Http\Controllers\Api\EntryController;
 Route::get('/lang/{lang}' , [\App\Http\Controllers\LangController::class , 'change'])->name('lang.change');
 
 Route::group( ['middleware' => 'api','prefix' => 'auth' , \Stancl\Tenancy\Middleware\InitializeTenancyByDomain::class,] , function ($router) {
-    Route::post('/signin', [AuthController::class, 'login']);
+    // Route::post('/signin', [AuthController::class, 'login']);
     Route::post('/register', [AuthController::class, 'register']);
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/refresh', [AuthController::class, 'refresh']);
