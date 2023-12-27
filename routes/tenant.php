@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Facades\Route;
+use Laravel\Sanctum\Http\Controllers\CsrfCookieController;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 
@@ -36,14 +37,22 @@ Route::middleware([
     ])->group(function () {
         require __DIR__.'/api.php';
     });
-
+    
+Route::group(['prefix' => config('sanctum.prefix', 'sanctum')], static function () {
+    Route::get('/csrf-cookie', [CsrfCookieController::class, 'show'])
+        ->middleware([
+            'web',
+            InitializeTenancyByDomain::class // Use tenancy initialization middleware of your choice
+        ])->name('sanctum.csrf-cookie');
+});
 
 Route::middleware([
         'api',
         'auth:sanctum',
         InitializeTenancyByDomain::class,
         PreventAccessFromCentralDomains::class,
-    ])->group(function () {
+    ])->prefix('/api')
+    ->group(function () {
         Route::get('/', function () {
             return 'This is your multi-tenant application. The id of the current tenant is ' . tenant('id');
         });
@@ -52,3 +61,4 @@ Route::middleware([
         require __DIR__.'/centralAndTenant.php';
     });
 
+    
