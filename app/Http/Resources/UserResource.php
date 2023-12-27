@@ -21,7 +21,7 @@ class  UserResource extends JsonResource
             "last_name" => $this->last_name ,
             "email" => $this->email ,
             "company_domain" => $this->company_domain,
-            "company_url" => $this->company_domain . config('tenancy.custom_domain'),
+            "company_url" => $this->company_domain . "." . config('tenancy.custom_domain'),
             "type"  => $this->type ,
             'roles' => $this->rolesWithPermissions->map(function ($role) {
                 return [
