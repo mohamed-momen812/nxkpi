@@ -3,6 +3,7 @@
 
 // categories routes
 
+use App\Http\Controllers\Api\PlanFeatureController;
 use Illuminate\Support\Facades\Route;
 
 Route::resource('categories' , \App\Http\Controllers\Api\CategoryController::class);
@@ -41,3 +42,4 @@ Route::group(['prefix' => 'Reports'] , function (){
     Route::get('kpi_performance', [\App\Http\Controllers\Api\ReportController::class, 'kpiPerformance']);
     Route::get('user_kpis', [\App\Http\Controllers\Api\ReportController::class, 'userKpis']);
 });
+
