@@ -3,6 +3,8 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Middleware\OurInitializeTenancyByDomain;
+use App\Http\Middleware\OurPreventAccessFromCentralDomains;
 use Illuminate\Support\Facades\Route;
 use Laravel\Sanctum\Http\Controllers\CsrfCookieController;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
@@ -22,8 +24,8 @@ use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 
 Route::middleware([
     'web',
-    InitializeTenancyByDomain::class,
-    PreventAccessFromCentralDomains::class,
+    OurInitializeTenancyByDomain::class,
+    OurPreventAccessFromCentralDomains::class,
 ])->group(function () {
     Route::get('/', function () {
         dd('kemo');
@@ -37,15 +39,15 @@ Route::group(['prefix' => config('sanctum.prefix', 'sanctum')], static function 
     Route::get('/csrf-cookie', [CsrfCookieController::class, 'show'])
         ->middleware([
             'web',
-            InitializeTenancyByDomain::class // Use tenancy initialization middleware of your choice
+            OurInitializeTenancyByDomain::class // Use tenancy initialization middleware of your choice
         ])->name('sanctum.csrf-cookie');
 });
 
 Route::middleware([
         'api',
         'auth:sanctum',
-        InitializeTenancyByDomain::class,
-        PreventAccessFromCentralDomains::class,
+        OurInitializeTenancyByDomain::class,
+        OurPreventAccessFromCentralDomains::class,
     ])->prefix('/api')
     ->group(function () {
         Route::get('/', function () {
@@ -59,8 +61,8 @@ Route::middleware([
     
     Route::middleware([
         'api',
-        InitializeTenancyByDomain::class,
-        PreventAccessFromCentralDomains::class,
+        OurInitializeTenancyByDomain::class,
+        OurPreventAccessFromCentralDomains::class,
     ])->group(function () {
         require __DIR__.'/api.php';
         Route::post('api/auth/tenant/signin', [AuthController::class, 'login']);

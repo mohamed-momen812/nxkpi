@@ -13,6 +13,7 @@ use App\Traits\ApiTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use Illuminate\Log\Logger;
 use Validator;
 
 class AuthController extends Controller
@@ -66,7 +67,10 @@ class AuthController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function logout() {
-        auth()->logout();
+        // logger(auth());
+
+        // auth()->logout();
+        auth()->user()->tokens()->delete();
         return $this->responseJson([] , $message = 'User successfully signed out');
 //        return response()->json(['message' => 'User successfully signed out']);
     }
