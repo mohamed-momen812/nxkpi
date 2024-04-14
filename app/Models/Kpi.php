@@ -65,9 +65,16 @@ class Kpi extends Model
         }
         // detect delemeter -> () : '/\((.*?)\)/'
         $new_equat = preg_replace_array( "/\#(.*?)\#/" , $targets , $v ) ;
-        $result = eval("return $new_equat;");
+        // $result = eval("return $new_equat;");
+        try {
+            $result = eval("return $new_equat;");
+            return $result;
+        } catch (\Throwable $e) {
+            // Handle any errors that occur during evaluation
+            return null;
+        }
 
-        return $result;
+        // return $result;
     }
 
     public function category()
