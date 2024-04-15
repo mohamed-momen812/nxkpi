@@ -1,8 +1,6 @@
 <?php
 
 
-// categories routes
-
 use App\Http\Controllers\Api\PlanFeatureController;
 use Illuminate\Support\Facades\Route;
 

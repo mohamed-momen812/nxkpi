@@ -34,7 +34,7 @@ Route::middleware([
 });
 
 
-    
+
 Route::group(['prefix' => config('sanctum.prefix', 'sanctum')], static function () {
     Route::get('/csrf-cookie', [CsrfCookieController::class, 'show'])
         ->middleware([
@@ -46,8 +46,9 @@ Route::group(['prefix' => config('sanctum.prefix', 'sanctum')], static function 
 Route::middleware([
         'api',
         'auth:sanctum',
-        OurInitializeTenancyByDomain::class,
         OurPreventAccessFromCentralDomains::class,
+        // OurInitializeTenancyByDomain::class,
+
     ])->prefix('/api')
     ->group(function () {
         Route::get('/', function () {
@@ -58,7 +59,7 @@ Route::middleware([
         require __DIR__.'/centralAndTenant.php';
     });
 
-    
+
     Route::middleware([
         'api',
         OurInitializeTenancyByDomain::class,
