@@ -24,12 +24,18 @@ class CategoryController extends Controller
 //        $categories = $this->categoryRepo->orderedAll();
         $user_id = tenant()->user->id;
         $categories = $this->categoryRepo->getCategoriesByUserId($user_id);
-        if ($categories)
-        {
-            return $this->responseJson(CategoryResource::collection($categories));
+
+        if (request()->has('name')) {
+            $name = strtolower(request()->input('name'));
+        
+            $categories = $categories->filter(function ($category) use ($name) {
+                
+                return strpos(strtolower($category->name), $name) !== false;
+            });
         }
 
-        return $this->responseJsonFailed();
+        return $this->responseJson(CategoryResource::collection($categories));
+        
     }
 
     /**

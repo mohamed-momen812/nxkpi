@@ -29,11 +29,11 @@ class KpiController extends Controller
         $kpis = auth()->user()->kpis ;
         
         if (request()->has('name')) {
-            $name = request()->input('name');
+            $name = strtolower(request()->input('name'));
         
             $kpis = $kpis->filter(function ($kpi) use ($name) {
                 
-                return strpos($kpi->name, $name) !== false;
+                return strpos(strtolower($kpi->name), $name) !== false;
             });
         }
 

@@ -36,6 +36,8 @@ class TenantService
                 '--tenants' => $tenant['id'],
                 '--class'   => ChartSeeder::class,
             ]);
+
+            \Artisan::call('storage:link');
         });
         $tenant->run(function () use ($tenant , $userData){
 
