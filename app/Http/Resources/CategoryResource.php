@@ -20,7 +20,7 @@ class CategoryResource extends JsonResource
             "name"          => $this->name ,
             "sort_order"    => $this->sort_order ,
             "kpis"          => KpiResource::collection($this->kpis),
-            "user"          => new UserResource($this->user) ,
+            // "user"          => new UserResource($this->user) ,
             "created_at"    => $this->created_at->format('d-m-y') ,
         ];
     }

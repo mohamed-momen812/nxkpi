@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Resources\KpiResource;
 use App\Http\Controllers\Controller;
 use App\Interfaces\KpiRepositoryInterface;
+use Illuminate\Support\Facades\Storage;
+
 class KpiController extends Controller
 {
     use ApiTrait;
@@ -25,12 +27,27 @@ class KpiController extends Controller
     public function index()
     {
         $kpis = auth()->user()->kpis ;
+        
+        if (request()->has('name')) {
+            $name = request()->input('name');
+        
+            $kpis = $kpis->filter(function ($kpi) use ($name) {
+                
+                return strpos($kpi->name, $name) !== false;
+            });
+        }
 
         if ( !$kpis->isEmpty() ){
             return $this->responseJson(KpiResource::collection($kpis),'kpis retrieved successfully');
         }
 
         return $this->responseJsonFailed("there's no kpis yet");
+    }
+
+    public function exportExcelExample()
+    {
+        $publicUrl = url('storage/kpis/KPIs-Import-Example.xlsx');
+        return $this->responseJson($publicUrl);
     }
 
     public function create()
@@ -113,6 +130,11 @@ class KpiController extends Controller
         return $this->responseJsonFailed();
     }
 
+    public function enableOrDisable(Kpi $kpi)
+    {
+        $this->kpiRepo->enableOrDisable($kpi);
+        return $this->responseJson(KpiResource::make($kpi));
+    }
     /**
      * Remove the specified resource from storage.
      *

@@ -15,6 +15,8 @@ Route::resource('kpis',\App\Http\Controllers\Api\KpiController::class);
 //Route::post('kpis' , [\App\Http\Controllers\Api\KpiController::class , 'store'])->middleware('can::create-kpis');
 Route::put('kpis/{id}' , [\App\Http\Controllers\Api\KpiController::class , 'update'])->middleware('can::edit-kpis');
 Route::get('kpis/{id}' , [\App\Http\Controllers\Api\KpiController::class , 'show'])->middleware('can::view-kpis');
+Route::put('kpis/enableOrDisable/{kpi}' , [\App\Http\Controllers\Api\KpiController::class , 'enableOrDisable']);
+Route::get('kpis/exportExcel/example', [\App\Http\Controllers\Api\KpiController::class, 'exportExcelExample']);
 
 Route::get('kpi/total-ratio/{kpi}' , [\App\Http\Controllers\Api\KpiController::class , 'totalRatio']);
 

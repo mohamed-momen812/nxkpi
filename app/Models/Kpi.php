@@ -9,15 +9,34 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-use Spatie\Translatable\HasTranslations;
-//use App\Traits\HasTranslations;
+// use Spatie\Translatable\HasTranslations;
+
 class Kpi extends Model
 {
-    use HasFactory, KpiTrait , HasTranslations;
+    use HasFactory, KpiTrait;
 
-    public $translatable = ['name' , 'description'];
-    protected $fillable = ['name' , 'description' , 'user_target' , 'sort_order' ,'format','direction','aggregated','target_calculated','icon','thresholds', 'equation' , 'user_id' , 'frequency_id' , 'category_id' , 'created_at' , 'updated_at'];
+    protected $fillable = [
+        'name', 
+        'description', 
+        'user_target', 
+        'sort_order',
+        'format',
+        'direction',
+        'aggregated',
+        'target_calculated',
+        'icon',
+        'thresholds', 
+        'equation', 
+        'user_id', 
+        'frequency_id', 
+        'category_id', 
+        'created_at', 
+        'updated_at',
+        'enable',
+        'working_weeks'
+    ];
 
+    protected $casts = ['working_weeks' => 'array'];
 //    protected $with =['frequency'];
 
     protected $appends = ['result_equation'];

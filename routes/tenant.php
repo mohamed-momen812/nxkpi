@@ -44,10 +44,10 @@ Route::group(['prefix' => config('sanctum.prefix', 'sanctum')], static function 
 });
 
 Route::middleware([
-        'api',
-        'auth:sanctum',
         OurPreventAccessFromCentralDomains::class,
-        // OurInitializeTenancyByDomain::class,
+        OurInitializeTenancyByDomain::class,
+        'api',
+        'auth:sanctum'
 
     ])->prefix('/api')
     ->group(function () {
@@ -57,6 +57,11 @@ Route::middleware([
         Route::get('/auth/user-profile', [\App\Http\Controllers\Api\AuthController::class, 'userProfile']);
         Route::post('/auth/logout', [\App\Http\Controllers\Api\AuthController::class, 'logout']);
         require __DIR__.'/centralAndTenant.php';
+        Route::get('runCommands', function(){
+            
+            \Artisan::call('storage:link');
+            return 'done';
+        });
     });
 
 

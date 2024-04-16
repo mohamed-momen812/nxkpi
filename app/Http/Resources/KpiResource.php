@@ -29,13 +29,15 @@ class KpiResource extends JsonResource
             'equation' => $this->equation,
             'equation_result' => $this->result_equation ,
             'thresholds' => $this->thresholds,
+            'enable' => $this->enable,
+            'working_weeks' => $this->working_weeks,
             'total_ratio' => $this->totalRatio(),
             "user" => new UserResource($this->user) ,
             "frequency" => new FrequencyResource($this->frequency) ,
 //            "category" => new CategoryResource($this->category) ,
             "created_at" => $this->created_at->format('d-m-y') ,
 //            'entries'   => EntryResource::collection($this->entries()->lastWeek()->get()),
-            'entries'   => EntryResource::collection($this->getEntries()),
+            'entries'   => $this->enable == 0 ? 'Disabled' : EntryResource::collection($this->getEntries()),
         ];
     }
 

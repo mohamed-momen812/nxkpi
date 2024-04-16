@@ -47,6 +47,9 @@ class KpiRequest extends FormRequest
             'format' => 'required',
 //            'direction' => 'nullable',
             'target_calculated' => 'required',
+            'enable' => 'boolean',
+            'working_weeks' => 'array',
+            'working_weeks.*' => 'in:"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"'
         ];
     }
 
@@ -68,6 +71,9 @@ class KpiRequest extends FormRequest
             'aggregated' => 'required',
             'direction' => 'nullable',
             'target_calculated' => 'required',
+            'enable' => 'boolean',
+            'working_weeks' => 'array',
+            'working_weeks.*' => 'in:"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"'
         ];
     }
 
