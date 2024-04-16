@@ -17,7 +17,7 @@ class FrequencySeeder extends Seeder
     {
         DB::table('frequencies')->delete();
         DB::table('frequencies')->insert(['name'=>'Daily']);
-        DB::table('frequencies')->insert(['name'=>'Weakly']);
+        DB::table('frequencies')->insert(['name'=>'Weekly']);
         DB::table('frequencies')->insert(['name'=>'Monthly']);
         DB::table('frequencies')->insert(['name'=>'Quarterly']);
         DB::table('frequencies')->insert(['name'=>'Yearly']);

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Imports\KpisImport;
 use App\Models\Kpi;
 use App\Traits\ApiTrait;
 use App\Models\Equation;
@@ -11,7 +12,10 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Resources\KpiResource;
 use App\Http\Controllers\Controller;
 use App\Interfaces\KpiRepositoryInterface;
+use App\Models\Frequency;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
 
 class KpiController extends Controller
 {
@@ -70,6 +74,37 @@ class KpiController extends Controller
         return $this->responseJsonFailed();
     }
 
+    public function importExcel(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|file|mimes:xlsx,xls',
+        ]);
+
+        $file = $request->file('file');
+        $rows = Excel::toArray(new KpisImport, $file);
+
+        $kpis = [];
+        for($i=1; $i < count($rows); $i++){
+            $kpiData = $this->prepareImporedKpi($rows[0][$i]);
+            $kpis[] = $this->kpiRepo->create($kpiData);
+        }
+
+        return $this->responseJson(KpiResource::collection($kpis));
+    }
+
+    private function prepareImporedKpi($row)
+    {
+        $kpiData = [];
+        $kpiData['name'] = $row[0];
+        $kpiData['description'] = $row[1];
+        $kpiData['category_id'] = 1;
+        $kpiData['format'] = $row[3];
+        $kpiData['frequency_id'] = Frequency::where('name' , $row[4])->first()->id;
+        $kpiData['direction'] = $row[5];
+        $kpiData['user_target'] = $row[6];
+
+        return $kpiData;
+    }
     /**
      * Display the specified resource.
      *

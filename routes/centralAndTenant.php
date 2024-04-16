@@ -17,6 +17,7 @@ Route::put('kpis/{id}' , [\App\Http\Controllers\Api\KpiController::class , 'upda
 Route::get('kpis/{id}' , [\App\Http\Controllers\Api\KpiController::class , 'show'])->middleware('can::view-kpis');
 Route::put('kpis/enableOrDisable/{kpi}' , [\App\Http\Controllers\Api\KpiController::class , 'enableOrDisable']);
 Route::get('kpis/exportExcel/example', [\App\Http\Controllers\Api\KpiController::class, 'exportExcelExample']);
+Route::post('kpi/importExcel', [\App\Http\Controllers\Api\KpiController::class, 'importExcel']);
 
 Route::get('kpi/total-ratio/{kpi}' , [\App\Http\Controllers\Api\KpiController::class , 'totalRatio']);
 
