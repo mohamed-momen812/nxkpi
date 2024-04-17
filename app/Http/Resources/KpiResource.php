@@ -32,9 +32,9 @@ class KpiResource extends JsonResource
             'enable' => $this->enable,
             'working_weeks' => $this->working_weeks,
             'total_ratio' => $this->totalRatio(),
-            "user" => new UserResource($this->user) ,
+            // "user" => new UserResource($this->user) ,
             "frequency" => new FrequencyResource($this->frequency) ,
-//            "category" => new CategoryResource($this->category) ,
+           "category" => new CategoryResource($this->category) ,
             "created_at" => $this->created_at->format('d-m-y') ,
 //            'entries'   => EntryResource::collection($this->entries()->lastWeek()->get()),
             'entries'   => $this->enable == 0 ? 'Disabled' : EntryResource::collection($this->getEntries()),
@@ -43,24 +43,32 @@ class KpiResource extends JsonResource
 
     public function getEntries()
     {
-        return $this->entries->filter(function ($item){
-            switch ($this->frequency->name){
-                case "Daily":
-                    return $item->entry_date >= now()->subWeek();
-                    break;
-                case "Weakly":
-                    return $item->entry_date >= now()->subWeek(6) ;
-                    break;
-                case "Monthly":
-                    return $item->entry_date >= now()->subMonth(6);
-                case "Quarterly":
-                    return $item->entry_date >= now()->subMonth(18);
-                case "Yearly":
-                    return  $item->entry_date >= now()->subYear(6);
-                default :
-                    return $item;
-            }
-        });
+        $entries = $this->entries;
+        if(request()->has('entry_date')){
+            $entries = $entries->filter(function ($item){
+                return $item->entry_date == request()->entry_date;
+            });
+        }
+
+        return $entries;
+        // return $this->entries->filter(function ($item){
+        //     switch ($this->frequency->name){
+        //         case "Daily":
+        //             return $item->entry_date >= now()->subWeek();
+        //             break;
+        //         case "Weakly":
+        //             return $item->entry_date >= now()->subWeek(6) ;
+        //             break;
+        //         case "Monthly":
+        //             return $item->entry_date >= now()->subMonth(6);
+        //         case "Quarterly":
+        //             return $item->entry_date >= now()->subMonth(18);
+        //         case "Yearly":
+        //             return  $item->entry_date >= now()->subYear(6);
+        //         default :
+        //             return $item;
+        //     }
+        // });
     }
 
 }

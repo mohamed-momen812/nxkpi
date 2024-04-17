@@ -31,7 +31,7 @@ class KpiController extends Controller
     public function index()
     {
         $kpis = auth()->user()->kpis ;
-        
+  
         if (request()->has('name')) {
             $name = strtolower(request()->input('name'));
         
@@ -86,7 +86,9 @@ class KpiController extends Controller
         $kpis = [];
         for($i=1; $i < count($rows); $i++){
             $kpiData = $this->prepareImporedKpi($rows[0][$i]);
-            $kpis[] = $this->kpiRepo->create($kpiData);
+            $kpi = $this->kpiRepo->create($kpiData);
+            auth()->user()->kpis()->attach($kpi->id);
+            $kpis[] = $kpi;
         }
 
         return $this->responseJson(KpiResource::collection($kpis));
@@ -193,6 +195,25 @@ class KpiController extends Controller
             return $this->responseJson($message="kpi deleted successfully");
         }
         return $this->responseJsonFailed();
+    }
+
+    public function deleteMany(Request $request)
+    {
+        $request->validate([
+            'kpi_ids' => 'required|array',
+            'kpi_ids.*' => 'exists:kpis,id',
+        ]);
+
+        $kpi_ids = $request->input('kpi_ids');
+        $kpis = auth()->user()->kpis ;
+        foreach($kpi_ids as $kpi_id){
+            if (!$kpis->contains($kpi_id)){
+                return $this->responseJsonFailed('Kpi ID ' . $kpi_id . ' Not Found');
+            }
+
+            $kpi = $this->kpiRepo->destroy($kpi_id);
+        }
+        return $this->responseJson("kpis deleted successfully");
     }
 
     public function setEquation(Kpi $kpi)

@@ -9,6 +9,9 @@ Route::resource('categories' , \App\Http\Controllers\Api\CategoryController::cla
 // entries routes
 Route::resource('entries',\App\Http\Controllers\Api\EntryController::class);
 Route::put('entries' , [\App\Http\Controllers\Api\EntryController::class,'update']);
+Route::get('entry/exportExcel', [\App\Http\Controllers\Api\EntryController::class, 'exportExcel']);
+Route::get('entries/exportExcel/example', [\App\Http\Controllers\Api\EntryController::class, 'exportExcelExample']);
+Route::post('entry/importExcel', [\App\Http\Controllers\Api\EntryController::class, 'importExcel']);
 
 // kpis routes
 Route::resource('kpis',\App\Http\Controllers\Api\KpiController::class);
@@ -18,6 +21,7 @@ Route::get('kpis/{id}' , [\App\Http\Controllers\Api\KpiController::class , 'show
 Route::put('kpis/enableOrDisable/{kpi}' , [\App\Http\Controllers\Api\KpiController::class , 'enableOrDisable']);
 Route::get('kpis/exportExcel/example', [\App\Http\Controllers\Api\KpiController::class, 'exportExcelExample']);
 Route::post('kpi/importExcel', [\App\Http\Controllers\Api\KpiController::class, 'importExcel']);
+Route::delete('kpi/delete-many' , [\App\Http\Controllers\Api\KpiController::class , 'deleteMany']);
 
 Route::get('kpi/total-ratio/{kpi}' , [\App\Http\Controllers\Api\KpiController::class , 'totalRatio']);
 

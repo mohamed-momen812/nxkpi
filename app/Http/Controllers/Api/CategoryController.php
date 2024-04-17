@@ -34,7 +34,7 @@ class CategoryController extends Controller
             });
         }
 
-        return $this->responseJson(CategoryResource::collection($categories));
+        return $this->responseJson($this->dataPaginate(CategoryResource::collection($categories)));
         
     }
 
