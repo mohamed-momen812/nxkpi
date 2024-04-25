@@ -18,8 +18,8 @@ class OurInitializeTenancyByDomain extends InitializeTenancyByDomain
     public function handle($request, Closure $next)
     {
         $parsedUrl = parse_url($request->header('origin'));
-        
-        $host = $parsedUrl['host'];
+        // dd($request->header());
+        $host = $parsedUrl['host'] ;
         return $this->initializeTenancy(
             $request, $next, $host 
         );

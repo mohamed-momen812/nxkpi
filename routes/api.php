@@ -17,6 +17,18 @@ use App\Http\Controllers\Api\PlanFeatureController;
 |
 */
 
+Route::get('test-cors', function (){
+    return response()->json([
+        'hello world'
+    ]);
+});
+
+Route::post('test-cors', function (Request $request){
+    return response()->json([
+        'hello world '. $request->name
+    ]);
+});
+
 Route::get('/lang/{lang}' , [\App\Http\Controllers\LangController::class , 'change']);
 
 Route::group( ['middleware' => 'api','prefix' => 'auth' , \Stancl\Tenancy\Middleware\InitializeTenancyByDomain::class,] , function ($router) {
