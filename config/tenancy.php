@@ -25,6 +25,7 @@ return [
         'localhost',
         'Kpi.test',
         'nxkpi.test',
+		'bk.qyasy.com'
     ],
 
     /**

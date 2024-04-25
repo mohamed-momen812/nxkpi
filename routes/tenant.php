@@ -47,7 +47,8 @@ Route::middleware([
         OurPreventAccessFromCentralDomains::class,
         OurInitializeTenancyByDomain::class,
         'api',
-        'auth:sanctum'
+        // 'cors',
+        'auth:sanctum',
 
     ])->prefix('/api')
     ->group(function () {

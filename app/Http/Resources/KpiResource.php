@@ -34,7 +34,7 @@ class KpiResource extends JsonResource
             'total_ratio' => $this->totalRatio(),
             // "user" => new UserResource($this->user) ,
             "frequency" => new FrequencyResource($this->frequency) ,
-           "category" => new CategoryResource($this->category) ,
+        //    "category" => new CategoryResource($this->category) ,
             "created_at" => $this->created_at->format('d-m-y') ,
 //            'entries'   => EntryResource::collection($this->entries()->lastWeek()->get()),
             'entries'   => $this->enable == 0 ? 'Disabled' : EntryResource::collection($this->getEntries()),
