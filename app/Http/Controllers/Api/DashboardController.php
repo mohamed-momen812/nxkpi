@@ -52,6 +52,13 @@ class DashboardController extends Controller
         return $this->responseJson(new DashboardResource($dashboard->load('charts')));
     }
 
+    public function share(Dashboard $dashboard)
+    {
+        $url = route('dashboards.show', $dashboard->id);
+
+        return $this->responseJson(['share_link' => $url]);
+    }
+
     public function update(DashboardRequest $request, $id)
     {
         $data = $request->validated();

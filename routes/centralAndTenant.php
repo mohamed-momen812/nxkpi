@@ -30,6 +30,9 @@ Route::apiResource('users' , \App\Http\Controllers\Api\UserController::class);
 
 // dashboard routes
 Route::apiResource('dashboards' , \App\Http\Controllers\Api\DashboardController::class);
+Route::get('dashboard/{dashboard}', [\App\Http\Controllers\Api\DashboardController::class, 'share'])->name('dashboard.share');
+
+
 Route::apiResource('charts' , \App\Http\Controllers\Api\ChartController::class);
 
 Route::apiResource('users' , \App\Http\Controllers\Api\UserController::class)->middleware('can:manage_users');;

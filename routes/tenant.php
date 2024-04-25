@@ -58,8 +58,8 @@ Route::middleware([
         Route::post('/auth/logout', [\App\Http\Controllers\Api\AuthController::class, 'logout']);
         require __DIR__.'/centralAndTenant.php';
         Route::get('runCommands', function(){
-            
-            \Artisan::call('storage:link');
+
+            \Artisan::call('migrate');
             return 'done';
         });
     });
