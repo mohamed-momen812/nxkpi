@@ -17,8 +17,8 @@ class KpiResource extends JsonResource
 //        dd($this->entries()->lastWeek()->get());
 //        return parent::toArray($request);
         return [
-            "id" => $this->id ,
-            "name" => $this->name ,
+            "id" => $this->id,
+            "name" => $this->name,
             "description" => $this->description,
             "user_target" => $this->user_target ,
             "sort_order" => $this->sort_order,

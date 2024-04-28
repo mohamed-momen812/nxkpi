@@ -4,11 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Rennokki\Plans\Traits\HasPlans;
 use Spatie\Translatable\HasTranslations;
 
 class Company extends Model
 {
-    use HasFactory;
+    use HasFactory, HasPlans;
 
     protected $fillable = [
         'name',

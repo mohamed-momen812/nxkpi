@@ -69,8 +69,10 @@ class ReportController extends Controller
         })->sortByDesc(function ($kpi) {
             return $kpi->totalRatio();
         });
-
-        return $this->responseJson(new KpiResource($sortedKpis->first()));
+        if($sortedKpis->first())
+            return $this->responseJson(new KpiResource($sortedKpis->first()));
+        
+        return $this->responseJson(null, 'Your selection has returned no results.');
     }
 
     public function userKpis()

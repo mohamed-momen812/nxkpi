@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Spatie\Permission\Models\Role;
 
 class SubscriptionRequest extends FormRequest
 {
@@ -13,7 +14,9 @@ class SubscriptionRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        $ownerRole = Role::where('name', 'owner')->first();
+        return auth()->user()->hasRole($ownerRole);
+
     }
 
     /**
