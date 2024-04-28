@@ -44,7 +44,7 @@ Route::get('frequencies' , [\App\Http\Controllers\Api\FrequencyController::class
 Route::apiResource('roles' , \App\Http\Controllers\Api\RoleController::class);
 Route::apiResource('permissions' , \App\Http\Controllers\Api\PermissionController::class);
 
-Route::group(['prefix' => 'Reports'] , function (){
+Route::group(['prefix' => 'reports'] , function (){
     Route::get('top_perform' , [\App\Http\Controllers\Api\ReportController::class , 'topPerform']);
     Route::get('worst_perform' , [\App\Http\Controllers\Api\ReportController::class , 'worstPerform']);
     Route::get('multiple_kpis' , [\App\Http\Controllers\Api\ReportController::class , 'multipliKpis']);
