@@ -36,7 +36,7 @@ class Kpi extends Model
         'working_weeks'
     ];
 
-    protected $casts = ['working_weeks' => 'array'];
+    protected $casts = ['working_weeks' => 'array', 'thresholds' => 'array'];
 //    protected $with =['frequency'];
 
     protected $appends = ['result_equation'];

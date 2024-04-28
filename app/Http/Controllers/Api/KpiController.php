@@ -11,6 +11,7 @@ use App\Http\Requests\KpiRequest;
 use Illuminate\Support\Facades\DB;
 use App\Http\Resources\KpiResource;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\EnableOrDisableManyKpisRequest;
 use App\Interfaces\KpiRepositoryInterface;
 use App\Models\Frequency;
 use Illuminate\Http\Request;
@@ -169,8 +170,19 @@ class KpiController extends Controller
 
     public function enableOrDisable(Kpi $kpi)
     {
-        $this->kpiRepo->enableOrDisable($kpi);
+        $this->kpiRepo->enableOrDisable($kpi, request()->enable);
         return $this->responseJson(KpiResource::make($kpi));
+    }
+
+    public function enableOrDisableMany(EnableOrDisableManyKpisRequest $request)
+    {
+        foreach($request->kpi_ids as $id){
+            $kpi = $this->kpiRepo->find($id);
+         
+            $this->kpiRepo->enableOrDisable($kpi, $request->enable);    
+        }
+        $kpis = auth()->user()->kpis ;
+        return $this->responseJson(KpiResource::collection($kpis));
     }
     /**
      * Remove the specified resource from storage.

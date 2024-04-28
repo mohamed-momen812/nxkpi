@@ -19,6 +19,7 @@ Route::resource('kpis',\App\Http\Controllers\Api\KpiController::class);
 Route::put('kpis/{id}' , [\App\Http\Controllers\Api\KpiController::class , 'update'])->middleware('can::edit-kpis');
 Route::get('kpis/{id}' , [\App\Http\Controllers\Api\KpiController::class , 'show'])->middleware('can::view-kpis');
 Route::put('kpis/enableOrDisable/{kpi}' , [\App\Http\Controllers\Api\KpiController::class , 'enableOrDisable']);
+Route::post('kpi/enableOrDisableMany' , [\App\Http\Controllers\Api\KpiController::class , 'enableOrDisableMany']);
 Route::get('kpis/exportExcel/example', [\App\Http\Controllers\Api\KpiController::class, 'exportExcelExample']);
 Route::post('kpi/importExcel', [\App\Http\Controllers\Api\KpiController::class, 'importExcel']);
 Route::delete('kpi/delete-many' , [\App\Http\Controllers\Api\KpiController::class , 'deleteMany']);

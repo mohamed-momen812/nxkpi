@@ -18,13 +18,13 @@ class KpiRepository extends BaseRepository implements KpiRepositoryInterface
         return $this->model->search( $request )->get();
     }
 
-    public function enableOrDisable(Kpi $kpi)
+    public function enableOrDisable(Kpi $kpi, $enable)
     {
-        if(request()->enable == 1){
+        if($enable == 1){
             return$kpi->update([
                 'enable' => 1
             ]);
-        }elseif(request()->enable == 0){
+        }elseif($enable == 0){
             return $kpi->update([
                 'enable' => 0
             ]);
