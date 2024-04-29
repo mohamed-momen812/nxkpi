@@ -42,7 +42,15 @@ class EntryController extends Controller
 
         if (request()->has('frequencyId') ) {
             $kpis = $kpis->filter(function ($kpi) {
-                return $kpi->frequency->id == request()->frequencyId;
+                return $kpi->frequency_id == request()->frequencyId;
+            });
+        }
+        if (request()->has('userId') ) {
+            
+        }
+        if (request()->has('categoryId') ) {
+            $kpis = $kpis->filter(function ($kpi) {
+                return $kpi->category_id == request()->categoryId;
             });
         }
 
@@ -56,7 +64,7 @@ class EntryController extends Controller
     public function exportExcel()
     {
         $entries = $this->getEntries();
-        
+
         $directory = 'app/'.auth()->id().'/entries/';
         Storage::makeDirectory($directory);
         $fileName = 'entries.xlsx';

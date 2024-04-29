@@ -16,21 +16,21 @@ class Kpi extends Model
     use HasFactory, KpiTrait;
 
     protected $fillable = [
-        'name', 
-        'description', 
-        'user_target', 
+        'name',
+        'description',
+        'user_target',
         'sort_order',
         'format',
         'direction',
         'aggregated',
         'target_calculated',
         'icon',
-        'thresholds', 
-        'equation', 
-        'user_id', 
-        'frequency_id', 
-        'category_id', 
-        'created_at', 
+        'thresholds',
+        'equation',
+        'user_id',
+        'frequency_id',
+        'category_id',
+        'created_at',
         'updated_at',
         'enable',
         'working_weeks'
@@ -113,7 +113,7 @@ class Kpi extends Model
 
     public function users()
     {
-        return $this->belongsToMany(User::class , 'kpi_user', 'kpi_id', 'user_id');
+        return $this->belongsToMany(User::class , 'kpi_user', 'user_id', 'kpi_id');
     }
 
     public function charts()

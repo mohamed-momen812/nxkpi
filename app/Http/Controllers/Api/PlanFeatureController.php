@@ -30,7 +30,7 @@ class PlanFeatureController extends Controller
     {
         $user = auth()->user();
         $company = $user->company()->first();
-      
+
         $plan = PlanModel::find( $request->plan_id );
 
         $startsOn = Carbon::now();
@@ -43,7 +43,7 @@ class PlanFeatureController extends Controller
             $isRecurring = true;
             $isPaid = true;
         }
-        
+
         // $subscription = $user->subscribeTo($plan, $duration, $isRecurring, $isPaid, $startsOn);
         $subscription = $company->subscribeTo($plan, $duration, $isRecurring, $isPaid, $startsOn);
         return $this->responseJson( new SubscriptionResource($subscription) );
@@ -51,8 +51,8 @@ class PlanFeatureController extends Controller
 
     public function cancelSubscription()
     {
-        $user = auth()->user();
-        $user->cancelCurrentSubscription();
+        $company = auth()->user()->company()->first();
+        $company->cancelCurrentSubscription();
         return $this->responseJson();
     }
 }
