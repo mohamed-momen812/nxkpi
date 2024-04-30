@@ -114,12 +114,14 @@ class UserController extends Controller
     public function changePreferedColor(Request $request)
     {
         $request->validate([
-            'color' => 'required|string',
+            'primary_color' => 'required|string',
+            'secondry_color' => 'required|string'
         ]);
 
         $user = auth()->user();
         $user->update([
-            'prefered_color' => $request->color
+            'primary_color' => $request->primary_color,
+            'secondry_color' => $request->secondry_color
         ]);
         return $this->responseJson(new UserResource($user), 'Prefered color changed successfully', 200);
     }
