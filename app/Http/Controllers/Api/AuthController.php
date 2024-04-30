@@ -130,6 +130,6 @@ class AuthController extends Controller
 
         $user->password = Hash::make($request->password);
         $user->save();
-        return $this->responseJson($user, 'Password changed successfully', 200);
+        return $this->responseJson(new UserResource($user), 'Password changed successfully', 200);
     }
 }

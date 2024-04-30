@@ -110,4 +110,17 @@ class UserController extends Controller
         $user = $this->userRepo->destroy($id);
         return $this->responseJson();
     }
+
+    public function changePreferedColor(Request $request)
+    {
+        $request->validate([
+            'color' => 'required|string',
+        ]);
+
+        $user = auth()->user();
+        $user->update([
+            'prefered_color' => $request->color
+        ]);
+        return $this->responseJson(new UserResource($user), 'Prefered color changed successfully', 200);
+    }
 }
