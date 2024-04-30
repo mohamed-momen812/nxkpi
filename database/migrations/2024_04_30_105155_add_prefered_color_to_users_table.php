@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->string('primary_color')->nullable()->after('type');
             $table->string('secondry_color')->nullable()->after('primary_color');
+            $table->string('text_color')->nullable()->after('secondry_color');
         });
     }
 
@@ -27,9 +28,9 @@ return new class extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            // $table->dropColumn('prefered_color');
             $table->dropColumn('primary_color');
             $table->dropColumn('secondry_color');
+            // $table->dropColumn('text_color');
         });
     }
 };

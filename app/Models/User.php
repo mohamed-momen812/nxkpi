@@ -28,6 +28,7 @@ class User extends Authenticatable implements JWTSubject
         'type',
         'primary_color',
         'secondry_color',
+        'text_color',
         'created_at',
         'updated_at'
     ];

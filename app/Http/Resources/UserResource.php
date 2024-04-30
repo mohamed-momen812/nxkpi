@@ -25,6 +25,7 @@ class  UserResource extends JsonResource
             "type"  => $this->type ,
             "primary_color" => $this->primary_color,
             "secondry_color" => $this->secondry_color,
+            "text_color" => $this->text_color,
             'roles' => $this->rolesWithPermissions->map(function ($role) {
                 return [
                     'name' => $role->name,
