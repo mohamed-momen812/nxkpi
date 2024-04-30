@@ -28,6 +28,7 @@ Route::get('kpi/total-ratio/{kpi}' , [\App\Http\Controllers\Api\KpiController::c
 
 // users routes
 Route::apiResource('users' , \App\Http\Controllers\Api\UserController::class);
+Route::put('user/change-password' , [\App\Http\Controllers\Api\AuthController::class , 'changePassword']);
 
 // dashboard routes
 Route::apiResource('dashboards' , \App\Http\Controllers\Api\DashboardController::class);

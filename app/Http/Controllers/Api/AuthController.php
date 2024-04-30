@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Log\Logger;
+use Illuminate\Support\Facades\Hash;
 use Validator;
 
 class AuthController extends Controller
@@ -113,5 +114,22 @@ class AuthController extends Controller
 //            'expires_in' => auth()->factory()->getTTL() * 60,
 //            'user' => auth()->user()
 //        ]);
+    }
+
+    public function changePassword(Request $request)
+    {
+        $request->validate([
+            'old_password' => 'required',
+            'new_password' => 'required|confirmed',
+        ]);
+        $user = Auth::user();
+
+        if (!Hash::check($request->old_password, $user->password)) {
+            return $this->responseJsonFailed('Old password does not match.', 401);
+        }
+
+        $user->password = Hash::make($request->password);
+        $user->save();
+        return $this->responseJson($user, 'Password changed successfully', 200);
     }
 }

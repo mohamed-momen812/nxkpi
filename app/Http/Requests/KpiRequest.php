@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Models\Kpi;
 use App\Rules\EquationKpisExist;
+use App\Rules\EquationValidate;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -41,7 +42,7 @@ class KpiRequest extends FormRequest
             'aggregated' => 'in:Sum,Average|required',
             'target_calculated' => 'boolean',
             'thresholds' => 'nullable|array',
-            'equation' => ['string' , new EquationKpisExist ],
+            'equation' => ['string', new EquationKpisExist, new EquationValidate],
             'frequency_id' => 'required',
             'category_id' => ['exists:categories,id'],
             'format' => 'required',

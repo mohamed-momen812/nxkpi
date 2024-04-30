@@ -67,7 +67,7 @@ class KpiController extends Controller
         $input['category_id'] = (isset($input['category_id'])) ? $input['category_id'] : 1 ;
 
         $kpi = $this->kpiRepo->create($input);
-        auth()->user()->kpis()->attach($kpi->id);
+        $kpi->users()->attach(auth()->user()->id);
         if ($kpi){
             $equation = ($request->equation) ? $this->setEquation($kpi) : null ;
             return $this->responseJson(KpiResource::make($kpi) , 'Kpi created successfully');
