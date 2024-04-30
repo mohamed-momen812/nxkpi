@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UpdateProfileRequest;
 use App\Http\Requests\UserRequest;
 use App\Http\Resources\UserResource;
 use App\Interfaces\UserRepositoryInterface;
@@ -11,6 +12,7 @@ use App\Traits\ApiTrait;
 use http\Message;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Spatie\Permission\Models\Permission;
 
 class UserController extends Controller
@@ -127,4 +129,26 @@ class UserController extends Controller
         ]);
         return $this->responseJson(new UserResource($user), 'Prefered color changed successfully', 200);
     }
+
+    public function updateProfile(UpdateProfileRequest $request)
+    {
+        $data = $request->validated();
+
+        $user = auth()->user();
+        if($request->hasFile('image')){
+            
+            $image = $request->file('image');
+            $imagePath = $request->file('image')->store('images/users', 'public');
+            $data['image'] = $imagePath;
+
+            $oldImagePath = $user->image;
+            if ($oldImagePath && Storage::disk('public')->exists($oldImagePath)) {
+                Storage::disk('public')->delete($oldImagePath);
+            }
+        }
+        $user = $this->userRepo->update($data , $user->id);
+
+        return $this->responseJson(new UserResource($user), 'Profile updated successfully', 200);
+    }
+
 }

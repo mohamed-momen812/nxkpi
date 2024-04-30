@@ -30,6 +30,7 @@ Route::get('kpi/total-ratio/{kpi}' , [\App\Http\Controllers\Api\KpiController::c
 Route::apiResource('users' , \App\Http\Controllers\Api\UserController::class);
 Route::put('user/change-password' , [\App\Http\Controllers\Api\AuthController::class , 'changePassword']);
 Route::put('user/change-prefered-color' , [\App\Http\Controllers\Api\UserController::class , 'changePreferedColor']);
+Route::put('user/update-profile' , [\App\Http\Controllers\Api\UserController::class , 'updateProfile']);
 
 // dashboard routes
 Route::apiResource('dashboards' , \App\Http\Controllers\Api\DashboardController::class);

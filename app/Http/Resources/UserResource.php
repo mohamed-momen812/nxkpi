@@ -20,13 +20,15 @@ class  UserResource extends JsonResource
             "first_name" => $this->first_name ,
             "last_name" => $this->last_name ,
             "email" => $this->email ,
+            "image" => $this->image ,
+            "preferred_language" => $this->preferred_language ,
             "company_domain" => $this->company_domain,
             // "company_url" => $this->company_domain . "." . config('tenancy.custom_domain'),
             "type"  => $this->type ,
             "primary_color" => $this->primary_color,
             "secondry_color" => $this->secondry_color,
             "text_color" => $this->text_color,
-            'roles' => $this->rolesWithPermissions->map(function ($role) {
+            'role' => $this->rolesWithPermissions->map(function ($role) {
                 return [
                     'name' => $role->name,
                     'permissions' => $role->permissions->pluck('name'),

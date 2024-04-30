@@ -19,7 +19,12 @@ class Company extends Model
         'country',
         'import_emails',
         'export_emails',
-        'site_url'
+        'site_url',
+        'invoices_email',
+        'invoice_address',
+        'default_frequency_id',
+        'start_finantial_year',
+        'start_of_week'
     ];
 
     public function user()
