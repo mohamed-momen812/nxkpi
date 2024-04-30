@@ -128,7 +128,7 @@ class AuthController extends Controller
             return $this->responseJsonFailed('Old password does not match.', 401);
         }
 
-        $user->password = Hash::make($request->password);
+        $user->password = Hash::make($request->new_password);
         $user->save();
         return $this->responseJson(new UserResource($user), 'Password changed successfully', 200);
     }
