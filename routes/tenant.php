@@ -60,7 +60,7 @@ Route::middleware([
         require __DIR__.'/centralAndTenant.php';
         Route::get('runCommands', function(){
 
-            \Artisan::call('migrate');
+            $result = \Artisan::call('migrate');
             return 'done';
         });
     });

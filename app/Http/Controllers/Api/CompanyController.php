@@ -9,6 +9,7 @@ use App\Models\Company;
 use App\Traits\ApiTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Storage;
 
 class CompanyController extends Controller
 {
@@ -82,13 +83,18 @@ class CompanyController extends Controller
         $data['user_id'] = auth()->id();
 
         if($request->hasFile('logo')){
-            $data['logo'] = $request->file('logo')->store('companyLogos');
-
+            $data['logo'] = $request->file('logo')->store('company/'. $company->id .'/logos');
+        
+            $oldImagePath = $company->logo;
+            if ($oldImagePath && Storage::disk('public')->exists($oldImagePath)) {
+                Storage::disk('public')->delete($oldImagePath);
+            }
 //            $file = $request->file('logo');
 //            $filename = $file->getClientOriginalName();
 //            $path = public_path().'/uploads/';
 //            return $file->move($path, $filename);
         }
+     
         $company->update($data);
         if ($request->site_url != null) {
             tenant()->domains()->update([ 'domain' => $request->site_url ]);

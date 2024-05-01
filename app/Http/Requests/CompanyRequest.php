@@ -29,12 +29,17 @@ class CompanyRequest extends FormRequest
         return [
             'name'          => 'string',
             'logo'          => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-//            'user_id'       => 'exists:users.id',
             'support_email' => 'required|email',
             'country'       => 'string',
             'import_emails' => 'array',
-            'export_emails' => 'array',
-            'site_url'      => 'string'
+            'import_emails.*' => 'email',
+            'invoices_email' => 'array',
+            'invoices_email.*' => 'email',
+            'invoice_address' => 'string',
+            'site_url'      => 'string',
+            'default_frequency_id' => 'exists:frequencies,id',
+            'start_finantial_year' => 'in:jan,feb,mar,apr,may,jun,jul,aug,sep,oct,nov,dec',
+            'start_of_week' => 'in:sun,mon,tue,wed,thu,fri,sat',
         ];
     }
 
@@ -42,19 +47,24 @@ class CompanyRequest extends FormRequest
         return [
             'name'          => 'string',
             'logo'          => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-//            'user_id'       => 'exists:users.id',
-            'support_email' => 'email',
+            'support_email' => 'required|email',
             'country'       => 'string',
             'import_emails' => 'array',
-            'export_emails' => 'array',
-            'site_url'      => 'string'
+            'import_emails.*' => 'email',
+            'invoices_email' => 'array',
+            'invoices_email.*' => 'email',
+            'invoice_address' => 'string',
+            'site_url'      => 'string',
+            'default_frequency_id' => 'exists:frequencies,id',
+            'start_finantial_year' => 'in:jan,feb,mar,apr,may,jun,jul,aug,sep,oct,nov,dec',
+            'start_of_week' => 'in:sun,mon,tue,wed,thu,fri,sat',
         ];
     }
 
     public function messages()
     {
         return [
-            'name.string'   => 'name is required',
+            
         ];
     }
 }
