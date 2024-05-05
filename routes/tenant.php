@@ -60,7 +60,7 @@ Route::middleware([
         require __DIR__.'/centralAndTenant.php';
         Route::get('runCommands', function(){
 
-            $result = \Artisan::call('storage:link');
+            $result = \Artisan::call('migrate');
             return 'done1';
         });
     });
@@ -73,4 +73,5 @@ Route::middleware([
     ])->group(function () {
         require __DIR__.'/api.php';
         Route::post('api/auth/tenant/signin', [AuthController::class, 'login']);
+
     });

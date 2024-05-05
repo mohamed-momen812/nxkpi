@@ -13,13 +13,15 @@ use App\Traits\ApiTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Traits\SubscriptionTrait;
 use Illuminate\Log\Logger;
 use Illuminate\Support\Facades\Hash;
+use Rennokki\Plans\Models\PlanModel;
 use Validator;
 
 class AuthController extends Controller
 {
-    use ApiTrait;
+    use ApiTrait, SubscriptionTrait;
     /**
      * Create a new AuthController instance.
      *
@@ -53,6 +55,13 @@ class AuthController extends Controller
     public function register(RegisterRequest $request , TenantService $tenantService) {
         $userData = array_merge( $request->validated(), ['password' => bcrypt($request->password) ] );
         $user = User::create($userData);
+        $company = Company::create([
+            "user_id" => $user->id ,
+            "support_email" => $user->email,
+            "country" => "United State",
+            "site_url" => $user->company_domain . "." . config('tenancy.custom_domain') ,
+        ]);
+        $subscription = $this->subscribeToPlan($company, PlanModel::find($request->plan_id), $request->plan_type);
         $user->assignRole( "Owner" );
         $tenant = Tenant::create(['user_id' => $user->id ]);
         $tenant->domains()->create(['domain' => $user->company_domain . "." . config('tenancy.custom_domain')]);

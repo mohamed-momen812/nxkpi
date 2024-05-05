@@ -32,18 +32,18 @@ class KpiController extends Controller
     public function index()
     {
         $kpis = auth()->user()->kpis ;
-  
+
         if (request()->has('name')) {
             $name = strtolower(request()->input('name'));
-        
+
             $kpis = $kpis->filter(function ($kpi) use ($name) {
-                
+
                 return strpos(strtolower($kpi->name), $name) !== false;
             });
         }
 
         if ( !$kpis->isEmpty() ){
-            return $this->responseJson(KpiResource::collection($kpis),'kpis retrieved successfully');
+            return $this->responseJson($this->dataPaginate(KpiResource::collection($kpis)),'kpis retrieved successfully');
         }
 
         return $this->responseJsonFailed("there's no kpis yet");
@@ -178,8 +178,8 @@ class KpiController extends Controller
     {
         foreach($request->kpi_ids as $id){
             $kpi = $this->kpiRepo->find($id);
-         
-            $this->kpiRepo->enableOrDisable($kpi, $request->enable);    
+
+            $this->kpiRepo->enableOrDisable($kpi, $request->enable);
         }
         $kpis = auth()->user()->kpis ;
         return $this->responseJson(KpiResource::collection($kpis));

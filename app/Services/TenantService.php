@@ -6,12 +6,17 @@ use App\Interfaces\CategoryRepositoryInterface;
 use App\Models\Company;
 use App\Models\Tenant;
 use App\Models\User;
+use App\Traits\SubscriptionTrait;
 use Database\Seeders\ChartSeeder;
 use Database\Seeders\FrequencySeeder;
+use Database\Seeders\PlanFeatureSeeder;
 use Database\Seeders\RoleAndPermissionSeeder;
+use Rennokki\Plans\Models\PlanModel;
 
 class TenantService
 {
+    use SubscriptionTrait;
+
     private $categoryRepo ;
     public function __construct(CategoryRepositoryInterface $categoryRepository) {
         $this->categoryRepo = $categoryRepository ;
@@ -37,6 +42,11 @@ class TenantService
                 '--class'   => ChartSeeder::class,
             ]);
 
+            //make_seed_for_PlanFeatureSeeder
+            \Artisan::call('tenants:seed', [
+                '--tenants' => $tenant['id'],
+                '--class'   => PlanFeatureSeeder::class,
+            ]);
             \Artisan::call('storage:link');
         });
         $tenant->run(function () use ($tenant , $userData){
@@ -55,6 +65,9 @@ class TenantService
                 "country" => "United State",
                 "site_url" => $user->company_domain . "." . config('tenancy.custom_domain') ,
             ]);
+
+            $subscriptionOnTenant = $this->subscribeToPlan($company, PlanModel::find(request()->plan_id), request()->plan_type);
+            
         });
 
     }

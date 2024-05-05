@@ -27,15 +27,26 @@ class CategoryController extends Controller
 
         if (request()->has('name')) {
             $name = strtolower(request()->input('name'));
-        
+
             $categories = $categories->filter(function ($category) use ($name) {
-                
+
                 return strpos(strtolower($category->name), $name) !== false;
             });
         }
 
+        if (request()->has('kpi_name')) {
+            $kpi_name = strtolower(request()->input('kpi_name'));
+
+            $categories = $categories->filter(function ($category) use ($kpi_name) {
+
+                return $category->kpis->filter(function ($kpi) use ($kpi_name) {
+                    return strpos(strtolower($kpi->name), $kpi_name) !== false;
+                })->isNotEmpty();
+            });
+        }
+
         return $this->responseJson($this->dataPaginate(CategoryResource::collection($categories)));
-        
+
     }
 
     /**

@@ -46,7 +46,4 @@ Route::get('test' , function (){
 Route::get('plans', [PlanFeatureController::class ,'index']);
 Route::get('plans/{id}', [PlanFeatureController::class ,'show']);
 
-Route::group( ['middleware'=> 'auth:sanctum','prefix'=> 'plans'], function ($router) {
-    Route::post('subscribe', [PlanFeatureController::class ,'subscribeToPlan']);
-    Route::post('cancel-subscription', [PlanFeatureController::class ,'cancelSubscription']);
-});
+

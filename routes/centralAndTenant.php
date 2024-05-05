@@ -55,3 +55,9 @@ Route::group(['prefix' => 'reports'] , function (){
     Route::get('user_kpis', [\App\Http\Controllers\Api\ReportController::class, 'userKpis']);
 });
 
+
+Route::group( ['middleware'=> 'auth:sanctum','prefix'=> 'plans'], function ($router) {
+    Route::post('upgradeSubscription', [PlanFeatureController::class ,'upgradeSubscription']);
+    Route::post('cancelSubscription', [PlanFeatureController::class ,'cancelSubscription']);
+});
+

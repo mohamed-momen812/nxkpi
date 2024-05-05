@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\SubscriptionRequest;
 use App\Http\Resources\PlanResource;
 use App\Http\Resources\SubscriptionResource;
+use App\Models\Company;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Rennokki\Plans\Models\PlanModel;
@@ -51,8 +52,10 @@ class PlanFeatureController extends Controller
 
     public function cancelSubscription()
     {
-        $company = auth()->user()->company()->first();
-        $company->cancelCurrentSubscription();
+        $company = Company::first();
+        dd($company->currentSubscription()->first());
+        $cancel = $company->cancelCurrentSubscription();
+        dd($cancel);
         return $this->responseJson();
     }
 }

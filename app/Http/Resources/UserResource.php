@@ -23,7 +23,7 @@ class  UserResource extends JsonResource
             "image" => $this->image ? url($this->image) : null ,
             "preferred_language" => $this->preferred_language ,
             "company_domain" => $this->company_domain,
-            // "company_url" => $this->company_domain . "." . config('tenancy.custom_domain'),
+            "company_url" => $this->company_domain . "." . config('tenancy.custom_domain'),
             "type"  => $this->type ,
             "primary_color" => $this->primary_color,
             "secondry_color" => $this->secondry_color,
