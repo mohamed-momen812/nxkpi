@@ -101,9 +101,7 @@ class KpiController extends Controller
             $kpis[] = $kpi;
         }
 
-        $user_id = tenant()->user->id;
-        $categories = $this->categoryRepo->getCategoriesByUserId($user_id);
-        return $this->responseJson($this->dataPaginate(CategoryResource::collection($categories)));
+        return $this->unifiedResponse();
         // return $this->responseJson(KpiResource::collection($kpis));
     }
 
@@ -186,7 +184,9 @@ class KpiController extends Controller
     public function enableOrDisable(Kpi $kpi)
     {
         $this->kpiRepo->enableOrDisable($kpi, request()->enable);
-        return $this->responseJson(KpiResource::make($kpi));
+
+        return $this->unifiedResponse();
+        // return $this->responseJson(KpiResource::make($kpi));
     }
 
     public function enableOrDisableMany(EnableOrDisableManyKpisRequest $request)
@@ -197,7 +197,8 @@ class KpiController extends Controller
             $this->kpiRepo->enableOrDisable($kpi, $request->enable);
         }
         $kpis = auth()->user()->kpis ;
-        return $this->responseJson(KpiResource::collection($kpis));
+        return $this->unifiedResponse();
+        // return $this->responseJson(KpiResource::collection($kpis));
     }
     /**
      * Remove the specified resource from storage.
@@ -219,9 +220,7 @@ class KpiController extends Controller
         $kpi = $this->kpiRepo->destroy($id);
 
         if ($kpi){
-            $user_id = tenant()->user->id;
-            $categories = $this->categoryRepo->getCategoriesByUserId($user_id);
-            return $this->responseJson($this->dataPaginate(CategoryResource::collection($categories)));
+            return $this->unifiedResponse();
             // return $this->responseJson($message="kpi deleted successfully");
         }
         return $this->responseJsonFailed();
@@ -243,7 +242,8 @@ class KpiController extends Controller
 
             $kpi = $this->kpiRepo->destroy($kpi_id);
         }
-        return $this->responseJson("kpis deleted successfully");
+        return $this->unifiedResponse();
+        // return $this->responseJson("kpis deleted successfully");
     }
 
     public function setEquation(Kpi $kpi)
@@ -285,6 +285,13 @@ class KpiController extends Controller
         $kpi = $this->kpiRepo->find($kpi_id);
 
         return $kpi->target();
+    }
+
+    public function unifiedResponse()
+    {
+        $user_id = tenant()->user->id;
+        $categories = $this->categoryRepo->getCategoriesByUserId($user_id);
+        return $this->responseJson($this->dataPaginate(CategoryResource::collection($categories)));
     }
 
 }

@@ -46,7 +46,9 @@ class EntryController extends Controller
             });
         }
         if (request()->has('userId') ) {
-            
+            $kpis = $kpis->filter(function ($kpi) {
+                return $kpi->user_id == request()->userId;
+            });
         }
         if (request()->has('categoryId') ) {
             $kpis = $kpis->filter(function ($kpi) {
