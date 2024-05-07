@@ -13,6 +13,7 @@ use App\Http\Resources\KpiResource;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\EnableOrDisableManyKpisRequest;
 use App\Interfaces\KpiRepositoryInterface;
+use App\Models\Category;
 use App\Models\Frequency;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -87,6 +88,7 @@ class KpiController extends Controller
         $kpis = [];
         for($i=1; $i < count($rows); $i++){
             $kpiData = $this->prepareImporedKpi($rows[0][$i]);
+           
             $kpi = $this->kpiRepo->create($kpiData);
             auth()->user()->kpis()->attach($kpi->id);
             $kpis[] = $kpi;
@@ -100,7 +102,7 @@ class KpiController extends Controller
         $kpiData = [];
         $kpiData['name'] = $row[0];
         $kpiData['description'] = $row[1];
-        $kpiData['category_id'] = 1;
+        $kpiData['category_id'] = Category::where('name', $row[2])->first()->id;
         $kpiData['format'] = $row[3];
         $kpiData['frequency_id'] = Frequency::where('name' , $row[4])->first()->id;
         $kpiData['direction'] = $row[5];
