@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Resources\CategoryResource;
 use App\Imports\KpisImport;
 use App\Models\Kpi;
 use App\Traits\ApiTrait;
@@ -12,6 +13,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Resources\KpiResource;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\EnableOrDisableManyKpisRequest;
+use App\Interfaces\CategoryRepositoryInterface;
 use App\Interfaces\KpiRepositoryInterface;
 use App\Models\Category;
 use App\Models\Frequency;
@@ -24,10 +26,12 @@ class KpiController extends Controller
     use ApiTrait;
 
     private $kpiRepo;
+    private $categoryRepo;
 
-    public function __construct(KpiRepositoryInterface $kpiRepoInterface)
+    public function __construct(KpiRepositoryInterface $kpiRepoInterface, CategoryRepositoryInterface $categoryRepositoryInterface)
     {
         $this->kpiRepo = $kpiRepoInterface ;
+        $this->categoryRepo = $categoryRepositoryInterface;
     }
 
     public function index()
@@ -71,7 +75,10 @@ class KpiController extends Controller
         $kpi->users()->attach(auth()->user()->id);
         if ($kpi){
             $equation = ($request->equation) ? $this->setEquation($kpi) : null ;
-            return $this->responseJson(KpiResource::make($kpi) , 'Kpi created successfully');
+            $user_id = tenant()->user->id;
+            $categories = $this->categoryRepo->getCategoriesByUserId($user_id);
+            return $this->responseJson($this->dataPaginate(CategoryResource::collection($categories)));
+            // return $this->responseJson(KpiResource::make($kpi) , 'Kpi created successfully');
         }
         return $this->responseJsonFailed();
     }
@@ -94,7 +101,10 @@ class KpiController extends Controller
             $kpis[] = $kpi;
         }
 
-        return $this->responseJson(KpiResource::collection($kpis));
+        $user_id = tenant()->user->id;
+        $categories = $this->categoryRepo->getCategoriesByUserId($user_id);
+        return $this->responseJson($this->dataPaginate(CategoryResource::collection($categories)));
+        // return $this->responseJson(KpiResource::collection($kpis));
     }
 
     private function prepareImporedKpi($row)
@@ -165,7 +175,10 @@ class KpiController extends Controller
         $kpi = $this->kpiRepo->update($input,$id);
 
         if ($kpi){
-            return $this->responseJson(KpiResource::make($kpi) , 'Kpi updated successfully');
+            $user_id = tenant()->user->id;
+            $categories = $this->categoryRepo->getCategoriesByUserId($user_id);
+            return $this->responseJson($this->dataPaginate(CategoryResource::collection($categories)));
+            // return $this->responseJson(KpiResource::make($kpi) , 'Kpi updated successfully');
         }
         return $this->responseJsonFailed();
     }
@@ -206,7 +219,10 @@ class KpiController extends Controller
         $kpi = $this->kpiRepo->destroy($id);
 
         if ($kpi){
-            return $this->responseJson($message="kpi deleted successfully");
+            $user_id = tenant()->user->id;
+            $categories = $this->categoryRepo->getCategoriesByUserId($user_id);
+            return $this->responseJson($this->dataPaginate(CategoryResource::collection($categories)));
+            // return $this->responseJson($message="kpi deleted successfully");
         }
         return $this->responseJsonFailed();
     }

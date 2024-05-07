@@ -48,7 +48,7 @@ trait ApiTrait
         $page = request()->page ?? 1;
         $perPage = request()->perPage ?? 10;
         if($perPage < 0){
-            return $data;
+            return ['data' => $data];
         }
         $paginatedData = new LengthAwarePaginator(
             $data->forPage($page, $perPage)->values(),

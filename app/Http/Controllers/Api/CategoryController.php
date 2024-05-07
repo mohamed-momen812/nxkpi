@@ -29,21 +29,19 @@ class CategoryController extends Controller
             $name = strtolower(request()->input('name'));
 
             $categories = $categories->filter(function ($category) use ($name) {
-
-                return strpos(strtolower($category->name), $name) !== false;
-            });
-        }
-
-        if (request()->has('kpi_name')) {
-            $kpi_name = strtolower(request()->input('kpi_name'));
-
-            $categories = $categories->filter(function ($category) use ($kpi_name) {
-
-                return $category->kpis->filter(function ($kpi) use ($kpi_name) {
-                    return strpos(strtolower($kpi->name), $kpi_name) !== false;
+                // Check if category name matches the provided name
+                $nameMatch = strpos(strtolower($category->name), $name) !== false;
+        
+                // Check if any of the KPIs in the category match the provided name
+                $kpiMatch = $category->kpis->filter(function ($kpi) use ($name) {
+                    return strpos(strtolower($kpi->name), $name) !== false;
                 })->isNotEmpty();
+        
+                // Return true if either category name or any KPI name matches the provided name
+                return $nameMatch || $kpiMatch;
             });
         }
+
 
         return $this->responseJson($this->dataPaginate(CategoryResource::collection($categories)));
 
@@ -120,7 +118,10 @@ class CategoryController extends Controller
         $category = $this->categoryRepo->update($input , $id);
 
         if ($category){
-            return $this->responseJson(CategoryResource::make($category),'category updated successfully');
+            $user_id = tenant()->user->id;
+            $categories = $this->categoryRepo->getCategoriesByUserId($user_id);
+            return $this->responseJson($this->dataPaginate(CategoryResource::collection($categories)));
+            // return $this->responseJson(CategoryResource::make($category),'category updated successfully');
         }
 
         return $this->responseJsonFailed();
@@ -137,7 +138,10 @@ class CategoryController extends Controller
         $category = $this->categoryRepo->destroy($id);
 
         if ($category){
-            return $this->responseJson('category deleted successfully');
+            $user_id = tenant()->user->id;
+            $categories = $this->categoryRepo->getCategoriesByUserId($user_id);
+            return $this->responseJson($this->dataPaginate(CategoryResource::collection($categories)));
+            // return $this->responseJson('category deleted successfully');
         }
 
         return $this->responseJsonFailed('category not found');
