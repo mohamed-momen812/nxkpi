@@ -56,8 +56,9 @@ Route::group(['prefix' => 'reports'] , function (){
 });
 
 
-Route::group( ['middleware'=> 'auth:sanctum','prefix'=> 'plans'], function ($router) {
-    Route::post('upgradeSubscription', [PlanFeatureController::class ,'upgradeSubscription']);
-    Route::post('cancelSubscription', [PlanFeatureController::class ,'cancelSubscription']);
+Route::group( ['middleware'=> 'auth:sanctum','prefix'=> 'plan'], function ($router) {
+    Route::post('upgrade', [PlanFeatureController::class ,'upgradeSubscription']);
+    Route::post('cancel', [PlanFeatureController::class ,'cancelSubscription']);
+    Route::get('current', [PlanFeatureController::class ,'getCurrent']);
 });
 

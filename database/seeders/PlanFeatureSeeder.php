@@ -19,6 +19,7 @@ class PlanFeatureSeeder extends Seeder
         DB::table('plans_usages')->delete();
         
         $freeTrail = $this->createPlan([
+            'id'    => 1,
             'name' => 'Free Trail',
             'code' => 'free_trail',
             'tag' => 'ft',
@@ -29,6 +30,7 @@ class PlanFeatureSeeder extends Seeder
         ]);
 
         $beginnerPlan = $this->createPlan([
+            'id' => 2,
             'name' => 'Beginner',
             'code' => 'beginner_plan',
             'tag' => 'sp',
@@ -39,6 +41,7 @@ class PlanFeatureSeeder extends Seeder
         ]);
 
         $intermediatePlan = $this->createPlan([
+            'id' => 3,
             'name' => 'Itermediate',
             'code' => 'itermediate_plan',
             'tag' => 'gp',
@@ -49,6 +52,7 @@ class PlanFeatureSeeder extends Seeder
         ]);
 
         $enterprisePlan = $this->createPlan([
+            'id' => 4,
             'name' => 'Enterprise',
             'code' => 'enterprise_plan',
             'tag' => 'up',

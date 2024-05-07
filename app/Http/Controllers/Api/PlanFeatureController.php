@@ -52,10 +52,46 @@ class PlanFeatureController extends Controller
 
     public function cancelSubscription()
     {
-        $company = Company::first();
-        dd($company->currentSubscription()->first());
+        $user = auth()->user();
+        $company = $user->company()->first();
+        
         $cancel = $company->cancelCurrentSubscription();
-        dd($cancel);
-        return $this->responseJson();
+        if($cancel){
+            return $this->responseJson();
+        }
+        return $this->responseJsonFailed();
     }
+
+    public function getCurrent()
+    {
+        $user = auth()->user();
+        $company = $user->company()->first();
+        
+        $checkSubscription = $company->hasActiveSubscription();
+        if($checkSubscription){
+            $subscription = $company->activeSubscription();
+            return $this->responseJson( new SubscriptionResource($subscription) );
+        }
+        
+        return $this->responseJsonFailed('No Active Subscription');
+    }
+
+    public function upgradeSubscription(Request $request)
+    {
+        $request->validate([
+            'plan_id' => 'required|exists:plans,id',
+            'start_now' => 'boolean',
+            'plan_type' => 'in:yearly,monthly',
+        ]);
+
+        $user = auth()->user();
+        $company = $user->company()->first();
+        $newPlan = PlanModel::find( $request->plan_id );
+        $paln_type = $request->plan_type == 'yearly' ? 365 : 30;
+
+        $newSubscription = $company->upgradeCurrentPlanTo($newPlan, $paln_type, $request->start_now);
+        
+        return $this->responseJson( new SubscriptionResource($newSubscription) );
+    }
+    
 }
