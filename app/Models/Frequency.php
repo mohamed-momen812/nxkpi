@@ -9,7 +9,7 @@ class Frequency extends Model
 {
     use HasFactory;
 
-    protected $fillable =[ 'name', 'created_at', 'updated_at'];
+    protected $fillable =[ 'name', 'type', 'created_at', 'updated_at'];
 
     public function kpis()
     {

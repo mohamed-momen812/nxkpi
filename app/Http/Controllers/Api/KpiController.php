@@ -51,7 +51,7 @@ class KpiController extends Controller
             return $this->responseJson($this->dataPaginate(KpiResource::collection($kpis)),'kpis retrieved successfully');
         }
 
-        return $this->responseJsonFailed("there's no kpis yet");
+        return $this->responseJson("there's no kpis yet");
     }
 
     public function exportExcelExample()

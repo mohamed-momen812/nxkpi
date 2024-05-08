@@ -18,6 +18,7 @@ class FrequencyResource extends JsonResource
         return [
             "id" => $this->id ,
             "name" => $this->name ,
+            "type" => $this->type ,
             "created_at" => $this->created_at ,
         ];
     }
