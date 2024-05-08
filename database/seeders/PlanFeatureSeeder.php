@@ -26,7 +26,7 @@ class PlanFeatureSeeder extends Seeder
             'description' => 'The free trail plan for 7 days with beginner features.',
             'price' => 0,
             'currency' => 'SAR',
-            'duration' => 7, // in days
+            'duration' => 14, // in days
         ]);
 
         $beginnerPlan = $this->createPlan([
