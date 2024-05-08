@@ -93,5 +93,21 @@ class PlanFeatureController extends Controller
         
         return $this->responseJson( new SubscriptionResource($newSubscription) );
     }
+
+    public function getAvailable()
+    {
+        $user = auth()->user();
+        $company = $user->company()->first();
+     
+        $checkSubscription = $company->hasActiveSubscription();
+        if($checkSubscription){
+            $subscription = $company->activeSubscription();
+            $availablePlans = PlanModel::where('price', '>', $subscription->price)->get();
+        }else{
+            $availablePlans = PlanModel::where('price', '>', 0)->get();
+        }
+
+        return $this->responseJson( PlanResource::collection($availablePlans) );
+    }
     
 }

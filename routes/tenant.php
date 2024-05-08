@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Middleware\OurInitializeTenancyByDomain;
 use App\Http\Middleware\OurPreventAccessFromCentralDomains;
+use Database\Seeders\PlanFeatureSeeder;
 use Illuminate\Support\Facades\Route;
 use Laravel\Sanctum\Http\Controllers\CsrfCookieController;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
@@ -60,6 +61,11 @@ Route::middleware([
         require __DIR__.'/centralAndTenant.php';
         Route::get('runCommands', function(){
 
+            // \Artisan::call('tenants:seed', [
+            //     '--tenants' => $tenant['id'],
+            //     '--class'   => PlanFeatureSeeder::class,
+            // ]);
+            
             $result = \Artisan::call('migrate');
             return 'done1';
         });

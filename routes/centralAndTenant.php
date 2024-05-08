@@ -60,5 +60,6 @@ Route::group( ['middleware'=> 'auth:sanctum','prefix'=> 'plan'], function ($rout
     Route::post('upgrade', [PlanFeatureController::class ,'upgradeSubscription']);
     Route::post('cancel', [PlanFeatureController::class ,'cancelSubscription']);
     Route::get('current', [PlanFeatureController::class ,'getCurrent']);
+    Route::get('available', [PlanFeatureController::class ,'getAvailable']);
 });
 
