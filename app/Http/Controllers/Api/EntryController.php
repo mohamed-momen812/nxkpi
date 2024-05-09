@@ -60,7 +60,7 @@ class EntryController extends Controller
             return $this->responseJson(KpiResource::collection($kpis),'kpis retrieved successfully');
         }
 
-        return $this->responseJsonFailed("there's no kpis yet");
+        return $this->responseJson([], "there's no kpis yet");
     }
 
     public function exportExcel()
@@ -153,7 +153,7 @@ class EntryController extends Controller
     {
         $entry = $this->entryRepo->find($id);
 
-        if ($entry == null) return $this->responseJsonFailed("Entry Not Found" );
+        if ($entry == null) return $this->responseJson([], "Entry Not Found" );
 
         $entry = $this->entryRepo->find($id);
         return $this->responseJson( EntryResource::make($entry) );
