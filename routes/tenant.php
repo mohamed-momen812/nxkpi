@@ -65,7 +65,7 @@ Route::middleware([
             //     '--tenants' => $tenant['id'],
             //     '--class'   => PlanFeatureSeeder::class,
             // ]);
-            
+
             $result = \Artisan::call('migrate');
             return 'done1';
         });

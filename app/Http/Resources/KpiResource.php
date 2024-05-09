@@ -2,6 +2,9 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Entry;
+use Carbon\Carbon;
+use Carbon\CarbonPeriod;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class KpiResource extends JsonResource
@@ -44,32 +47,119 @@ class KpiResource extends JsonResource
 
     public function getEntries()
     {
-        $entries = $this->entries;
-
         if(request()->has('entry_date')){
-            $entries = $entries->filter(function ($item){
-                return $item->entry_date == request()->entry_date;
-            });
-        }
-        // return $entries;
-        return $this->entries->filter(function ($item){
+            $entry_date = Carbon::createFromFormat('Y-m-d', request()->input('entry_date'));
+
+            $dates = [];
+
             switch ($this->frequency->name){
                 case "Daily":
-                    return $item->entry_date >= now()->subWeek();
+                    // $period = CarbonPeriod::create('2018-06-14', '2018-06-20');
+
+                    // // Iterate over the period
+                    // foreach ($period as $date) {
+                    //     echo $date->format('Y-m-d');
+                    // }
+
+                    // // Convert the period to an array of dates
+                    // $dates = $period->toArray();
+                    $from = $entry_date->copy()->subWeek();
+                    $to = $entry_date->copy();
+
+                    while ($from->lte($to)) {
+                        $dates[] = $from->copy();
+
+                        $from->addDay();
+                    }
+
                     break;
+                    // if($this->id == 2)dd($dates);
                 case "Weakly":
-                    return $item->entry_date >= now()->subWeek(6) ;
+                    $scope = ['from' => $entry_date, 'to'=> $entry_date->subWeek(6)];
+
+                    $currentDate = $scope['from']->copy()->startOfWeek();
+
+                    while ($currentDate->lte($scope['to'])) {
+                        $dates[] = $currentDate->copy();
+                        $currentDate->addWeek();
+                    }
                     break;
                 case "Monthly":
-                    return $item->entry_date >= now()->subMonth(6);
+                    $scope = ['from' => $entry_date, 'to'=> $entry_date->subMonth(6)];
+
+                    $currentDate = $scope['to']->copy()->startOfMonth();
+
+                    for ($i = 0; $i < 7; $i++) {
+                        $dates[] = $currentDate->copy();
+                        $currentDate->subMonth();
+                    }
                 case "Quarterly":
-                    return $item->entry_date >= now()->subMonth(18);
+                    $scope = ['from' => $entry_date, 'to'=> $entry_date->subMonth(18)];
+
+                    $currentDate = $scope['to']->copy()->startOfMonth();
+
+                    for ($i = 0; $i < 6; $i++) {
+                        $dates[] = $currentDate->copy()->startOfQuarter();
+                        $currentDate->subMonths(3);
+                    }
                 case "Yearly":
-                    return  $item->entry_date >= now()->subYear(6);
-                default :
-                    return $item;
+                    $scope = ['from' => $entry_date, 'to'=> $entry_date->subYear(6)];
+
+                    $currentDate = $scope['to']->copy()->startOfYear();
+
+                    for ($i = 0; $i < 6; $i++) {
+                        $dates[] = $currentDate->copy()->startOfYear();
+                        $currentDate->subYear();
+                    }
             }
-        });
+
+            $entries = [];
+
+            foreach($dates as $date){
+                // if($this->id == 2) dd($this->entries()->first()->entry_date);
+                $entry = Entry::where('kpi_id', $this->id)->where('entry_date', $date->format('y-m-d'))->first();
+
+                // dd($date->format('y-m-d'));
+                //     dd($entry->entry_date == $date->format('y-m-d'));
+                if($entry){
+                    $entries[] = $entry;
+                }else{
+                    $emptyEntry = new Entry();
+                    $emptyEntry->kpi_id = $this->id;
+                    $emptyEntry->entry_date = $date;
+                    $emptyEntry->target = $this->user_target ?? null;
+
+                    $entries[] = $emptyEntry;
+                }
+            }
+            return $entries;
+        }
+        // $entries = $this->entries;
+
+        // if(request()->has('entry_date')){
+        //     $entries = $entries->filter(function ($item){
+        //         return $item->entry_date == request()->entry_date;
+        //     });
+        // }
+        // // return $entries;
+        // return $this->entries->filter(function ($item){
+        //     switch ($this->frequency->name){
+        //         case "Daily":
+        //             return $item->entry_date >= now()->subWeek();
+        //             break;
+        //         case "Weakly":
+        //             return $item->entry_date >= now()->subWeek(6) ;
+        //             break;
+        //         case "Monthly":
+        //             return $item->entry_date >= now()->subMonth(6);
+        //         case "Quarterly":
+        //             return $item->entry_date >= now()->subMonth(18);
+        //         case "Yearly":
+        //             return  $item->entry_date >= now()->subYear(6);
+        //         default :
+        //             return $item;
+        //     }
+        // });
     }
 
 }

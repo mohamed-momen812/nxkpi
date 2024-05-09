@@ -37,7 +37,8 @@ class EntryRequest extends FormRequest
             "entries.*.id" => 'required|numeric',
             'entries.*.date' => 'date|before_or_equal:now',
             'entries.*.actual' => 'numeric|max:9999999.99|min:00.01',
-            'kpi_id' => 'required|numeric',
+            'entries.*.user_target' => 'numeric','max:9999999.99','min:0.01' , 'nullable',
+            'kpi_id' => 'required|exists:kpis,id',
             'notes' => 'string'
         ];
     }

@@ -17,6 +17,10 @@ class Entry extends Model
 
     protected $appends = ["range_date"];
 
+    // public function setEntryDateAttribute($value){
+    //     return $value;
+    //     // return Carbon::createFromFormat('Y-m-d' , $value);
+    // }
     public function user(){
         return $this->belongsTo(User::class , 'user_id');
     }

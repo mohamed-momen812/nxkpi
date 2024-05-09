@@ -33,7 +33,7 @@ class EntryResource extends JsonResource
             "quarter" => $this->quarter,
             "year" => $this->year ,
             "range_date" => $this->range_date ,
-            "created_at" => $this->created_at->format('d-m-y'),
+            "created_at" => $this->created_at?->format('d-m-y'),
 //            "user" => new UserResource($this->user),
 //            "kpi" => new KpiResource($this->kpi) ,
         ];
