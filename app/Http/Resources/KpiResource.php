@@ -84,23 +84,25 @@ class KpiResource extends JsonResource
                     }
                     break;
                 case "Quarterly":
-                    $scope = ['from' => $entry_date, 'to'=> $entry_date->subMonth(18)];
+                    $from = $entry_date->copy()->subMonth(15); // 5 past quarters
+                    $to = $entry_date->copy();
 
-                    $currentDate = $scope['to']->copy()->startOfMonth();
+                    while ($from->lte($to)) {
+                        $dates[] = $from->copy();
 
-                    for ($i = 0; $i < 6; $i++) {
-                        $dates[] = $currentDate->copy()->startOfQuarter();
-                        $currentDate->subMonths(3);
+                        $from->addMonths(3);
                     }
+                    break;
                 case "Yearly":
-                    $scope = ['from' => $entry_date, 'to'=> $entry_date->subYear(6)];
+                    $from = $entry_date->copy()->subYear(6);
+                    $to = $entry_date->copy();
 
-                    $currentDate = $scope['to']->copy()->startOfYear();
+                    while ($from->lte($to)) {
+                        $dates[] = $from->copy();
 
-                    for ($i = 0; $i < 6; $i++) {
-                        $dates[] = $currentDate->copy()->startOfYear();
-                        $currentDate->subYear();
+                        $from->addYear();
                     }
+                    break;
             }
 
             $entries = [];
@@ -110,11 +112,17 @@ class KpiResource extends JsonResource
                 $entry = Entry::where('kpi_id', $this->id)->where('entry_date', $date->format('y-m-d'))->first();
                 if($this->frequency->name == "Weekly"){
                     $weekNo = $date->weekOfYear;
-                    info($weekNo);
                     $entry = Entry::where('kpi_id', $this->id)->where('weekNo', $weekNo)->first();
                 }elseif($this->frequency->name == "Monthly"){
                     $month = $date->month;
                     $entry = Entry::where('kpi_id', $this->id)->where('month', $month)->first();
+                }elseif($this->frequency->name == "Quarterly"){
+                    $year = $date->year;
+                    $quarter = $date->quarter;
+                    $entry = Entry::where('kpi_id', $this->id)->where('year', $year)->where('quarter', $quarter)->first();
+                }elseif($this->frequency->name == "Yearly"){
+                    $year = $date->year;
+                    $entry = Entry::where('kpi_id', $this->id)->where('year', $year)->first();
                 }
                 // dd($date->format('y-m-d'));
                 //     dd($entry->entry_date == $date->format('y-m-d'));

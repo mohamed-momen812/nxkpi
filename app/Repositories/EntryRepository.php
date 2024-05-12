@@ -56,6 +56,24 @@ class EntryRepository extends BaseRepository implements EntryRepositoryInterface
                 $entry = $this->create($data);
             }
             return $entry;
+        }elseif($kpi->frequency->id == 4){ // check if kpi frequency is monthly
+            // check if entry already exist by month
+            $entry = $this->model->where('kpi_id' , $kpi->id)->where('quarter', $data['quarter'])->first();
+            if($entry){
+                $this->update($data , $entry->id);
+            }else{
+                $entry = $this->create($data);
+            }
+            return $entry;
+        }elseif($kpi->frequency->id == 5){ // check if kpi frequency is monthly
+            // check if entry already exist by month
+            $entry = $this->model->where('kpi_id' , $kpi->id)->where('year', $data['year'])->first();
+            if($entry){
+                $this->update($data , $entry->id);
+            }else{
+                $entry = $this->create($data);
+            }
+            return $entry;
         }
     }
 }

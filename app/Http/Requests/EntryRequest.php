@@ -25,9 +25,10 @@ class EntryRequest extends FormRequest
         return [
             'entries' => 'required|array',
             'entries.*.date' => 'date|before_or_equal:now',
+            'entries.*.notes' => 'string',
             'entries.*.actual' => 'numeric|max:9999999.99|min:00.01',
             'kpi_id' => 'required|numeric',
-            'notes' => 'string'
+            // 'notes' => 'string'
         ];
     }
 

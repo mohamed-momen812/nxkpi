@@ -133,6 +133,9 @@ class EntryController extends Controller
             $preparedData = $this->prepareData($entry);
             if(isset($entry['user_target']) &&  $entry['user_target'] != null)
                 $input['target'] = $entry['user_target'];
+
+            if(isset($entry['notes']) && $entry['notes'] != null)
+                $input['notes'] = $entry['notes'];
             // dd($input, $preparedData);
             $input = array_merge($input , $preparedData );
 
