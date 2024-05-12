@@ -5,7 +5,9 @@ declare(strict_types=1);
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Middleware\OurInitializeTenancyByDomain;
 use App\Http\Middleware\OurPreventAccessFromCentralDomains;
+use Database\Seeders\FrequencySeeder;
 use Database\Seeders\PlanFeatureSeeder;
+use Database\Seeders\RoleAndPermissionSeeder;
 use Illuminate\Support\Facades\Route;
 use Laravel\Sanctum\Http\Controllers\CsrfCookieController;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
@@ -66,7 +68,7 @@ Route::middleware([
             //     '--class'   => PlanFeatureSeeder::class,
             // ]);
 
-            $result = \Artisan::call('migrate');
+            $result = \Artisan::call('db:seed', ['--class' => RoleAndPermissionSeeder::class]);
             return 'done1';
         });
     });

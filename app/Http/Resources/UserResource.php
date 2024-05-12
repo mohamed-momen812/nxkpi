@@ -28,12 +28,13 @@ class  UserResource extends JsonResource
             "primary_color" => $this->primary_color,
             "secondry_color" => $this->secondry_color,
             "text_color" => $this->text_color,
-            'role' => $this->rolesWithPermissions->map(function ($role) {
-                return [
-                    'name' => $role->name,
-                    'permissions' => $role->permissions->pluck('name'),
-                ];
-            }),
+            // 'role' => $this->rolesWithPermissions->map(function ($role) {
+            //     return [
+            //         'name' => $role->name,
+            //         'permissions' => $role->permissions->pluck('name'),
+            //     ];
+            // }),
+            'role' => RoleResource::collection($this->rolesWithPermissions),
             "added_permissions"    => $this->permissions->map(function ($permission){
                 return ['name' => $permission->name];
             }),

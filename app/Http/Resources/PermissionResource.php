@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Module;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class PermissionResource extends JsonResource
@@ -14,12 +15,13 @@ class PermissionResource extends JsonResource
      */
     public function toArray($request)
     {
-//        return parent::toArray($request);
+        $modules = Module::all();
+
         return [
             'id'            => $this->id,
             'name'          => $this->name,
-            'created_at'    => $this->created_at->format('d-m-y'),
-            'updated_at'    => $this->updated_at->format('d-m-y'),
+            // 'created_at'    => $this->created_at->format('d-m-y'),
+            // 'updated_at'    => $this->updated_at->format('d-m-y'),
 //            'roles'         => RoleResource::collection($this->roles),
         ];
     }
