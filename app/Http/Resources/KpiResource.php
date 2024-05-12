@@ -54,16 +54,7 @@ class KpiResource extends JsonResource
 
             switch ($this->frequency->name){
                 case "Daily":
-                    // $period = CarbonPeriod::create('2018-06-14', '2018-06-20');
-
-                    // // Iterate over the period
-                    // foreach ($period as $date) {
-                    //     echo $date->format('Y-m-d');
-                    // }
-
-                    // // Convert the period to an array of dates
-                    // $dates = $period->toArray();
-                    $from = $entry_date->copy()->subWeek();
+                    $from = $entry_date->copy()->subWeek()->addDay();
                     $to = $entry_date->copy();
 
                     while ($from->lte($to)) {
@@ -71,28 +62,27 @@ class KpiResource extends JsonResource
 
                         $from->addDay();
                     }
-
                     break;
-                    // if($this->id == 2)dd($dates);
-                case "Weakly":
-                    $scope = ['from' => $entry_date, 'to'=> $entry_date->subWeek(6)];
+                case "Weekly":
+                    $from = $entry_date->copy()->subWeek(6);
+                    $to = $entry_date->copy();
 
-                    $currentDate = $scope['from']->copy()->startOfWeek();
+                    while ($from->lte($to)) {
+                        $dates[] = $from->copy();
 
-                    while ($currentDate->lte($scope['to'])) {
-                        $dates[] = $currentDate->copy();
-                        $currentDate->addWeek();
+                        $from->addWeek();
                     }
                     break;
                 case "Monthly":
-                    $scope = ['from' => $entry_date, 'to'=> $entry_date->subMonth(6)];
+                    $from = $entry_date->copy()->subMonth(6);
+                    $to = $entry_date->copy();
 
-                    $currentDate = $scope['to']->copy()->startOfMonth();
+                    while ($from->lte($to)) {
+                        $dates[] = $from->copy();
 
-                    for ($i = 0; $i < 7; $i++) {
-                        $dates[] = $currentDate->copy();
-                        $currentDate->subMonth();
+                        $from->addMonth();
                     }
+                    break;
                 case "Quarterly":
                     $scope = ['from' => $entry_date, 'to'=> $entry_date->subMonth(18)];
 
@@ -116,9 +106,16 @@ class KpiResource extends JsonResource
             $entries = [];
 
             foreach($dates as $date){
-                // if($this->id == 2) dd($this->entries()->first()->entry_date);
+                // if($this->id == 2) dd($dates);
                 $entry = Entry::where('kpi_id', $this->id)->where('entry_date', $date->format('y-m-d'))->first();
-
+                if($this->frequency->name == "Weekly"){
+                    $weekNo = $date->weekOfYear;
+                    info($weekNo);
+                    $entry = Entry::where('kpi_id', $this->id)->where('weekNo', $weekNo)->first();
+                }elseif($this->frequency->name == "Monthly"){
+                    $month = $date->month;
+                    $entry = Entry::where('kpi_id', $this->id)->where('month', $month)->first();
+                }
                 // dd($date->format('y-m-d'));
                 //     dd($entry->entry_date == $date->format('y-m-d'));
                 if($entry){

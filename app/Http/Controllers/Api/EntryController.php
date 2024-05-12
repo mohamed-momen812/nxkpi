@@ -108,8 +108,9 @@ class EntryController extends Controller
     public function store(EntryRequest $request)
     {
         //to get kpi_id and notes directly
-        $input = $request->validated();
+        $input = $request->except('entries');
         $input['user_id'] = auth()->id();
+        $input['kpi_id'] = $request->kpi_id;
         $kpi = auth()->user()->kpis->where('id' , $request->kpi_id )->first();
 
         if($kpi == null) return $this->responseJsonFailed("kpi not found");
@@ -132,10 +133,11 @@ class EntryController extends Controller
             $preparedData = $this->prepareData($entry);
             if(isset($entry['user_target']) &&  $entry['user_target'] != null)
                 $input['target'] = $entry['user_target'];
-
+            // dd($input, $preparedData);
             $input = array_merge($input , $preparedData );
 
-            $entry = $this->entryRepo->create($input);
+            // $entry = $this->entryRepo->create($input);
+            $entry = $this->entryRepo->createOrUpdate($input, $kpi);
 
             if($entry) continue;
 
