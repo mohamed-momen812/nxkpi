@@ -24,7 +24,8 @@ class EntryRequest extends FormRequest
     public function onCreate(){
         return [
             'entries' => 'required|array',
-            'entries.*.date' => 'date|before_or_equal:now',
+            // 'entries.*.date' => 'date|before_or_equal:now',
+            'entries.*.date' => 'date',
             'entries.*.notes' => 'string',
             'entries.*.actual' => 'numeric|max:9999999.99|min:00.01',
             'kpi_id' => 'required|numeric',

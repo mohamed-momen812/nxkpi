@@ -84,7 +84,7 @@ class KpiResource extends JsonResource
                     }
                     break;
                 case "Quarterly":
-                    $from = $entry_date->copy()->subMonth(15); // 5 past quarters
+                    $from = $entry_date->copy()->subMonth(18); // 5 past quarters
                     $to = $entry_date->copy();
 
                     while ($from->lte($to)) {
