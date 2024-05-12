@@ -133,33 +133,34 @@ class KpiResource extends JsonResource
                 }
             }
             return $entries;
+        }else{
+            $entries = $this->entries;
+            return $entries;
+            // if(request()->has('entry_date')){
+            //     $entries = $entries->filter(function ($item){
+            //         return $item->entry_date == request()->entry_date;
+            //     });
+            // }
+            // // return $entries;
+            // return $this->entries->filter(function ($item){
+            //     switch ($this->frequency->name){
+            //         case "Daily":
+            //             return $item->entry_date >= now()->subWeek();
+            //             break;
+            //         case "Weakly":
+            //             return $item->entry_date >= now()->subWeek(6) ;
+            //             break;
+            //         case "Monthly":
+            //             return $item->entry_date >= now()->subMonth(6);
+            //         case "Quarterly":
+            //             return $item->entry_date >= now()->subMonth(18);
+            //         case "Yearly":
+            //             return  $item->entry_date >= now()->subYear(6);
+            //         default :
+            //             return $item;
+            //     }
+            // });
         }
-        // $entries = $this->entries;
-
-        // if(request()->has('entry_date')){
-        //     $entries = $entries->filter(function ($item){
-        //         return $item->entry_date == request()->entry_date;
-        //     });
-        // }
-        // // return $entries;
-        // return $this->entries->filter(function ($item){
-        //     switch ($this->frequency->name){
-        //         case "Daily":
-        //             return $item->entry_date >= now()->subWeek();
-        //             break;
-        //         case "Weakly":
-        //             return $item->entry_date >= now()->subWeek(6) ;
-        //             break;
-        //         case "Monthly":
-        //             return $item->entry_date >= now()->subMonth(6);
-        //         case "Quarterly":
-        //             return $item->entry_date >= now()->subMonth(18);
-        //         case "Yearly":
-        //             return  $item->entry_date >= now()->subYear(6);
-        //         default :
-        //             return $item;
-        //     }
-        // });
     }
 
 }

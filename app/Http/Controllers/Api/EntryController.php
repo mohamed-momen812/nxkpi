@@ -130,7 +130,7 @@ class EntryController extends Controller
         foreach($entries as $entry)
         {
             $preparedData = $this->prepareData($entry);
-            if($entry['user_target'] != null)
+            if(isset($entry['user_target']) &&  $entry['user_target'] != null)
                 $input['target'] = $entry['user_target'];
 
             $input = array_merge($input , $preparedData );
