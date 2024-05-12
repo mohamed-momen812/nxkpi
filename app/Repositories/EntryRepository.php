@@ -28,8 +28,17 @@ class EntryRepository extends BaseRepository implements EntryRepositoryInterface
 
     public function createOrUpdate($data, Kpi $kpi)
     {
-        // check if kpi frequency is weekly
-        if($kpi->frequency->id == 2){
+        if($kpi->frequency->id == 1){
+            // check if entry already exist by weekNo
+            // dd($data);
+            $entry = $this->model->where('kpi_id' , $kpi->id)->where('entry_date' , $data['entry_date'])->first();
+            if($entry){
+                $this->update($data , $entry->id);
+            }else{
+                $entry = $this->create($data);
+            }
+            return $entry;
+        }elseif($kpi->frequency->id == 2){
             // check if entry already exist by weekNo
             $entry = $this->model->where('kpi_id' , $kpi->id)->where('weekNo' , $data['weekNo'])->first();
             if($entry){

@@ -34,12 +34,13 @@ class EntryRequest extends FormRequest
     public function onUpdate(){
         return [
             'entries' => 'required|array',
-            "entries.*.id" => 'required|numeric',
+            "entries.*.id" => 'required|exists:entries,id',
             'entries.*.date' => 'date|before_or_equal:now',
+            'entries.*.notes' => 'string',
             'entries.*.actual' => 'numeric|max:9999999.99|min:00.01',
             'entries.*.user_target' => 'numeric','max:9999999.99','min:0.01' , 'nullable',
             'kpi_id' => 'required|exists:kpis,id',
-            'notes' => 'string'
+            // 'notes' => 'string'
         ];
     }
 
@@ -51,7 +52,6 @@ class EntryRequest extends FormRequest
             'entries.*.id.required' => 'id of entry is required',
             'entries.*.id.numeric' => 'id of entry must be number',
             'entries.*.date.date' => 'date of entries must be date format d-m-y',
-            'entries.*.date.date' => 'date of entries must be before or equal today',
             'entries.*.actual.numeric' => 'actual value must be numeric',
             'entries.*.actual.max' => 'actual value must be less than 9999999.99' ,
             'entries.*.actual.min' => 'actual value must be greater than 00.01',

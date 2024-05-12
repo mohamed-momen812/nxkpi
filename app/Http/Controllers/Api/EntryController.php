@@ -197,8 +197,11 @@ class EntryController extends Controller
         foreach($entries as $entry)
         {
             $preparedData = $this->prepareData($entry);
-            if($entry['user_target'] != null)
+            if(isset($entry['user_target']) && $entry['user_target'] != null)
                 $input['target'] = $entry['user_target'];
+            
+            if(isset($entry['notes']) && $entry['notes'] != null)
+                $input['notes'] = $entry['notes'];
             
             $input = array_merge($input , $preparedData );
             $entry = $this->entryRepo->update($input , $entry['id']);
@@ -237,7 +240,8 @@ class EntryController extends Controller
     {
         $date = new Carbon($entry['date']);
         $input['entry_date'] = $date;
-        $input['actual'] = $entry['actual'];
+        if(isset($entry['actual']) && $entry['actual'] != null)
+            $input['actual'] = $entry['actual'];
         $input['day'] = $date->day ;
         $input['weekNo'] = $date->weekOfYear ;
         $input['month'] = $date->month;
