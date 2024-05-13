@@ -54,25 +54,26 @@ class PlanFeatureController extends Controller
     {
         $user = auth()->user();
         $company = $user->company()->first();
-        
-        $cancel = $company->cancelCurrentSubscription();
-        if($cancel){
+
+        $cancel = $company->ourCancelCurrentSubscription();
+        if($cancel['success']){
             return $this->responseJson();
         }
-        return $this->responseJsonFailed();
+        return $this->responseJsonFailed($cancel['error']);
     }
 
     public function getCurrent()
     {
         $user = auth()->user();
         $company = $user->company()->first();
-        
-        $checkSubscription = $company->hasActiveSubscription();
+        $plan_tag = request()->plan_tag;
+        $checkSubscription = $company->ourHasActiveSubscription();
+
         if($checkSubscription){
-            $subscription = $company->activeSubscription();
+            $subscription = $company->ourActiveSubscription();
             return $this->responseJson( new SubscriptionResource($subscription) );
         }
-        
+
         return $this->responseJsonFailed('No Active Subscription');
     }
 
@@ -90,7 +91,7 @@ class PlanFeatureController extends Controller
         $paln_type = $request->plan_type == 'yearly' ? 365 : 30;
 
         $newSubscription = $company->upgradeCurrentPlanTo($newPlan, $paln_type, $request->start_now);
-        
+
         return $this->responseJson( new SubscriptionResource($newSubscription) );
     }
 
@@ -98,16 +99,18 @@ class PlanFeatureController extends Controller
     {
         $user = auth()->user();
         $company = $user->company()->first();
-     
-        $checkSubscription = $company->hasActiveSubscription();
+
+        $checkSubscription = $company->ourHasActiveSubscription();
+
         if($checkSubscription){
-            $subscription = $company->activeSubscription();
-            $availablePlans = PlanModel::where('price', '>', $subscription->price)->get();
+            $subscription = $company->ourActiveSubscription();
+           
+            $availablePlans = PlanModel::where('price', '>', $subscription->plan->price)->get();
         }else{
             $availablePlans = PlanModel::where('price', '>', 0)->get();
         }
 
         return $this->responseJson( PlanResource::collection($availablePlans) );
     }
-    
+
 }

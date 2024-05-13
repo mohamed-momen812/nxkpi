@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\OurHasPlansTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Rennokki\Plans\Traits\HasPlans;
@@ -9,7 +10,9 @@ use Spatie\Translatable\HasTranslations;
 
 class Company extends Model
 {
-    use HasFactory, HasPlans;
+    use HasFactory;
+    // use HasPlans;
+    use OurHasPlansTrait;
 
     protected $fillable = [
         'name',

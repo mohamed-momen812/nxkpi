@@ -6,6 +6,8 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class SubscriptionResource extends JsonResource
 {
+
+    public static $model = \Rennokki\Plans\Models\PlanSubscriptionModel::class;
     /**
      * Transform the resource into an array.
      *

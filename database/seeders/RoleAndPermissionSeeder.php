@@ -98,8 +98,8 @@ class RoleAndPermissionSeeder extends Seeder
             $module = \App\Models\Module::create($item);
 
             $mod = \App\Models\Module::where('name', $item['name'])->first();
-           
-            $mod->permissions()->attach($ids);   
+
+            $mod->permissions()->attach($ids);
 
         });
         // //permissions
@@ -123,6 +123,11 @@ class RoleAndPermissionSeeder extends Seeder
         foreach ($allPermissions as $permission){
             $ownerRole->givePermissionTo($permission->name);
         }
+
+        
+        $directorRole->givePermissionTo([
+
+        ])
 
         // $userRole->givePermissionTo([
         //     'access-assigned-kpis',

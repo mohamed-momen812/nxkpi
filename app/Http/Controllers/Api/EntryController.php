@@ -100,7 +100,7 @@ class EntryController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * used for create or update entries
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -146,9 +146,8 @@ class EntryController extends Controller
 
             return $this->responseJsonFailed();
         }
-
-        $entriesForOneKpi = $this->entryRepo->getEntriesByKpi($request->kpi_id);
-        return $this->responseJson($entriesForOneKpi , 'Entries created successfully');
+        $kpis = auth()->user()->kpis;
+        return $this->responseJson(KpiResource::collection($kpis),'kpis retrieved successfully');
     }
 
     /**
@@ -202,10 +201,10 @@ class EntryController extends Controller
             $preparedData = $this->prepareData($entry);
             if(isset($entry['user_target']) && $entry['user_target'] != null)
                 $input['target'] = $entry['user_target'];
-            
+
             if(isset($entry['notes']) && $entry['notes'] != null)
                 $input['notes'] = $entry['notes'];
-            
+
             $input = array_merge($input , $preparedData );
             $entry = $this->entryRepo->update($input , $entry['id']);
 
