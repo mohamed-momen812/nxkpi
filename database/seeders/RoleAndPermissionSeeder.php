@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -120,14 +121,32 @@ class RoleAndPermissionSeeder extends Seeder
 
         //give all permissions to owner
         $allPermissions = Permission::all();
-        foreach ($allPermissions as $permission){
-            $ownerRole->givePermissionTo($permission->name);
+        // foreach ($allPermissions as $permission){
+        //     // $ownerRole->givePermissionTo($permission);
+        //     $permission->assignRole($ownerRole);
+        // }
+        $ownerRole->syncPermissions($allPermissions);
+
+        $user = User::where('type', 'owner')->first();
+        if($user)
+            $user->assignRole($ownerRole->name);
+            
+        $managerPermissions = [];
+        $moduleCollection->each(function ($item, $key) use (&$managerPermission) {
+            $managerPermissions[] = Permission::where('name', 'view_'.$item['name'])->first();
+        });
+
+        $managerRole->syncPermissions($managerPermissions);
+        $managers = User::where('type', 'manager')->get();
+        if(!empty($managers)){
+            foreach($managers as $manager){
+                $manager->assignRole($managerRole->name);
+            }
         }
-
         
-        $directorRole->givePermissionTo([
-
-        ])
+        // foreach ($managerPermission as $permission){
+        //     $managerRole->givePermissionTo($permission);
+        // }
 
         // $userRole->givePermissionTo([
         //     'access-assigned-kpis',

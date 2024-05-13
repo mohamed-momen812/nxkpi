@@ -15,6 +15,7 @@ class RoleResource extends JsonResource
      */
     public function toArray($request)
     {
+        // dd($this->mapPermissions($this->permissions));
         return [
             'id'            => $this->id,
             'name'          => $this->name,
@@ -28,16 +29,25 @@ class RoleResource extends JsonResource
     protected function mapPermissions($permissions)
     {
         $modules = Module::all();
-    
+
         $mappedPermissions = [];
-        
+
         foreach ($modules as $module) {
             $modulePermissions = $module->permissions()->pluck('permissions.id')->toArray();
-            $mappedPermissions[$module->name] = $permissions->filter(function ($permission) use ($modulePermissions) {
-                return in_array($permission->id, $modulePermissions);
-            })->pluck('name')->toArray();
+            $i = 0;
+            foreach($permissions as $permission){
+                if(in_array($permission->id, $modulePermissions)){
+                    $mappedPermissions[$module->name][$i] = $permission->name;
+                }
+                $i++;
+            }
+            continue;
+            // $mappedPermissions[$module->name] = $permissions->filter(function ($permission) use ($modulePermissions) {
+            //     return in_array($permission->id, $modulePermissions);
+            // })->pluck('name')->toArray();
+            info($mappedPermissions);
         }
-        
+
         return $mappedPermissions;
         // $modules->map(function ($module) use ($permissions) {
         //     $module->permissions = $permissions->filter(function ($permission) use ($module) {
@@ -51,7 +61,7 @@ class RoleResource extends JsonResource
         // foreach ($permissions as $permission) {
         //     // Extract the module name from the permission name
         //     $moduleName = explode('.', $permission->name)[0];
-            
+
         //     // Append the permission to the module's array
         //     $mappedPermissions[$moduleName][] = $permission->only(['id', 'name']);
         // }
