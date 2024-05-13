@@ -31,7 +31,7 @@ class SubscriptionResource extends JsonResource
             "recurring_each_days"   => $this->recurring_each_days,
             "updated_at"            => $this->updated_at->format('F j, Y g:i A'),
             "created_at"            => $this->created_at->format('F j, Y g:i A'),
-            "plan"                  => $this->plan,
+            "plan"                  => new PlanResource($this->plan),
         ];
     }
 }
