@@ -90,10 +90,17 @@ class RoleAndPermissionSeeder extends Seeder
                 'guard_name' => 'sanctum',
             ]);
 
+            $p_delete = Permission::firstOrCreate([
+                'name' => 'delete_'.$item['name'],
+                'display_name' => 'delete_'.strtolower($item['name']),
+                'guard_name' => 'sanctum',
+            ]);
+
             $ids[] = Permission::where('display_name', 'view_' . strtolower($item['name']))->first()->id;
             $ids[] = Permission::where('display_name', 'create_' . strtolower($item['name']))->first()->id;
             $ids[] = Permission::where('display_name', 'update_' . strtolower($item['name']))->first()->id;
             $ids[] = Permission::where('display_name', 'update_status_' . strtolower($item['name']))->first()->id;
+            $ids[] = Permission::where('display_name', 'delete_' . strtolower($item['name']))->first()->id;
 
             //insert model
             $module = \App\Models\Module::create($item);
@@ -121,49 +128,83 @@ class RoleAndPermissionSeeder extends Seeder
 
         //give all permissions to owner
         $allPermissions = Permission::all();
-        // foreach ($allPermissions as $permission){
-        //     // $ownerRole->givePermissionTo($permission);
-        //     $permission->assignRole($ownerRole);
-        // }
+    
         $ownerRole->syncPermissions($allPermissions);
 
         $user = User::where('type', 'owner')->first();
         if($user)
             $user->assignRole($ownerRole->name);
             
+        //give all views permissions to manager    
         $managerPermissions = [];
-        $moduleCollection->each(function ($item, $key) use (&$managerPermission) {
+        $moduleCollection->each(function ($item, $key) use (&$managerPermissions) {
             $managerPermissions[] = Permission::where('name', 'view_'.$item['name'])->first();
         });
-
+        
         $managerRole->syncPermissions($managerPermissions);
+        
         $managers = User::where('type', 'manager')->get();
         if(!empty($managers)){
             foreach($managers as $manager){
                 $manager->assignRole($managerRole->name);
             }
         }
+
+        //give some permissions to user
+        $userPermissions = Permission::all();
+        $userPermissions = $userPermissions->filter(function ($permission) {
+            return $permission->name != 'view_Kpi' && $permission->name != 'view_Setting';
+        });
         
-        // foreach ($managerPermission as $permission){
-        //     $managerRole->givePermissionTo($permission);
-        // }
+        $userRole->syncPermissions($userPermissions);
+        
+        $users = User::where('type', 'user')->get();
+        if(!empty($users)){
+            foreach($users as $user){
+                $user->assignRole($userRole->name);
+            }
+        }
 
-        // $userRole->givePermissionTo([
-        //     'access-assigned-kpis',
-        // ]);
+        //give all permissions of category, kpi, entry, dashboard, chart modules to director role
+        $allPermissions = Permission::all();
+        $directorPermissions = $allPermissions->filter(function ($permission) {
+            $moduleNames = ['Category', 'Kpi', 'Entry', 'Dashboard', 'Chart'];
+            foreach ($moduleNames as $moduleName) {
+                
+                if (strpos($permission->name, 'view_' . $moduleName) === 0 ||
+                    strpos($permission->name, 'create_' . $moduleName) === 0 ||
+                    strpos($permission->name, 'update_' . $moduleName) === 0 ||
+                    strpos($permission->name, 'update_status_' . $moduleName) === 0 ||
+                    strpos($permission->name, 'delete_' . $moduleName) === 0) {
+                    return true;
+                }
+            }
+            return false;
+        });
+      
+        $directorRole->syncPermissions($directorPermissions);
+        
+        $directors = User::where('type', 'director')->get();
+        if(!empty($directors)){
+            foreach($directors as $director){
+                $director->assignRole($directorRole->name);
+            }
+        }
+        
+        //give all permissions to admin role except update and delete permissions
+        $allPermissions = Permission::all();
+        $adminPermissions = $allPermissions->reject(function ($permission) {
+            return strpos($permission->name, 'update_') === 0 || strpos($permission->name, 'delete_') === 0;
+        });
 
-        // $managerRole->givePermissionTo([
-        //     'create-kpis',
-        //     'edit-kpis',
-        //     'manage-users'
-        // ]);
+        $adminRole->syncPermissions($adminPermissions);
 
-        // $directorRole->givePermissionTo([
-        //     'view-kpis'
-        // ]);
-
-        // $adminRole->givePermissionTo([
-        //     'full-access',
-        // ]);
+        $admins = User::where('type', 'admin')->get();
+        if(!empty($admins)){
+            foreach ($admins as $admin) {
+                $admin->assignRole($adminRole->name);
+            }
+        }
+        
     }
 }

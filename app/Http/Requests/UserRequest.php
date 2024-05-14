@@ -40,7 +40,7 @@ class UserRequest extends FormRequest
             'group_id'      => 'numeric|exists:groups,id',
             'password'      => 'required|string',
             'parent_user'   => 'numeric|exists:users,id',
-            'type'          => 'string',
+            'type'          => 'in:owner,user,manager,director,admin',
             'permission_id' => 'array|nullable',
             'company_domain'=> 'string|unique:users',
         ];
@@ -54,7 +54,7 @@ class UserRequest extends FormRequest
             'group_id'      => 'numeric|exists:groups,id',
             'password'      => 'required|string',
             'parent_user'   => 'numeric|exists:users,id',
-            'type'          => 'string',
+            'type'          => 'in:owner,user,manager,director,admin',
             'permission_id' => 'array|nullable',
             'company_domain'=> 'string|unique:users',
         ];
