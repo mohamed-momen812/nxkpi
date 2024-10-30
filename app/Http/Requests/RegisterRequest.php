@@ -22,6 +22,7 @@ class RegisterRequest extends FormRequest
             'company_domain' => $this->company_domain ?? strval( octdec(uniqid()) ),
         ]);
     }
+    
     /**
      * Get the validation rules that apply to the request.
      *

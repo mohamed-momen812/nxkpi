@@ -9,14 +9,11 @@ return [
      */
 
     'models' => [
-
         'plan' => \Rennokki\Plans\Models\PlanModel::class,
         'subscription' => \Rennokki\Plans\Models\PlanSubscriptionModel::class,
         'feature' => \Rennokki\Plans\Models\PlanFeatureModel::class,
         'usage' => \Rennokki\Plans\Models\PlanSubscriptionUsageModel::class,
-
         'stripeCustomer' => \Rennokki\Plans\Models\StripeCustomerModel::class,
-
     ],
 
 ];

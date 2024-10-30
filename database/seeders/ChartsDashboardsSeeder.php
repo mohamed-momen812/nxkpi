@@ -17,15 +17,21 @@ class ChartsDashboardsSeeder extends Seeder
      */
     public function run()
     {
+        // Fetch all chart and dashboard IDs
         $charts_id = Chart::pluck('id')->toArray();
         $dashboards_id = Dashboard::pluck('id')->toArray();
 
-        foreach ($dashboards_id as $dashboard_id){
+        foreach ($dashboards_id as $dashboard_id) {
+            // Get a random chart ID from the charts array
+            $randomChartKey = array_rand($charts_id);
+            $randomChartId = $charts_id[$randomChartKey];
+
+            // Insert into charts_dashboards
             DB::table('charts_dashboards')->insert([
-                'chart_id'      => array_rand( array_values( $charts_id) ) === 0 ? array_rand( array_values( $charts_id) )+1 : array_rand( array_values( $charts_id) )  ,
-                'dashboard_id'  => $dashboard_id,
+                'chart_id' => $randomChartId,
+                'dashboard_id' => $dashboard_id,
             ]);
         }
-
     }
+
 }

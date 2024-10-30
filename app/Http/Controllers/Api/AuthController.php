@@ -14,14 +14,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Traits\SubscriptionTrait;
-use Illuminate\Log\Logger;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Rennokki\Plans\Models\PlanModel;
-use Validator;
 
 class AuthController extends Controller
 {
     use ApiTrait, SubscriptionTrait;
+
     /**
      * Create a new AuthController instance.
      *
@@ -29,24 +29,28 @@ class AuthController extends Controller
      */
     private $categoryRepo ;
     public function __construct(CategoryRepositoryInterface $categoryRepository) {
-//        $this->middleware('auth:api', ['except' => ['login', 'register']]);
+        // $this->middleware('auth:api', ['except' => ['login', 'register']]);
         $this->categoryRepo = $categoryRepository ;
     }
+
     /**
      * Get a JWT via given credentials.
      *
      * @return \Illuminate\Http\JsonResponse
      */
     public function login(LoginRequest $request){
+        dd(DB::connection()->getDatabaseName());
         if( auth()->user() ) {
             auth()->logout();
         }
-        if (! $token = auth()->attempt($request->validated())) {
+
+        if (! $token = auth()->attempt(credentials: $request->validated())) {
             return $this->responseJsonFailed( 'Credintials fail' , 401 );
         }
 
         return $this->createNewToken($token);
     }
+
     /**
      * Register a User.
      *
@@ -77,13 +81,15 @@ class AuthController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function logout() {
+        dd(DB::connection()->getDatabaseName());
         // logger(auth());
 
         // auth()->logout();
         auth()->user()->tokens()->delete();
         return $this->responseJson([] , $message = 'User successfully signed out');
-//        return response()->json(['message' => 'User successfully signed out']);
+        // return response()->json(['message' => 'User successfully signed out']);
     }
+    
     /**
      * Refresh a token.
      *
@@ -92,6 +98,7 @@ class AuthController extends Controller
     public function refresh() {
         return $this->createNewToken(auth()->refresh());
     }
+
     /**
      * Get the authenticated User.
      *
@@ -99,8 +106,9 @@ class AuthController extends Controller
      */
     public function userProfile() {
         return $this->responseJson(new UserResource( auth()->user() ));
-//        return response()->json(auth()->user());
+        // return response()->json(auth()->user());
     }
+
     /**
      * Get the token array structure.
      *
@@ -111,7 +119,7 @@ class AuthController extends Controller
     protected function createNewToken($token){
         return $this->responseJson([
             'access_token' => auth()->user()->createToken('MyApp')->plainTextToken,
-
+            
 //            'access_token' => $token,
 //            'token_type' => 'bearer',
 //            'expires' => auth()->factory()->getTTL() * 60,

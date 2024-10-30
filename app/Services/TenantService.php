@@ -18,9 +18,11 @@ class TenantService
     use SubscriptionTrait;
 
     private $categoryRepo ;
+
     public function __construct(CategoryRepositoryInterface $categoryRepository) {
         $this->categoryRepo = $categoryRepository ;
     }
+
     public function intiateTenant(Tenant $tenant , array $userData)
     {
         $tenant->run(function () use ($tenant){
@@ -49,16 +51,18 @@ class TenantService
             ]);
             \Artisan::call('storage:link');
         });
-        $tenant->run(function () use ($tenant , $userData){
 
+        $tenant->run(function () use ($tenant , $userData){
             $userData['id'] = $tenant->user->id;
             $user = User::create($userData);
             $user->assignRole( "Owner" );
+
             $category = $this->categoryRepo->create([
                 'name'      =>'Default',
                 'user_id'   => $user->id ,
                 'sort_order'=> 1
             ]);
+            
             $company = Company::create([
                 "user_id" => $user->id ,
                 "support_email" => $user->email,
