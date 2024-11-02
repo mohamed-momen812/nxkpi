@@ -21,14 +21,6 @@ class ChartSeeder extends Seeder
     {
         DB::table('charts')->delete();
 
-//        $charts = [
-//            ChartsEnum::COLUMN_GRAPH ,
-//            ChartsEnum::LINE_GRAPH ,
-//            ChartsEnum::SINGLE_KPI ,
-//            ChartsEnum::STACKED_KPI_GRAPH ,
-//            ChartsEnum::MULTIPLE_KPI_SERIES,
-//            ChartsEnum::SINGLE_COLUMN_KPI
-//        ];
         $charts = [
             "column_graph",
             "line_graph",

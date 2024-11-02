@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -89,22 +88,20 @@ class User extends Authenticatable implements JWTSubject
         return $this->belongsTo(Group::class , 'group_id');
     }
 
+    public function owner() {
+        return $this->belongsTo(User::class , 'parent_user' , 'id');
+    }
+
+    public function kpis(){
+        return $this->belongsToMany(Kpi::class, 'kpi_user', 'user_id', 'kpi_id');
+    }
+
     public function categories(){
         return $this->hasMany(Category::class);
     }
 
     public function entries(){
         return $this->hasMany(Entry::class);
-    }
-
-    public function kpis()
-    {
-        return $this->belongsToMany(Kpi::class, 'kpi_user', 'user_id', 'kpi_id');
-    }
-
-    public function owner()
-    {
-        return $this->belongsTo(User::class , 'parent_user' , 'id');
     }
 
     public function empolyees()

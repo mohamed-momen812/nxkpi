@@ -39,15 +39,6 @@ class RouteServiceProvider extends ServiceProvider
         $this->configureRateLimiting();
 
         $this->routes(function () {
-            Route::prefix('api')
-                ->middleware('api')
-                ->namespace($this->namespace)
-                ->group(base_path('routes/api.php'));
-
-            Route::middleware('web')
-                ->namespace($this->namespace)
-                ->group(base_path('routes/web.php'));
-
             $this->mapApiRoutes();
             $this->mapWebRoutes();
         });
@@ -70,7 +61,7 @@ class RouteServiceProvider extends ServiceProvider
         return config('tenancy.central_domains');
     }
 
-    
+
     protected function mapApiRoutes()
     {
         foreach ($this->centralDomains() as $domain) {
@@ -81,7 +72,7 @@ class RouteServiceProvider extends ServiceProvider
             ->group(base_path('routes/api.php'));
         }
     }
-    
+
     protected function mapWebRoutes()
     {
         foreach ($this->centralDomains() as $domain) {

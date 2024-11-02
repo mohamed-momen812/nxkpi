@@ -3,7 +3,6 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Illuminate\Http\Request;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 
 class OurInitializeTenancyByDomain extends InitializeTenancyByDomain
@@ -17,10 +16,19 @@ class OurInitializeTenancyByDomain extends InitializeTenancyByDomain
      */
     public function handle($request, Closure $next)
     {
+        if (!$request->hasHeader('Origin')) {
+            return response()->json(['error' => 'Origin header is missing'], 400);
+        }
+
         $parsedUrl = parse_url($request->header('origin'));
-        $host = $parsedUrl['host'] ;
+
+        if (!isset($parsedUrl['host'])) {
+            return response()->json(['error' => 'Invalid Origin header'], 400);
+        }
+
+        $host = $parsedUrl['host'];
         return $this->initializeTenancy(
-            $request, $next, $host 
+            $request, $next, $host
         );
     }
 }

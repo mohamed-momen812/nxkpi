@@ -11,6 +11,7 @@ use Spatie\Translatable\HasTranslations;
 class Company extends Model
 {
     use HasFactory;
+
     // use HasPlans;
     use OurHasPlansTrait;
 

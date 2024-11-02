@@ -11,6 +11,7 @@ use Database\Seeders\ChartSeeder;
 use Database\Seeders\FrequencySeeder;
 use Database\Seeders\PlanFeatureSeeder;
 use Database\Seeders\RoleAndPermissionSeeder;
+use Illuminate\Support\Facades\Artisan;
 use Rennokki\Plans\Models\PlanModel;
 
 class TenantService
@@ -27,29 +28,30 @@ class TenantService
     {
         $tenant->run(function () use ($tenant){
             //make seed for role and permission
-            \Artisan::call('tenants:seed', [
+            Artisan::call('tenants:seed', [
                 '--tenants' => $tenant['id'],
                 '--class'   => RoleAndPermissionSeeder::class,
             ]);
 
             //make seed for frequency
-            \Artisan::call('tenants:seed', [
+            Artisan::call('tenants:seed', [
                 '--tenants' => $tenant['id'],
                 '--class'   => FrequencySeeder::class,
             ]);
 
             //make_seed_for_charts
-            \Artisan::call('tenants:seed', [
+            Artisan::call('tenants:seed', [
                 '--tenants' => $tenant['id'],
                 '--class'   => ChartSeeder::class,
             ]);
 
             //make_seed_for_PlanFeatureSeeder
-            \Artisan::call('tenants:seed', [
+            Artisan::call('tenants:seed', [
                 '--tenants' => $tenant['id'],
                 '--class'   => PlanFeatureSeeder::class,
             ]);
-            \Artisan::call('storage:link');
+
+            Artisan::call('storage:link');
         });
 
         $tenant->run(function () use ($tenant , $userData){
@@ -62,7 +64,7 @@ class TenantService
                 'user_id'   => $user->id ,
                 'sort_order'=> 1
             ]);
-            
+
             $company = Company::create([
                 "user_id" => $user->id ,
                 "support_email" => $user->email,
@@ -71,7 +73,6 @@ class TenantService
             ]);
 
             $subscriptionOnTenant = $this->subscribeToPlan($company, PlanModel::find(request()->plan_id), request()->plan_type);
-            
         });
 
     }

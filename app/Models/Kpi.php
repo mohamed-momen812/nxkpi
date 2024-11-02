@@ -106,11 +106,6 @@ class Kpi extends Model
         return $this->belongsTo(Frequency::class , 'frequency_id');
     }
 
-    public function entries()
-    {
-        return $this->hasMany(Entry::class);
-    }
-
     public function users()
     {
         return $this->belongsToMany(User::class , 'kpi_user', 'kpi_id', 'user_id');
@@ -119,6 +114,11 @@ class Kpi extends Model
     public function charts()
     {
         return $this->belongsToMany(Chart::class);
+    }
+
+    public function entries()
+    {
+        return $this->hasMany(Entry::class);
     }
 
     public function dashboards()

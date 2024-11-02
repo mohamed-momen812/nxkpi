@@ -6,14 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\CategoryRequest;
 use App\Http\Resources\CategoryResource;
 use App\Interfaces\CategoryRepositoryInterface;
-use App\Models\Category;
 use App\Traits\ApiTrait;
-use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
     use ApiTrait;
+
     private $categoryRepo;
+
     public function __construct(CategoryRepositoryInterface $categoryRepoInterface)
     {
         $this->categoryRepo = $categoryRepoInterface;
@@ -31,12 +31,12 @@ class CategoryController extends Controller
             $categories = $categories->filter(function ($category) use ($name) {
                 // Check if category name matches the provided name
                 $nameMatch = strpos(strtolower($category->name), $name) !== false;
-        
+
                 // Check if any of the KPIs in the category match the provided name
                 $kpiMatch = $category->kpis->filter(function ($kpi) use ($name) {
                     return strpos(strtolower($kpi->name), $name) !== false;
                 })->isNotEmpty();
-        
+
                 // Return true if either category name or any KPI name matches the provided name
                 return $nameMatch || $kpiMatch;
             });

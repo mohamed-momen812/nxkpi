@@ -5,55 +5,21 @@ declare(strict_types=1);
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Middleware\OurInitializeTenancyByDomain;
 use App\Http\Middleware\OurPreventAccessFromCentralDomains;
-use Database\Seeders\RoleAndPermissionSeeder;
 use Illuminate\Support\Facades\Route;
-use Laravel\Sanctum\Http\Controllers\CsrfCookieController;
-use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
-use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
-
 
 Route::middleware([
-    'api',
     OurInitializeTenancyByDomain::class,
     OurPreventAccessFromCentralDomains::class,
-])->group(function () {
-    Route::post('api/auth/tenant/signin', [AuthController::class, 'login']);
+    'api',
+    'auth:sanctum',
+])->prefix('/api')->group(function () {
+    Route::post('/auth/tenant/signin', [AuthController::class, 'login'])->withoutMiddleware('auth:sanctum');
+    Route::post('/auth/tenant/logout', [AuthController::class, 'logout']);
+    Route::post('/auth/tenant/refresh', [AuthController::class, 'refresh']);
+    Route::post('/auth/tenant/change-password', [AuthController::class, 'changePassword']);
+    Route::get('/auth/tenant/user-profile', [AuthController::class, 'userProfile']);
+    require __DIR__.'/centralAndTenant.php';
 });
-
-Route::group(['prefix' => config('sanctum.prefix', 'sanctum')], static function () {
-    Route::get('/csrf-cookie', [CsrfCookieController::class, 'show'])
-        ->middleware([
-            'web',
-            OurInitializeTenancyByDomain::class // Use tenancy initialization middleware of your choice
-        ])->name('sanctum.csrf-cookie');
-});
-
-Route::middleware([
-        OurPreventAccessFromCentralDomains::class,
-        OurInitializeTenancyByDomain::class,
-        'api',
-        // 'cors',
-        'auth:sanctum',
-
-    ])->prefix('/api')
-    ->group(function () {
-        Route::get('/', function () {
-            return 'This is your multi-tenant application. The id of the current tenant is ' . tenant('id');
-        });
-        Route::get('/auth/user-profile', [\App\Http\Controllers\Api\AuthController::class, 'userProfile']);
-        Route::post('/auth/logout', [\App\Http\Controllers\Api\AuthController::class, 'logout']);
-        require __DIR__.'/centralAndTenant.php';
-        Route::get('runCommands', function(){
-
-            // \Artisan::call('tenants:seed', [
-            //     '--tenants' => $tenant['id'],
-            //     '--class'   => PlanFeatureSeeder::class,
-            // ]);
-
-            $result = \Artisan::call('db:seed', ['--class' => RoleAndPermissionSeeder::class]);
-            return 'done1';
-        });
-    });
 
 
 

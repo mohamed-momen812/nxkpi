@@ -16,13 +16,13 @@ class FeatureResource extends JsonResource
     {
         // return parent::toArray($request);
         return [
-            "id"        => $this->id,
-            "name"      => $this->name,
-            "code"      => $this->code,
+            "id"          => $this->id,
+            "name"        => $this->name,
+            "code"        => $this->code,
             "description" => $this->description,
-            "type"      => $this->type,
-            "limit"     => $this->limit,
-            "created_at"=> $this->created_at->format('d-m-y'),
+            "type"        => $this->type,
+            "limit"       => $this->limit,
+            "created_at"  => $this->created_at->format('d-m-y'),
         ];
     }
 }

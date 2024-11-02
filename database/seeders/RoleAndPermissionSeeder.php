@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Permission;
@@ -128,21 +127,21 @@ class RoleAndPermissionSeeder extends Seeder
 
         //give all permissions to owner
         $allPermissions = Permission::all();
-    
+
         $ownerRole->syncPermissions($allPermissions);
 
         $user = User::where('type', 'owner')->first();
         if($user)
             $user->assignRole($ownerRole->name);
-            
-        //give all views permissions to manager    
+
+        //give all views permissions to manager
         $managerPermissions = [];
         $moduleCollection->each(function ($item, $key) use (&$managerPermissions) {
             $managerPermissions[] = Permission::where('name', 'view_'.$item['name'])->first();
         });
-        
+
         $managerRole->syncPermissions($managerPermissions);
-        
+
         $managers = User::where('type', 'manager')->get();
         if(!empty($managers)){
             foreach($managers as $manager){
@@ -155,9 +154,9 @@ class RoleAndPermissionSeeder extends Seeder
         $userPermissions = $userPermissions->filter(function ($permission) {
             return $permission->name != 'view_Kpi' && $permission->name != 'view_Setting';
         });
-        
+
         $userRole->syncPermissions($userPermissions);
-        
+
         $users = User::where('type', 'user')->get();
         if(!empty($users)){
             foreach($users as $user){
@@ -170,7 +169,7 @@ class RoleAndPermissionSeeder extends Seeder
         $directorPermissions = $allPermissions->filter(function ($permission) {
             $moduleNames = ['Category', 'Kpi', 'Entry', 'Dashboard', 'Chart'];
             foreach ($moduleNames as $moduleName) {
-                
+
                 if (strpos($permission->name, 'view_' . $moduleName) === 0 ||
                     strpos($permission->name, 'create_' . $moduleName) === 0 ||
                     strpos($permission->name, 'update_' . $moduleName) === 0 ||
@@ -181,16 +180,16 @@ class RoleAndPermissionSeeder extends Seeder
             }
             return false;
         });
-      
+
         $directorRole->syncPermissions($directorPermissions);
-        
+
         $directors = User::where('type', 'director')->get();
         if(!empty($directors)){
             foreach($directors as $director){
                 $director->assignRole($directorRole->name);
             }
         }
-        
+
         //give all permissions to admin role except update and delete permissions
         $allPermissions = Permission::all();
         $adminPermissions = $allPermissions->reject(function ($permission) {
@@ -205,6 +204,6 @@ class RoleAndPermissionSeeder extends Seeder
                 $admin->assignRole($adminRole->name);
             }
         }
-        
+
     }
 }

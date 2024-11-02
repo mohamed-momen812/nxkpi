@@ -18,18 +18,25 @@ class OurPreventAccessFromCentralDomains extends PreventAccessFromCentralDomains
 
      public function handle(Request $request, Closure $next)
      {
-        $parsedUrl = parse_url($request->header('origin'));
-        
-        $host = $parsedUrl['host'];
+        if (!$request->hasHeader('Origin')) {
+            return response()->json(['error' => 'Origin header is missing'], 400);
+        }
 
+        $parsedUrl = parse_url($request->header('origin'));
+
+        if (!isset($parsedUrl['host'])) {
+            return response()->json(['error' => 'Invalid Origin header'], 400);
+        }
+
+        $host = $parsedUrl['host'];
          if (in_array($host, config('tenancy.central_domains'))) {
              $abortRequest = static::$abortRequest ?? function () {
                  abort(404);
              };
- 
+
              return $abortRequest($request, $next);
          }
- 
+
          return $next($request);
      }
 }

@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\SubscriptionRequest;
 use App\Http\Resources\PlanResource;
 use App\Http\Resources\SubscriptionResource;
-use App\Models\Company;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Rennokki\Plans\Models\PlanModel;
@@ -104,7 +103,7 @@ class PlanFeatureController extends Controller
 
         if($checkSubscription){
             $subscription = $company->ourActiveSubscription();
-           
+
             $availablePlans = PlanModel::where('price', '>', $subscription->plan->price)->get();
         }else{
             $availablePlans = PlanModel::where('price', '>', 0)->get();
