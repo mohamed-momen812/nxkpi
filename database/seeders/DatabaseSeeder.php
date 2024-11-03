@@ -16,18 +16,18 @@ class DatabaseSeeder extends Seeder
     {
         // \App\Models\User::factory(10)->create();
         $this->call([
-            GroupSeeder::class,
-            UserSeeder::class,
-            CategorySeeder::class,
-            FrequencySeeder::class,
-            KpiSeeder::class,
-            EntrySeeder::class,
-            DashboardSeeder::class,
             RoleAndPermissionSeeder::class,
-            KpiUserSeeder::class,
-            ChartSeeder::class,
-            ChartsDashboardsSeeder::class,
             PlanFeatureSeeder::class
+            // GroupSeeder::class,
+            // UserSeeder::class,
+            // CategorySeeder::class,
+            // FrequencySeeder::class,
+            // KpiSeeder::class,
+            // EntrySeeder::class,
+            // DashboardSeeder::class,
+            // KpiUserSeeder::class,
+            // ChartSeeder::class,
+            // ChartsDashboardsSeeder::class,
         ]);
     }
 }

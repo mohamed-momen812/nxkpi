@@ -19,8 +19,6 @@ return new class extends Migration
             $table->string('last_name');
             $table->string('email')->unique();
             $table->string('company_domain')->unique();
-            $table->unsignedBigInteger('group_id')->nullable();
-            $table->foreign('group_id')->references('id')->on('groups')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->unsignedBigInteger('parent_user')->nullable();
@@ -41,3 +39,5 @@ return new class extends Migration
         Schema::dropIfExists('users');
     }
 };
+
+// noexero10@demo.com => 1|cazQvDCoR73LaU2VD5QpqbfW8UbBJXntUflTbsoM

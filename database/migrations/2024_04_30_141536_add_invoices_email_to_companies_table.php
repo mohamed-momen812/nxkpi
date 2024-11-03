@@ -30,6 +30,7 @@ return new class extends Migration
     public function down()
     {
         Schema::table('companies', function (Blueprint $table) {
+            $table->dropForeign(['default_frequency_id']);
             $table->dropColumn([
                 'invoices_email', 
                 'invoice_address', 

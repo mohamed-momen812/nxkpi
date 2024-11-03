@@ -13,10 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('charts', function (Blueprint $table) {
-            $table->id();
-            $table->string('type');
-            $table->timestamps();
+        Schema::table('charts_dashboards', function (Blueprint $table) {
+            //
+            $table->json('groups_ids')->nullable();
+            $table->dropColumn('roles_filter');
         });
     }
 
@@ -27,6 +27,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('charts');
+        Schema::table('charts_dashboards', function (Blueprint $table) {
+            //
+        });
     }
 };

@@ -45,12 +45,6 @@ class TenantService
                 '--class'   => ChartSeeder::class,
             ]);
 
-            //make_seed_for_PlanFeatureSeeder
-            Artisan::call('tenants:seed', [
-                '--tenants' => $tenant['id'],
-                '--class'   => PlanFeatureSeeder::class,
-            ]);
-
             Artisan::call('storage:link');
         });
 
@@ -64,15 +58,6 @@ class TenantService
                 'user_id'   => $user->id ,
                 'sort_order'=> 1
             ]);
-
-            $company = Company::create([
-                "user_id" => $user->id ,
-                "support_email" => $user->email,
-                "country" => "United State",
-                "site_url" => $user->company_domain . "." . config('tenancy.custom_domain') ,
-            ]);
-
-            $subscriptionOnTenant = $this->subscribeToPlan($company, PlanModel::find(request()->plan_id), request()->plan_type);
         });
 
     }

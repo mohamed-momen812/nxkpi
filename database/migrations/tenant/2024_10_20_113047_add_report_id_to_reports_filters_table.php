@@ -13,9 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('kpis', function (Blueprint $table) {
-            $table->boolean('enable')->default(true);
-            $table->json('working_weeks')->nullable();
+        Schema::table('reports_filters', function (Blueprint $table) {
+            //
+            $table->foreignId('report_id')->nullable()->constrained()->cascadeOnDelete();
         });
     }
 
@@ -26,8 +26,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('kpis', function (Blueprint $table) {
-            $table->dropColumn(['enable', 'working_weeks']);
+        Schema::table('reports_filters', function (Blueprint $table) {
+            //
         });
     }
 };

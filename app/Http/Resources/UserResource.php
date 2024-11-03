@@ -14,7 +14,7 @@ class  UserResource extends JsonResource
      */
     public function toArray($request)
     {
-//        return parent::toArray($request);
+        // return parent::toArray($request);
         return [
             "id" => $this->id ,
             "first_name" => $this->first_name ,
@@ -38,7 +38,7 @@ class  UserResource extends JsonResource
             "added_permissions"    => $this->permissions->map(function ($permission){
                 return ['name' => $permission->name];
             }),
-            "company" => new CompanyResource($this->company),
+            // "company" => new CompanyResource($this->company),
             "tenant"  => new TenantResource(tenant()),
             "created_at" => $this->created_at->format('d-m-y') ,
             "group" => new GroupResource($this->group) ,

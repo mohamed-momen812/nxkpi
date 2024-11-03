@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Controllers\LangController;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\PlanFeatureController;
+use Database\Seeders\DatabaseSeeder;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 
 // maping those routes to each central domain in the RouteServiceProvider in boot method
@@ -20,7 +22,3 @@ Route::group(['middleware' => 'api', 'prefix' => 'auth', InitializeTenancyByDoma
     Route::post('/refresh', [AuthController::class, 'refresh'])->middleware('auth:sanctum');
     Route::get('/user-profile', [AuthController::class, 'userProfile'])->middleware('auth:sanctum');
 });
-
-
-
-

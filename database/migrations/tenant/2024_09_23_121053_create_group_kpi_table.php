@@ -13,12 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('charts_dashboards', function (Blueprint $table) {
+        Schema::create('group_kpi', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('chart_id');
-            $table->foreign('chart_id')->references('id')->on('charts')->onDelete('cascade');
-            $table->unsignedBigInteger('dashboard_id');
-            $table->foreign('dashboard_id')->references('id')->on('dashboards')->onDelete('cascade');
+            $table->foreignId('group_id')->references('id')->on('groups')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('kpi_id')->references('id')->on('kpis')->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamps();
         });
     }
@@ -30,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('charts_dashboards');
+        Schema::dropIfExists('group_kpi');
     }
 };

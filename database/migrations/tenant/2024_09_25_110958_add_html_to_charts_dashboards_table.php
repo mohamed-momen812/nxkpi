@@ -13,8 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('plans_subscriptions', function (Blueprint $table) {
-            $table->dateTime('grace_until')->nullable();
+        Schema::table('charts_dashboards', function (Blueprint $table) {
+            //
+            $table->text('html')->nullable();
         });
     }
 
@@ -25,8 +26,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('plans_subscriptions', function (Blueprint $table) {
-            $table->dropColumn('grace_until');
+        Schema::table('charts_dashboards', function (Blueprint $table) {
+            //
         });
     }
 };

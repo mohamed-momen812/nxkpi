@@ -13,11 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('groups', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->integer('sort_order')->nullable();
-            $table->timestamps();
+        Schema::table('charts_dashboards', function (Blueprint $table) {
+            //
+            $table->enum('stack_by', ['not', 'value', 'percent'])->default('not')->nullable();
+
         });
     }
 
@@ -28,6 +27,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('groups');
+        Schema::table('charts_dashboards', function (Blueprint $table) {
+            //
+        });
     }
 };
